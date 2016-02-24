@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using NLog;
 using WebLedMatrix.Authentication.Infrastructure;
 using WebLedMatrix.Authentication.Models;
 
@@ -28,7 +29,10 @@ namespace WebLedMatrix.Controllers
 
         private UserIdentityManager UserManager
         {
-            get { return HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>(); }
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>();
+            }
         }
 
         [HttpPost]
@@ -49,20 +53,23 @@ namespace WebLedMatrix.Controllers
             }
             else
             {
-                return View("Error", new string[] {"User Not Found"});
+                return View("Error", new[] { "User Not Found" });
             }
         }
+
         [AllowAnonymous]
         public PartialViewResult Login(string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
-                return PartialView("Greetings",User.Identity.Name);
+                return PartialView("Greetings", User.Identity.Name);
             }
+
             if (ModelState.IsValid)
             {
                 ViewBag.returnUrl = returnUrl;
             }
+
             return PartialView();
         }
 
@@ -73,23 +80,23 @@ namespace WebLedMatrix.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("Error", new string[] { "Access Denied" });
+                return View("Error", new[] { "Access Denied" });
             }
+
             if (ModelState.IsValid)
             {
-
                 User user = await UserManager.FindAsync(loginModel.Name, loginModel.Password);
                 if (user == null)
                 {
-                    ModelState.AddModelError("","Invalid name or password");
+                    ModelState.AddModelError(string.Empty, "Invalid name or password");
                 }
                 else
                 {
                     ClaimsIdentity identity =
                         await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignOut();
-                    AuthManager.SignIn(new AuthenticationProperties() {IsPersistent = false},identity);
-                    if (returnUrl!=null)
+                    AuthManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
+                    if (returnUrl != null)
                     {
                         return Redirect(returnUrl);
                     }
@@ -98,9 +105,11 @@ namespace WebLedMatrix.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }
+
                 ViewBag.returnUrl = returnUrl;
                 return View(loginModel);
             }
+
             return View(loginModel);
         }
 
@@ -113,7 +122,10 @@ namespace WebLedMatrix.Controllers
 
         private IAuthenticationManager AuthManager
         {
-            get { return HttpContext.GetOwinContext().Authentication; }
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
         }
 
         [HttpPost]
@@ -121,7 +133,14 @@ namespace WebLedMatrix.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User() {FirstName = model.FirstName, LastName =  model.LastName,PhoneNumber = model.TelephoneNumber, UserName = model.Name,Email = model.Email};
+                User user = new User()
+                                {
+                                    FirstName = model.FirstName, 
+                                    LastName = model.LastName, 
+                                    PhoneNumber = model.TelephoneNumber, 
+                                    UserName = model.Name, 
+                                    Email = model.Email
+                                };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -132,6 +151,7 @@ namespace WebLedMatrix.Controllers
                     AddErrorsFromResult(result);
                 }
             }
+
             return View(model);
         }
 
@@ -139,7 +159,7 @@ namespace WebLedMatrix.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("",error);
+                ModelState.AddModelError(string.Empty, error);
             }
         }
 
@@ -163,29 +183,28 @@ namespace WebLedMatrix.Controllers
             if (user != null)
             {
                 user.Email = email;
-                IdentityResult validEmail
-                    = await UserManager.UserValidator.ValidateAsync(user);
+                IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
                 if (!validEmail.Succeeded)
                 {
                     AddErrorsFromResult(validEmail);
                 }
+
                 IdentityResult validPass = null;
                 if (password != string.Empty)
                 {
-                    validPass
-                        = await UserManager.PasswordValidator.ValidateAsync(password);
+                    validPass = await UserManager.PasswordValidator.ValidateAsync(password);
                     if (validPass.Succeeded)
                     {
-                        user.PasswordHash =
-                            UserManager.PasswordHasher.HashPassword(password);
+                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(password);
                     }
                     else
                     {
                         AddErrorsFromResult(validPass);
                     }
                 }
-                if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded
-                                                                    && password != string.Empty && validPass.Succeeded))
+
+                if ((validEmail.Succeeded && validPass == null)
+                    || (validEmail.Succeeded && password != string.Empty && validPass.Succeeded))
                 {
                     IdentityResult result = await UserManager.UpdateAsync(user);
                     if (result.Succeeded)
@@ -200,8 +219,9 @@ namespace WebLedMatrix.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "User Not Found");
+                ModelState.AddModelError(string.Empty, "User Not Found");
             }
+
             return View(user);
         }
     }

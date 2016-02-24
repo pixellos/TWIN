@@ -22,6 +22,7 @@ namespace WebLedMatrix.Hubs.Tests
 
             request.Setup(x => x.User.IsInRole("Administrators")).Returns(isAdministrator);
             request.SetupGet(z => z.User.Identity.IsAuthenticated).Returns(isAuthenticated);
+            request.SetupGet(x => x.User.Identity.Name).Returns("TestMode");
             return request;
         }
 
@@ -40,27 +41,27 @@ namespace WebLedMatrix.Hubs.Tests
 
             string status = "";
             dynamic caller = new ExpandoObject();
-            caller.loginStatus = new Action<string>((message) => status = message);
-
             mockClient.Setup(x => x.Caller).Returns((ExpandoObject)caller);
+            caller.loginStatus = new Action<string>(message => status = message);
+           
             hub.LoginStatus();
 
             Assert.Equal(expectedState.ToString(), status);
         }
 
-        [Fact()]
+        [Fact]
         public void NotLoggedCaseTest()
         {
             CoreAccountTest(AccountHub.State.NotLogged, getRequestMock(false, false).Object);
         }
 
-        [Fact()]
+        [Fact]
         public void LoggedCaseTest()
         {
             CoreAccountTest(AccountHub.State.Logged, getRequestMock(true, false).Object);
         }
 
-        [Fact()]
+        [Fact]
         public void AdminCaseTest()
         {
             CoreAccountTest(AccountHub.State.Admin, getRequestMock(true, true).Object);

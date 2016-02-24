@@ -37,6 +37,7 @@ namespace WebLedMatrix.Authentication.Infrastructure
                 roleManager.Create(new AppRole(roles));
                 userManager.AddToRole(user.Id, roles);
             }
+            context.SaveChanges();
         }
     }
 }

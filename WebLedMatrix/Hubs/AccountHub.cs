@@ -4,13 +4,18 @@ using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
-
-
+using NLog;
 
 namespace WebLedMatrix.Hubs
 {
+    using System.Security.Principal;
+
     public class AccountHub : Hub
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
+        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
+
         public enum State
         {
             Admin = 2,
@@ -20,9 +25,10 @@ namespace WebLedMatrix.Hubs
 
         public void LoginStatus()
         {
-            if (Context.User.Identity.IsAuthenticated)
+            IPrincipal user = Context.User;
+            if (user.Identity.IsAuthenticated)
             {
-                if (Context.User.IsInRole("Administrators"))//Context.User.IsInRole("Administrators"))
+                if (user.IsInRole("Administrators"))//Context.User.IsInRole("Administrators"))
                 {
                     Clients.Caller.loginStatus(State.Admin.ToString());
                 }
@@ -35,6 +41,8 @@ namespace WebLedMatrix.Hubs
             {
                 Clients.Caller.loginStatus(State.NotLogged.ToString());
             }
+
+            logger.Info(LogInfoUserCheckedState, user.Identity.Name, user.Identity.IsAuthenticated);
         }
     }
 }
