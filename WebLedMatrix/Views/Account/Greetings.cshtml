@@ -1,0 +1,6 @@
+﻿@model string
+
+<h3>
+    Welcome back, @Model
+    @Html.ActionLink("Sign Out", "Logout", "Account", null, new { @class = "btn btn-primary" })
+</h3>

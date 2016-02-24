@@ -1,0 +1,115 @@
+﻿<style>
+
+</style>
+
+<div class="container">
+    <div class="col-xs-12" id="Status">
+        <div class="col-xs-3" id="progress">
+        </div>
+         <div class="col-xs-9">
+        @{Html.RenderAction("Login", "Account");} 
+        </div>
+    </div>
+</div>
+
+<!-- These are probably out dated so you might want to use newest versions -->
+<script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.6.0/dist/progressbar.js"></script>
+
+
+@{ ViewBag.Title = "Index"; }
+<div class="panel panel-primary">
+    <div class="panel-heading">User Details</div>
+    <table class="table table-striped">
+        @foreach (string key in Model.Keys)
+        {
+            <tr>
+                <th>@key</th>
+                <td>@Model[key]</td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function() {
+
+            var firstHub = $.connection.firstHub;
+            var accountHub = $.connection.accountHub;
+            var circle;
+
+            accountHub.client.loginStatus = function(status) {
+                var colour = "#FFFFFF";
+
+                switch (status) {
+                case "Admin":
+                    colour = "#FF0000";
+                    break;
+                case "Logged":
+                    colour = "#008000";
+                    break;
+                case "NotLogged":
+                    colour = "#808080";
+                    break;
+                }
+                $('#progress').style = null;
+                if (circle != null) {
+                    circle.destroy();
+
+                }
+                circle = new ProgressBar.Circle('#progress', {
+                    duration: 200,
+                    color: colour,
+                    trailColor: "#ddd",
+                    strokeWidth: 30
+                });
+                circle.animate(1);
+            }
+
+
+            firstHub.client.newMessage = function(message) {
+                $('#messages').append('<li>' + message + '</li>');
+            };
+
+            firstHub.client.getKill = function(mess) {
+                $('#messages').text(mess);
+            };
+
+            $.connection.hub.start().done(function () {
+                accountHub.server.amILogged();
+            });
+            
+
+            $('#KillCheck').click(function() {
+                firstHub.server.kill();
+
+            });
+
+            $("#progress").click(function() {
+
+                    var x = accountHub.server.amILogged();
+                    x++;
+                }
+            )
+            $("#broadcast").click(function() {
+
+                firstHub.server.sendMessage($('#msg').val());
+            });
+
+            $(document).ready(function (){
+                
+            });
+
+            function OnLoad() {
+                accountHub.server.amILogged();
+            }
+         
+    });
+</script>
+
+
+<input type="text" id="msg" />
+<input type="button" id="broadcast" value="broadcast" />
+<input type="button" id="KillCheck" value="Rousian Roulette" />
+<ul id="messages"></ul>
