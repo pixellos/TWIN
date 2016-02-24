@@ -32,10 +32,7 @@
 
 
 <script type="text/javascript">
-
     $(function() {
-
-            var firstHub = $.connection.firstHub;
             var accountHub = $.connection.accountHub;
             var circle;
 
@@ -67,49 +64,16 @@
                 circle.animate(1);
             }
 
-
-            firstHub.client.newMessage = function(message) {
-                $('#messages').append('<li>' + message + '</li>');
-            };
-
-            firstHub.client.getKill = function(mess) {
-                $('#messages').text(mess);
-            };
-
             $.connection.hub.start().done(function () {
-                accountHub.server.amILogged();
+                accountHub.server.loginStatus();
             });
-            
 
-            $('#KillCheck').click(function() {
-                firstHub.server.kill();
-
-            });
 
             $("#progress").click(function() {
-
-                    var x = accountHub.server.amILogged();
-                    x++;
+                    accountHub.server.amILogged();
                 }
-            )
-            $("#broadcast").click(function() {
-
-                firstHub.server.sendMessage($('#msg').val());
-            });
-
-            $(document).ready(function (){
-                
-            });
-
-            function OnLoad() {
-                accountHub.server.amILogged();
-            }
-         
+            );
     });
 </script>
 
 
-<input type="text" id="msg" />
-<input type="button" id="broadcast" value="broadcast" />
-<input type="button" id="KillCheck" value="Rousian Roulette" />
-<ul id="messages"></ul>

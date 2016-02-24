@@ -17,6 +17,7 @@ namespace WebLedMatrix.Authentication.Infrastructure
             System.Data.Entity.Database.SetInitializer<UserIdentityDbContext>(new UserIdentityDbInitialize());
         }
 
+        
         public static UserIdentityDbContext Create()
         {
             return new UserIdentityDbContext();

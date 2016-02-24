@@ -5,24 +5,24 @@ using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 
+
+
 namespace WebLedMatrix.Hubs
 {
     public class AccountHub : Hub
     {
-        enum State
+        public enum State
         {
             Admin = 2,
             Logged = 1,
             NotLogged = 0
         }
 
-        public void AmILogged()
+        public void LoginStatus()
         {
-            var user = Context.User;
-    
-            if (user.Identity.IsAuthenticated)
+            if (Context.User.Identity.IsAuthenticated)
             {
-                if (user.IsInRole("Administrators"))
+                if (Context.User.IsInRole("Administrators"))//Context.User.IsInRole("Administrators"))
                 {
                     Clients.Caller.loginStatus(State.Admin.ToString());
                 }
