@@ -230,6 +230,7 @@
     <Compile Include="Authentication\Models\Roles\AppRole.cs" />
     <Compile Include="Authentication\Models\Roles\RoleEditModel.cs" />
     <Compile Include="Authentication\Models\Roles\RoleModificationModel.cs" />
+    <Compile Include="Authentication\Models\Roles\TypicalRoles.cs" />
     <Compile Include="Authentication\Models\User.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
