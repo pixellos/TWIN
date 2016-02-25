@@ -48,6 +48,34 @@
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.Owin.3.1.0\lib\net45\Autofac.Integration.Mvc.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.3.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.SignalR, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.SignalR.3.0.2\lib\net40\Autofac.Integration.SignalR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Web.4.0.0\lib\net45\Autofac.Integration.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi.Owin, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.Owin.3.3.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -113,14 +141,23 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SignalR.Extras.Autofac, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SignalR.Extras.Autofac.1.1.1\lib\net45\SignalR.Extras.Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Owin, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.0\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -186,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Logic\MatrixsManagement\Abstract\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Login\" />
   </ItemGroup>
@@ -223,19 +261,19 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Authentication\Abstract\TwinUser.cs" />
-    <Compile Include="Authentication\Infrastructure\IdentityHelper.cs" />
-    <Compile Include="Authentication\Infrastructure\UserIdentityDbContext.cs" />
-    <Compile Include="Authentication\Infrastructure\UserIdentityDbInitialize.cs" />
-    <Compile Include="Authentication\Infrastructure\UserIdentityManager.cs" />
-    <Compile Include="Authentication\Models\CreateModel.cs" />
-    <Compile Include="Authentication\Models\LoginModel.cs" />
-    <Compile Include="Authentication\Models\Roles\AppRoleManager.cs" />
-    <Compile Include="Authentication\Models\Roles\AppRole.cs" />
-    <Compile Include="Authentication\Models\Roles\RoleEditModel.cs" />
-    <Compile Include="Authentication\Models\Roles\RoleModificationModel.cs" />
-    <Compile Include="Authentication\Models\Roles\TypicalRoles.cs" />
-    <Compile Include="Authentication\Models\User.cs" />
+    <Compile Include="Logic\Authentication\Abstract\ITwinUser.cs" />
+    <Compile Include="Logic\Authentication\Infrastructure\IdentityHelper.cs" />
+    <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbContext.cs" />
+    <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbInitialize.cs" />
+    <Compile Include="Logic\Authentication\Infrastructure\UserIdentityManager.cs" />
+    <Compile Include="Logic\Authentication\Models\CreateModel.cs" />
+    <Compile Include="Logic\Authentication\Models\LoginModel.cs" />
+    <Compile Include="Logic\Authentication\Models\Roles\AppRoleManager.cs" />
+    <Compile Include="Logic\Authentication\Models\Roles\AppRole.cs" />
+    <Compile Include="Logic\Authentication\Models\Roles\RoleEditModel.cs" />
+    <Compile Include="Logic\Authentication\Models\Roles\RoleModificationModel.cs" />
+    <Compile Include="Logic\Authentication\Models\Roles\TypicalRoles.cs" />
+    <Compile Include="Logic\Authentication\Models\User.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleAdministrationController.cs" />
@@ -244,6 +282,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\AccountHub.cs" />
+    <Compile Include="IoC\BrowserXServerModule.cs" />
+    <Compile Include="Logic\MatrixsManagement\DataBase\Infrastructure\MatrixUnitDbContext.cs" />
+    <Compile Include="Logic\MatrixsManagement\DataBase\Infrastructure\MatrixUnitDbInitialize.cs" />
+    <Compile Include="Logic\MatrixsManagement\DataBase\Model\MatrixUnit.cs" />
+    <Compile Include="Logic\ServerBrowser\Abstract\ILoginStatusChecker.cs" />
+    <Compile Include="Logic\ServerBrowser\Concrete\LoginStatusChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +297,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />

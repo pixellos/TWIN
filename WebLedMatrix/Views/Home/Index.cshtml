@@ -1,8 +1,4 @@
-﻿<style>
-
-</style>
-
-<div class="container">
+﻿<div class="container">
     <div class="col-xs-12" id="Status">
         <div class="col-xs-3" id="progress">
         </div>
@@ -12,9 +8,7 @@
     </div>
 </div>
 
-<!-- These are probably out dated so you might want to use newest versions -->
 <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.6.0/dist/progressbar.js"></script>
-
 
 @{ ViewBag.Title = "Index"; }
 <div class="panel panel-primary">
@@ -29,7 +23,6 @@
         }
     </table>
 </div>
-
 
 <script type="text/javascript">
     $(function() {
@@ -61,7 +54,7 @@
                     trailColor: "#ddd",
                     strokeWidth: 30
                 });
-                circle.animate(1);
+                circle.animate(1,function () {circle.animate(0.7)});
             }
 
             $.connection.hub.start().done(function () {
@@ -70,7 +63,7 @@
 
 
             $("#progress").click(function() {
-                    accountHub.server.amILogged();
+                    accountHub.server.loginStatus();
                 }
             );
     });

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using WebLedMatrix.Authentication.Models.Roles;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.Owin;
-using WebLedMatrix.Authentication.Infrastructure;
-using WebLedMatrix.Authentication.Models;
+using WebLedMatrix.Logic.Authentication.Infrastructure;
+using WebLedMatrix.Logic.Authentication.Models;
+using WebLedMatrix.Logic.Authentication.Models.Roles;
 
 namespace WebLedMatrix.Controllers
 {

@@ -9,8 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NLog;
-using WebLedMatrix.Authentication.Infrastructure;
-using WebLedMatrix.Authentication.Models;
+using WebLedMatrix.Logic.Authentication.Infrastructure;
+using WebLedMatrix.Logic.Authentication.Models;
 
 namespace WebLedMatrix.Controllers
 {

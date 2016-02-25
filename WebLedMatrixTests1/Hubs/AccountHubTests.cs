@@ -8,63 +8,70 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Moq;
+using Autofac.Integration.SignalR;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using Moq;
+using NSubstitute;
+using WebLedMatrix.Logic.ServerBrowser.Abstract;
+using WebLedMatrix.Logic.ServerBrowser.Concrete;
+using WebLedMatrixTests1;
 
 namespace WebLedMatrix.Hubs.Tests
 {
-    public class AccountHubTests
+    public class AccountHubTests : BaseTest
     {
+        private readonly ILoginStatusChecker _loginStatusChecker = new LoginStatusChecker();
+
+
         static Mock<IRequest> getRequestMock(bool isAuthenticated, bool isAdministrator)
         {
             var request = new Mock<IRequest>();
 
             request.Setup(x => x.User.IsInRole("Administrators")).Returns(isAdministrator);
             request.SetupGet(z => z.User.Identity.IsAuthenticated).Returns(isAuthenticated);
-            request.SetupGet(x => x.User.Identity.Name).Returns("TestMode");
             return request;
         }
 
-        static AccountHub GetAccountHub(IRequest request, IHubCallerConnectionContext<dynamic> client )
+         AccountHub GetAccountHub(IRequest request, IHubCallerConnectionContext<dynamic> client)
         {
-            var hub = new AccountHub();
+            var hub = new AccountHub(_loginStatusChecker);
             hub.Context = new HubCallerContext(request, "1");
             hub.Clients = client;
             return hub;
         }
 
-        public void CoreAccountTest(AccountHub.State expectedState, IRequest clientRequest)
+        public void CoreAccountTest(State expectedState, IRequest clientRequest)
         {
             var mockClient = new Mock<IHubCallerConnectionContext<dynamic>>();
             var hub = GetAccountHub(clientRequest, mockClient.Object);
 
             string status = "";
             dynamic caller = new ExpandoObject();
+            caller.loginStatus = new Action<string>((message) => status = message);
+
             mockClient.Setup(x => x.Caller).Returns((ExpandoObject)caller);
-            caller.loginStatus = new Action<string>(message => status = message);
-           
             hub.LoginStatus();
 
             Assert.Equal(expectedState.ToString(), status);
         }
 
-        [Fact]
+        [Fact()]
         public void NotLoggedCaseTest()
         {
-            CoreAccountTest(AccountHub.State.NotLogged, getRequestMock(false, false).Object);
+            CoreAccountTest(State.NotLogged, getRequestMock(false, false).Object);
         }
 
-        [Fact]
+        [Fact()]
         public void LoggedCaseTest()
         {
-            CoreAccountTest(AccountHub.State.Logged, getRequestMock(true, false).Object);
+            CoreAccountTest(State.Logged, getRequestMock(true, false).Object);
         }
 
-        [Fact]
+        [Fact()]
         public void AdminCaseTest()
         {
-            CoreAccountTest(AccountHub.State.Admin, getRequestMock(true, true).Object);
+            CoreAccountTest(State.Admin, getRequestMock(true, true).Object);
         }
 
     }

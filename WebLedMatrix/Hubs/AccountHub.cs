@@ -5,44 +5,27 @@ using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using NLog;
+using WebLedMatrix.Logic.ServerBrowser.Abstract;
 
 namespace WebLedMatrix.Hubs
 {
-    using System.Security.Principal;
-
     public class AccountHub : Hub
     {
+        private ILoginStatusChecker _loginStatusChecker;
         private Logger logger = LogManager.GetCurrentClassLogger();
-
         private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
 
-        public enum State
+        public AccountHub(ILoginStatusChecker statusChecker)
         {
-            Admin = 2,
-            Logged = 1,
-            NotLogged = 0
+            _loginStatusChecker = statusChecker;
         }
 
         public void LoginStatus()
         {
-            IPrincipal user = Context.User;
-            if (user.Identity.IsAuthenticated)
-            {
-                if (user.IsInRole("Administrators"))//Context.User.IsInRole("Administrators"))
-                {
-                    Clients.Caller.loginStatus(State.Admin.ToString());
-                }
-                else
-                {
-                    Clients.Caller.loginStatus(State.Logged.ToString());
-                }
-            }
-            else
-            {
-                Clients.Caller.loginStatus(State.NotLogged.ToString());
-            }
+            Clients.Caller.loginStatus(
+                _loginStatusChecker.GetLoginStateString(Context.User));
 
-            logger.Info(LogInfoUserCheckedState, user.Identity.Name, user.Identity.IsAuthenticated);
+            logger.Info(LogInfoUserCheckedState, Context.User.Identity.Name, Context.User.Identity.IsAuthenticated);
         }
     }
 }
