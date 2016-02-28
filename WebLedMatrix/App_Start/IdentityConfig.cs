@@ -2,7 +2,6 @@
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.SignalR;
-using Autofac.Integration.WebApi;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
@@ -11,8 +10,6 @@ using Owin;
 using WebLedMatrix.IoC;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
-using WebLedMatrix.Logic.ServerBrowser.Abstract;
-using WebLedMatrix.Logic.ServerBrowser.Concrete;
 
 namespace WebLedMatrix
 {

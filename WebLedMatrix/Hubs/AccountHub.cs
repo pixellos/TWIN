@@ -24,7 +24,6 @@ namespace WebLedMatrix.Hubs
         {
             Clients.Caller.loginStatus(
                 _loginStatusChecker.GetLoginStateString(Context.User));
-
             logger.Info(LogInfoUserCheckedState, Context.User.Identity.Name, Context.User.Identity.IsAuthenticated);
         }
     }

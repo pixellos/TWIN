@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Windows;
+using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using WebLedMatrix.ScreenController.Model;
 
 namespace WebLedMatrix.ScreenController.ViewModel
@@ -36,6 +38,51 @@ namespace WebLedMatrix.ScreenController.ViewModel
             }
         }
 
+
+        void HideAll()
+        {
+            TextVisible = Visibility.Hidden;
+            ImageVisibility = Visibility.Hidden;
+        }
+
+        private System.Windows.Visibility _textVisible = Visibility.Hidden;
+        public System.Windows.Visibility TextVisible
+        {
+            get	{ return _textVisible;	}
+            set	{ Set(ref _textVisible, value);	}
+        }
+
+        private string _displayedText = "";
+        public string DisplayedText
+        {
+            get { return _displayedText; }
+            set
+            {
+                HideAll();
+                TextVisible = Visibility.Visible;
+                Set(ref _displayedText, value);
+            }
+        }
+
+        private System.Windows.Visibility _imageVisibility = Visibility.Hidden;
+        public System.Windows.Visibility ImageVisibility
+        {
+            get	{		return _imageVisibility;	}
+            set	{		Set(ref _imageVisibility, value);	}
+        }
+
+        private string _displayedPicture = "http://pre03.deviantart.net/b285/th/pre/f/2013/257/6/8/grumpy_cat__nope_by_imwithstoopid13-d624kvl.png";
+        public string DisplayedPicture
+        {
+            get	{		return _displayedPicture;	}
+            set
+            {
+                HideAll();
+                ImageVisibility = Visibility.Visible;
+                Set(ref _displayedPicture, value);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -50,8 +97,16 @@ namespace WebLedMatrix.ScreenController.ViewModel
                         // Report error here
                         return;
                     }
-
+                    DisplayedText = "Hello!\n" +
+                                    "TWIN\n" +
+                                    "Application\n" +
+                                    "Display\n" +
+                                    "Client\n" +
+                                    "\n" +
+                                    "Have fun!\n";
                     WelcomeTitle = item.Title;
+                    
+
                 });
         }
 

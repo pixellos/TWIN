@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
-        Height="300"
-        Width="300"
+        Height="302"
+        Width="359"
         Title="MVVM Light Application"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+        DataContext="{Binding Main, Source={StaticResource Locator}}" MinWidth="101" MinHeight="251">
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,15 +18,21 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Margin="0,0,0,-1">
+        <Label x:Name="label" Content="Resolution&#xD;&#xA;" Margin="0,10,10,0" VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="74"/>
+        <TextBox x:Name="resolutionXTextBox" Height="23" Margin="0,40,52,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" HorizontalAlignment="Right" Width="32"/>
+        <TextBox x:Name="resolutionYTextBox" Height="23" Margin="0,40,10,0" TextWrapping="Wrap" Text="Y" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34"/>
+        <Label x:Name="label1" Content="Server&#xD;&#xA;" VerticalAlignment="Top" Margin="0,90,9,0" Height="27" HorizontalAlignment="Right" Width="74"/>
+        <TextBox x:Name="serverTextBox" Height="22" Margin="0,122,9,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="74"/>
+        <Button x:Name="connectButton" Content="Connect" HorizontalAlignment="Right" Margin="0,150,9,0" VerticalAlignment="Top" Width="75" BorderBrush="Black" Background="White"/>
+        <Grid x:Name="commonGrid" Margin="0,0,100,0">
+            <Viewbox x:Name="viewbox" StretchDirection="DownOnly" Height="{Binding Height, ElementName=commonGrid }" Width="{Binding Width, ElementName=commonGrid}" Stretch="Fill" Visibility="{Binding TextVisible}">
 
-        <TextBlock FontSize="36"
-                   FontWeight="Bold"
-                   Foreground="Purple"
-                   Text="{Binding WelcomeTitle}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+                <TextBox x:Name="textInGrid" TextWrapping="Wrap" IsReadOnly="True" FontWeight="Bold" TextAlignment="Center" Text="{Binding DisplayedText}" AllowDrop="False" FontSize="32" />
+            </Viewbox>
+            <Image x:Name="imageInGrid" Source="{Binding DisplayedPicture}" Visibility="{Binding ImageVisibility}" Stretch="UniformToFill"/>
+        </Grid>
+        <Button x:Name="changeButton" Content="Change" HorizontalAlignment="Right" Margin="0,70,8,0" VerticalAlignment="Top" Width="75" BorderBrush="Black" Background="White" Click="changeButton_Click"/>
 
     </Grid>
 </Window>

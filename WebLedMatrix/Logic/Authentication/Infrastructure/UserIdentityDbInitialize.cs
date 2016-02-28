@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -30,7 +31,6 @@ namespace WebLedMatrix.Logic.Authentication.Infrastructure
                 new User() {UserName = userName, FirstName = firstName, LastName = lastName, Email = email}, password);
 
             var user = userManager.FindByName(userName);
-
             foreach (string roles in Enum.GetNames(typeof(TypicalRoles)))
             {
                 roleManager.Create(new AppRole(roles));
