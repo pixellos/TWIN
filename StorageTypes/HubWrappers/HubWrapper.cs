@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
-
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using Microsoft.AspNet.SignalR.Client.Infrastructure;
@@ -38,6 +38,11 @@ namespace WebLedMatrix.Hubs
 
     public static class Helper
     {
+        public static object[] DeserializeObject(this object[] thisObjects, int countOfParameters)
+        {
+            return ((object[])thisObjects).Take(countOfParameters).ToArray();
+        }
+
         public static bool IsEquals(this ParameterInfo[] firstParameterInfos, ParameterInfo[] secParameterInfos)
         {
             bool isEveryMatching = true;
@@ -66,8 +71,6 @@ namespace WebLedMatrix.Hubs
    
     public class HubWrapper<T> where T : Hub // ClientSide
     {
-      
-
         const string DefaultUrl = "localhost:8080";
         private string Url { get; set; }
 
@@ -75,14 +78,14 @@ namespace WebLedMatrix.Hubs
         private IHubProxy _hubProxy;
         private HubConnection _hubConnection;
 
-        public HubWrapper(IHub hub, HubConnection hubConnection = null, IHubProxy hubProxy = null) : this(hub, null)
+        public HubWrapper(IHub hub, HubConnection hubConnection = null, IHubProxy hubProxy = null)
         {
+            _hub = hub;
             _hubConnection = hubConnection ?? new HubConnection(DefaultUrl);
             _hubProxy = hubProxy ?? new HubProxy(_hubConnection, GetHubName());
         }
-        public HubWrapper(IHub hub, string url = DefaultUrl)
+        public HubWrapper(IHub hub, string url = DefaultUrl) : this(hub,null,null)
         {
-            _hub = hub;
             Url = url;
         }
 
@@ -91,10 +94,10 @@ namespace WebLedMatrix.Hubs
             _hubConnection.Start();
         }
 
-        public void Register<TInterface, TClassToRegister>(TClassToRegister toRegister) where TClassToRegister : TInterface
+        public void Register<TInterface, TClassToRegister>(TClassToRegister registerClassObject) where TClassToRegister : TInterface
         {
            var x = typeof (TInterface).GetRuntimeMethods();
-
+            
             foreach (var interfaceVar in x)
             {
                     foreach (var classVar in (typeof(TClassToRegister)).GetRuntimeMethods())
@@ -102,22 +105,19 @@ namespace WebLedMatrix.Hubs
                         var parameterInfos = interfaceVar.GetParameters();
                         var parameterInfo = classVar.GetParameters();
                         var isEqual = parameterInfos.IsEquals(parameterInfo);
+
                         if (interfaceVar.Name == classVar.Name && interfaceVar.ReturnParameter.IsEquals(classVar.ReturnParameter) && isEqual)
                         {
-                            object[] objectMock = new object[parameterInfo.Length];
-                            classVar.Invoke(toRegister, objectMock);
-                        break;
-                            
+                            _hubProxy.On<object[]>(interfaceVar.Name, (parameter) =>
+                            {
+                                classVar.Invoke(registerClassObject,
+                                    parameter.DeserializeObject(parameterInfo.Length));
+                            });
+                            break;
                         }
                     }
-          //      _hubProxy.On(interfaceVar.Name, () =>
-           //     {
-                    
-
-                //  });
             }
         }
-     
         
         public async Task<TReturnValue> InvokeAtServer<TReturnValue>(Delegate hardTypedFromHubFunction,object[] args)
         {

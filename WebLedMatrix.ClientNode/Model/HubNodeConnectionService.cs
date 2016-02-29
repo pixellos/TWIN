@@ -23,8 +23,12 @@ namespace WebLedMatrix.ClientNode.Model
     public class HubNodeConnectionService : IHubConnectionService, NodeConnectionInterface
     {
         private string Url = "localhost:8080";
-        private HubWrapper<ConnectionHubBase> _hubWrapper; 
-        
+        private HubWrapper<ConnectionHubBase> _hubWrapper;
+
+        public HubNodeConnectionService() : this("url")
+        {
+            
+        }
 
         public HubNodeConnectionService(string url = null)
         {
@@ -58,7 +62,7 @@ namespace WebLedMatrix.ClientNode.Model
             _hubWrapper.Start();
         }
 
-        public void sendData(DataToDisplay data, object[] args = null)
+        public virtual void sendData(DataToDisplay data, object[] args = null)
         {
            Console.WriteLine("sendData");
         }
@@ -68,7 +72,7 @@ namespace WebLedMatrix.ClientNode.Model
             return base.ToString();
         }
 
-        public void Hello()
+        public virtual void Hello()
         {
             Console.WriteLine("Hello");
         }
