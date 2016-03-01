@@ -778,14 +778,14 @@ intellisense.annotate(jQuery.fn, {
   },
   'ajaxComplete': function() {
     /// <signature>
-    ///   <summary>Register a handler to be called when Ajax requests complete. This is an AjaxEvent.</summary>
+    ///   <summary>RegisterAndInvoke a handler to be called when Ajax requests complete. This is an AjaxEvent.</summary>
     ///   <param name="handler(event, XMLHttpRequest, ajaxOptions)" type="Function">The function to be invoked.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'ajaxError': function() {
     /// <signature>
-    ///   <summary>Register a handler to be called when Ajax requests complete with an error. This is an Ajax Event.</summary>
+    ///   <summary>RegisterAndInvoke a handler to be called when Ajax requests complete with an error. This is an Ajax Event.</summary>
     ///   <param name="handler(event, jqXHR, ajaxSettings, thrownError)" type="Function">The function to be invoked.</param>
     ///   <returns type="jQuery" />
     /// </signature>
@@ -799,14 +799,14 @@ intellisense.annotate(jQuery.fn, {
   },
   'ajaxStart': function() {
     /// <signature>
-    ///   <summary>Register a handler to be called when the first Ajax request begins. This is an Ajax Event.</summary>
+    ///   <summary>RegisterAndInvoke a handler to be called when the first Ajax request begins. This is an Ajax Event.</summary>
     ///   <param name="handler()" type="Function">The function to be invoked.</param>
     ///   <returns type="jQuery" />
     /// </signature>
   },
   'ajaxStop': function() {
     /// <signature>
-    ///   <summary>Register a handler to be called when all Ajax requests have completed. This is an Ajax Event.</summary>
+    ///   <summary>RegisterAndInvoke a handler to be called when all Ajax requests have completed. This is an Ajax Event.</summary>
     ///   <param name="handler()" type="Function">The function to be invoked.</param>
     ///   <returns type="jQuery" />
     /// </signature>

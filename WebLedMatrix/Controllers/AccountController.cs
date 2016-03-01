@@ -75,7 +75,7 @@ namespace WebLedMatrix.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+//        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel loginModel, string returnUrl)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -96,14 +96,6 @@ namespace WebLedMatrix.Controllers
                         await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignOut();
                     AuthManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
-                    if (returnUrl != null)
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
                 }
 
                 ViewBag.returnUrl = returnUrl;

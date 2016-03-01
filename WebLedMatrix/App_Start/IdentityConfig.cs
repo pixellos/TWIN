@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Web.Helpers;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.SignalR;
@@ -44,7 +45,7 @@ namespace WebLedMatrix
                     AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                     LoginPath = new PathString("/Account/Login"),
                 });
-
+            AntiForgeryConfig.SuppressIdentityHeuristicChecks = true;
             app.MapSignalR(config);
         }
     }

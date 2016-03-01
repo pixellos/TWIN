@@ -2,8 +2,10 @@
     <div class="col-xs-12" id="Status">
         <div class="col-xs-3" id="progress">
         </div>
-         <div class="col-xs-9">
-        @{Html.RenderAction("Login", "Account");} 
+        <div class="col-xs-9">
+            @{
+                Html.RenderAction("Login", "Account");
+            }
         </div>
     </div>
 </div>
@@ -26,13 +28,13 @@
 
 <script type="text/javascript">
     $(function() {
-            var accountHub = $.connection.accountHub;
-            var circle;
+        var clientNodeHub = $.connection.uIManagerHub;
+        var circle;
 
-            accountHub.client.loginStatus = function(status) {
-                var colour = "#FFFFFF";
+        var circleState = function(status) {
+            var colour = "#FFFFFF";
 
-                switch (status) {
+            switch (status) {
                 case "Admin":
                     colour = "#FF0000";
                     break;
@@ -42,31 +44,62 @@
                 case "NotLogged":
                     colour = "#808080";
                     break;
-                }
-                $('#progress').style = null;
-                if (circle != null) {
-                    circle.destroy();
-
-                }
-                circle = new ProgressBar.Circle('#progress', {
-                    duration: 200,
-                    color: colour,
-                    trailColor: "#ddd",
-                    strokeWidth: 30
-                });
-                circle.animate(1,function () {circle.animate(0.7)});
             }
 
-            $.connection.hub.start().done(function () {
-                accountHub.server.loginStatus();
+            if (circle != null) {
+                circle.destroy();
+            }
+
+            ///Extract method from there!
+            circle = new ProgressBar.Circle('#progress', {
+                duration: 200,
+                color: colour,
+                trailColor: "#ddd",
+                strokeWidth: 30
             });
+            circle.animate(1, function () { circle.animate(0.5) });
+        }
 
+        clientNodeHub.client.loginStatus = function(status) {
+            circleState(status);
+        };
 
-            $("#progress").click(function() {
-                    accountHub.server.loginStatus();
-                }
-            );
+        clientNodeHub.client.showSections = function(matrixes, sending, administration) {
+            if (matrixes) {
+                $("#matrixSection").slideDown("slow");
+            } else {
+                $("#matrixSection").slideUp("slow");
+            }
+        }
+
+        $.connection.hub.start().done(function() {
+            clientNodeHub.server.loginStatus();
+        });
+        
+        $("#progress").click(function() {
+                clientNodeHub.server.loginStatus();
+            }
+        );
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $("#matrixDataPanelClickIt").click(function() {
+            $("#matrixDataPanel").slideToggle("slow");
+        });
+    });
+</script>
+
+<div id="matrixSection">
+    <center>
+        <input type="button" value="Click IT" id="matrixDataPanelClickIt" />
+    </center>
+
+    <div id="matrixDataPanel" class="jumbotron" style="display: none">
+        TestTest Test
+        Test
+    </div>
+</div>
 
 

@@ -1,75 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
-using Microsoft.AspNet.SignalR.Client.Infrastructure;
 using Microsoft.AspNet.SignalR.Hubs;
-using StorageTypes;
-using StorageTypes.AppInterface.ClientHub;
+using WebLedMatrix.Hubs;
 
-namespace WebLedMatrix.Hubs
+namespace StorageTypes.HubWrappers
 {
-    public class ConnectionHubBase : Hub<NodeConnectionInterface>
-    {
-        public async void RequestForData()
-        {
-            //Register call - to UI information "Hi, i'm there and i can receive commands"
-        }
-
-        //From ui
-        public async void DisplayData(object type, object data)
-        {
-            DisplayDataType displayDataType;
-            DisplayDataType.TryParse((string)type, out displayDataType);
-            Clients.Caller.sendData(new DataToDisplay
-            {
-                DisplayDataType = displayDataType,
-                Data = data.ToString()
-            });
-        }
-    }
-
-    public static class Helper
-    {
-        public static object[] DeserializeObject(this object[] thisObjects, int countOfParameters)
-        {
-            return ((object[])thisObjects).Take(countOfParameters).ToArray();
-        }
-
-        public static bool IsEquals(this ParameterInfo[] firstParameterInfos, ParameterInfo[] secParameterInfos)
-        {
-            bool isEveryMatching = true;
-            foreach (var first in firstParameterInfos)
-            {
-                bool isAnyMatching = false;
-                foreach (var second in secParameterInfos)
-                {
-                    if (isAnyMatching == false)
-                    {
-                        isAnyMatching = first.Name.Equals(second.Name) && first.ParameterType.Equals(second.ParameterType);
-                    }
-                }
-                if (isAnyMatching == false)
-                {
-                    isEveryMatching = false;
-                }
-            }
-            return isEveryMatching;
-        }
-        public static bool IsEquals(this ParameterInfo firstParameterInfos, ParameterInfo secParameterInfos)
-        {
-             return firstParameterInfos.ParameterType.Equals(secParameterInfos.ParameterType);
-        }
-    }
-   
-    public class HubWrapper<T> where T : Hub // ClientSide
+    public class HubWrapper<THub> : IHubWrapper<THub> where THub : Hub// ClientSide
     {
         const string DefaultUrl = "localhost:8080";
         private string Url { get; set; }
@@ -94,28 +34,31 @@ namespace WebLedMatrix.Hubs
             _hubConnection.Start();
         }
 
-        public void Register<TInterface, TClassToRegister>(TClassToRegister registerClassObject) where TClassToRegister : TInterface
+        public void RegisterAndInvoke<TInterface, TClassToRegister>(TClassToRegister registerClassObject) where TClassToRegister : TInterface
         {
            var x = typeof (TInterface).GetRuntimeMethods();
             
             foreach (var interfaceVar in x)
             {
-                    foreach (var classVar in (typeof(TClassToRegister)).GetRuntimeMethods())
-                    {
-                        var parameterInfos = interfaceVar.GetParameters();
-                        var parameterInfo = classVar.GetParameters();
-                        var isEqual = parameterInfos.IsEquals(parameterInfo);
+                foreach (var classVar in (typeof(TClassToRegister)).GetRuntimeMethods())
+                {
+                    var interfaceParameters = interfaceVar.GetParameters();
+                    var classParameters = classVar.GetParameters();
 
-                        if (interfaceVar.Name == classVar.Name && interfaceVar.ReturnParameter.IsEquals(classVar.ReturnParameter) && isEqual)
+                    bool areReturnParametersEquals = interfaceParameters.IsEquals(classParameters);
+                    bool areNamesEquals = interfaceVar.Name == classVar.Name;
+
+                    if (areNamesEquals && interfaceVar.ReturnParameter.IsEquals(classVar.ReturnParameter) && areReturnParametersEquals)
+                    {
+                        _hubProxy.On<object[]>(interfaceVar.Name, (parameter) =>
                         {
-                            _hubProxy.On<object[]>(interfaceVar.Name, (parameter) =>
-                            {
-                                classVar.Invoke(registerClassObject,
-                                    parameter.DeserializeObject(parameterInfo.Length));
-                            });
-                            break;
-                        }
+                            classVar.Invoke(registerClassObject,
+                                parameter.DeserializeObject(classParameters.Length));
+                        });
+                        classVar.Invoke(registerClassObject, new object[classParameters.Length]);
+                        break;
                     }
+                }
             }
         }
         
@@ -123,6 +66,8 @@ namespace WebLedMatrix.Hubs
         {
              return await _hubProxy.Invoke<TReturnValue>(GetMethodName(hardTypedFromHubFunction), args);
         }
+
+
         public async Task<object> InvokeAtServer(Delegate hardTypedFromHubFunction, object[] args)
         {
             return await InvokeAtServer<object>(hardTypedFromHubFunction,args);
@@ -134,15 +79,14 @@ namespace WebLedMatrix.Hubs
         }
         public string GetMethodName(Delegate x)
         {
-            if (typeof (T).Equals(x.Method.DeclaringType))
+            if (typeof (THub) == x.Method.DeclaringType)
             {
                 return x.Method.Name;
             }
             throw new MethodDoesntBelongToDesiredTypeException(x.Method.Name,
-                typeof (T).FullName, x.Method.DeclaringType.FullName);
+                typeof (THub).FullName, x.Method.DeclaringType.FullName);
         }
     }
-
 
     public class MethodDoesntBelongToDesiredTypeException : Exception
     {

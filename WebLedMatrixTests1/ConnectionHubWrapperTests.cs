@@ -11,7 +11,7 @@ namespace WebLedMatrix.Hubs.Tests
 {
     public class ConnectionHubWrapperTests
     {
-        public class ConnectionHub : Hub
+        public class ClientNodeHub : Hub
         {
             public async void RequestForData()
             {
@@ -40,7 +40,7 @@ namespace WebLedMatrix.Hubs.Tests
          [Fact]
             public void GetHubNameTest()
             {
-                Assert.Equal("ConnectionHub", new ConnectionHubWrapper<ConnectionHub>(new ConnectionHub()).GetHubName());
+                Assert.Equal("ClientNodeHub", new ConnectionHubWrapper<ClientNodeHub>(new ClientNodeHub()).GetHubName());
             }
         
     }

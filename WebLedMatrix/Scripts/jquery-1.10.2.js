@@ -9774,7 +9774,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 	// Otherwise expose jQuery to the global object as usual
 	window.jQuery = window.$ = jQuery;
 
-	// Register as a named AMD module, since jQuery can be concatenated with other
+	// RegisterAndInvoke as a named AMD module, since jQuery can be concatenated with other
 	// files that may use define, but not via a proper concatenation script that
 	// understands anonymous AMD modules. A named AMD is safest and most robust
 	// way to register. Lowercase jquery is used because AMD module names are

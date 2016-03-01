@@ -33,9 +33,9 @@ namespace WebLedMatrix.Hubs.Tests
             return request;
         }
 
-         AccountHub GetAccountHub(IRequest request, IHubCallerConnectionContext<dynamic> client)
+         UIManagerHub GetAccountHub(IRequest request, IHubCallerConnectionContext<dynamic> client)
         {
-            var hub = new AccountHub(_loginStatusChecker);
+            var hub = new UIManagerHub(_loginStatusChecker);
             hub.Context = new HubCallerContext(request, "1");
             hub.Clients = client;
             return hub;
