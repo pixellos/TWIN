@@ -1,13 +1,20 @@
-﻿using System.Reflection;
+﻿using System.CodeDom;
+using System.Reflection;
 using System.Web.Helpers;
 using System.Web.Http;
+using System.Web.Routing;
 using Autofac;
+using Autofac.Builder;
+using Autofac.Core.Lifetime;
 using Autofac.Integration.SignalR;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using SignalR.Extras.Autofac;
+using WebLedMatrix.Hubs;
 using WebLedMatrix.IoC;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
@@ -24,17 +31,27 @@ namespace WebLedMatrix
 
         private static HubConfiguration SignalRIoCConfiguration()
         {
-            var builder = new ContainerBuilder();
+            ContainerBuilder builder = new ContainerBuilder();
             var config = new HubConfiguration();
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
+            builder.RegisterType(typeof (UiManagerHub)).AsSelf().InstancePerDependency();
             builder.RegisterModule(new BrowserXServerModule());
+
             var container = builder.Build();
             config.Resolver = new AutofacDependencyResolver(container);
+            
+            GlobalHost.DependencyResolver = config.Resolver;
             return config;
+        }
+
+        private static void WCFIoC()
+        {
+            
         }
 
         private static void RegisterIdentity(IAppBuilder app, HubConfiguration config)
         {
+            WCFIoC();
             app.CreatePerOwinContext<UserIdentityDbContext>(UserIdentityDbContext.Create);
             app.CreatePerOwinContext<UserIdentityManager>(UserIdentityManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
@@ -46,6 +63,7 @@ namespace WebLedMatrix
                     LoginPath = new PathString("/Account/Login"),
                 });
             AntiForgeryConfig.SuppressIdentityHeuristicChecks = true;
+        
             app.MapSignalR(config);
         }
     }

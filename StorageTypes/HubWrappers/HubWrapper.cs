@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Resources;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Client;
@@ -11,7 +12,7 @@ namespace StorageTypes.HubWrappers
 {
     public class HubWrapper<THub> : IHubWrapper<THub> where THub : Hub// ClientSide
     {
-        const string DefaultUrl = "localhost:8080";
+        const string DefaultUrl = "http://localhost:8080";
         private string Url { get; set; }
 
         private IHub _hub;//
@@ -22,16 +23,24 @@ namespace StorageTypes.HubWrappers
         {
             _hub = hub;
             _hubConnection = hubConnection ?? new HubConnection(DefaultUrl);
-            _hubProxy = hubProxy ?? new HubProxy(_hubConnection, GetHubName());
+            _hubProxy = hubProxy ?? _hubConnection.CreateHubProxy(GetHubName());
         }
-        public HubWrapper(IHub hub, string url = DefaultUrl) : this(hub,null,null)
+        public HubWrapper(IHub hub, string url = null) : this(hub,null,null)
         {
-            Url = url;
+            Url = url ?? DefaultUrl;
         }
 
-        public void Start()
+        public async Task Start(string url = null)
         {
-            _hubConnection.Start();
+            try
+            {
+                await _hubConnection.Start();
+            }
+            catch (Exception e )
+            {
+                Console.WriteLine(e.StackTrace);
+                throw;
+            }
         }
 
         public void RegisterAndInvoke<TInterface, TClassToRegister>(TClassToRegister registerClassObject) where TClassToRegister : TInterface
@@ -55,13 +64,14 @@ namespace StorageTypes.HubWrappers
                             classVar.Invoke(registerClassObject,
                                 parameter.DeserializeObject(classParameters.Length));
                         });
-                        classVar.Invoke(registerClassObject, new object[classParameters.Length]);
+                        classVar.Invoke(registerClassObject, new object[classParameters.Length]); //Invoking for test purposes -> cant test it without it
                         break;
                     }
                 }
             }
         }
-        
+
+    
         public async Task<TReturnValue> InvokeAtServer<TReturnValue>(Delegate hardTypedFromHubFunction,object[] args)
         {
              return await _hubProxy.Invoke<TReturnValue>(GetMethodName(hardTypedFromHubFunction), args);

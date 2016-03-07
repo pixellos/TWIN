@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 
@@ -11,6 +12,6 @@ namespace WebLedMatrix.Hubs
         Task<object> InvokeAtServer(Delegate hardTypedFromHubFunction, object[] args);
         Task<TReturnValue> InvokeAtServer<TReturnValue>(Delegate hardTypedFromHubFunction, object[] args);
         void RegisterAndInvoke<TInterface, TClassToRegister>(TClassToRegister registerClassObject) where TClassToRegister : TInterface;
-        void Start();
+        Task Start(string url = null);
     }
 }

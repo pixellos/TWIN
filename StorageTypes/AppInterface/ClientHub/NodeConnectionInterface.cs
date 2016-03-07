@@ -1,8 +1,10 @@
-﻿namespace StorageTypes.AppInterface.ClientHub
+﻿using System.Threading.Tasks;
+
+namespace StorageTypes.AppInterface.ClientHub
 {
     public interface NodeConnectionInterface
     {
         void sendData(DataToDisplay data, object[] args = null);
-        void Hello();
+        Task Hello();
     }
 }

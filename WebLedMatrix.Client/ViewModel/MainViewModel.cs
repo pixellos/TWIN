@@ -1,10 +1,14 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using WebLedMatrix.Client.Model;
+using WebLedMatrix.ClientNode.Model;
 
 namespace WebLedMatrix.Client.ViewModel
 {
-    /// <summary>
+
+
+/// <summary>
     /// This class contains properties that the main View can data bind to.
     /// <para>
     /// See http://www.mvvmlight.net
@@ -12,30 +16,37 @@ namespace WebLedMatrix.Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private readonly IDataService _dataService;
 
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
         public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
-        private string _welcomeTitle = string.Empty;
-
+        private HubNodeConnectionService connectionService;
         /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
+        /// Initializes a new instance of the ConnectionViewModel class.
         /// </summary>
-        public string WelcomeTitle
+        /// H
+        public MainViewModel(HubNodeConnectionService connectionService)
         {
-            get
+            this.connectionService = connectionService;
+            ConnectCommand = new RelayCommand(async () =>
             {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
+                MessageBox.Show("Hitted");
+                await connectionService.Start();
+                await connectionService.Hello();
+                Url = "Seems Ok!";
+            });
         }
+
+        private string _url = "Hello";
+        public string Url
+        {
+            get { return _url; }
+            set { Set(() => Url, ref _url, value); }
+        }
+
+        public RelayCommand ConnectCommand { get; private set; }
 
 
         void HideAll()
@@ -44,14 +55,14 @@ namespace WebLedMatrix.Client.ViewModel
             ImageVisibility = Visibility.Hidden;
         }
 
-        private System.Windows.Visibility _textVisible = Visibility.Hidden;
+        private System.Windows.Visibility _textVisible = Visibility.Visible;
         public System.Windows.Visibility TextVisible
         {
             get { return _textVisible; }
             set { Set(ref _textVisible, value); }
         }
 
-        private string _displayedText = "";
+        private string _displayedText = "WellCome";
         public string DisplayedText
         {
             get { return _displayedText; }
@@ -81,33 +92,8 @@ namespace WebLedMatrix.Client.ViewModel
                 Set(ref _displayedPicture, value);
             }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel(IDataService dataService)
-        {
-            _dataService = dataService;
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
-                    DisplayedText = "Hello!\n" +
-                                    "TWIN\n" +
-                                    "Application\n" +
-                                    "Display\n" +
-                                    "Client\n" +
-                                    "\n" +
-                                    "Have fun!\n";
-                    WelcomeTitle = item.Title;
-
-
-                });
+     
         }
 
     }
-}
+

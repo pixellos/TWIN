@@ -699,7 +699,7 @@
 
                     // If we have a keep alive
                     if (res.KeepAliveTimeout) {
-                        // RegisterAndInvoke the keep alive data as activated
+                        // Register the keep alive data as activated
                         keepAliveData.activated = true;
 
                         // Timeout to designate when to force the connection into reconnecting converted to milliseconds

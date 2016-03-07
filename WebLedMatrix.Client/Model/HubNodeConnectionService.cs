@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 using StorageTypes;
 using StorageTypes.AppInterface.ClientHub;
@@ -15,27 +16,19 @@ namespace WebLedMatrix.ClientNode.Model
         Action<string> DisplayImageAction { get; }
     }
 
-    public interface IHubConnectionService
+    public class HubNodeConnectionService : NodeConnectionInterface
     {
-        void SetConnection(string Url);
-        void Start();
-    }
-    
-    public class HubNodeConnectionService : IHubConnectionService, NodeConnectionInterface
-    {
-        private string Url = "localhost:8080";
+        private string Name = "DefaultNode";
         private HubWrapper<ClientNodeHubBase> _hubWrapper;
-        private ClientNodeHubBase _typingClientNodeHubBase = new ClientNodeHubBase();
+        private ClientNodeHubBase _typingClientNodeHubBase;
 
         /// <summary>
         /// For testing purposes - I couldnt make nsubstitute call ctor(null);
         /// </summary>
-        public HubNodeConnectionService() : this("url"){        }
-
-        public HubNodeConnectionService(string url = null)
+        public HubNodeConnectionService()
         {
-            _hubWrapper = new HubWrapper<ClientNodeHubBase>(new ClientNodeHubBase(), Url);
-            Url = url ?? Url;
+            _typingClientNodeHubBase = new ClientNodeHubBase(null);
+            _hubWrapper = new HubWrapper<ClientNodeHubBase>(new ClientNodeHubBase(null),null);
             ServicePointManager.DefaultConnectionLimit = 10; // For WPF App
         }
 
@@ -44,38 +37,28 @@ namespace WebLedMatrix.ClientNode.Model
             _hubWrapper.RegisterAndInvoke<NodeConnectionInterface,HubNodeConnectionService>(this);   
         }
 
-        public void SetConnection(string Url)
+        public async Task Start(string Url = null)
         {
-//            _hubConnection = new HubConnection(Url);
-//            _hubProxy = _hubConnection.CreateHubProxy(HubName);
-//            ConfigureHubMethods();
-        }
-
-        public async void RequestData()
-        {
-//            var returnedData = await _hubProxy.Invoke<StorageTypes.DataToDisplay>("ClientIsReady");
-        }
-
-        public async void Start()
-        {
-            _hubWrapper.Start();
+            try
+            {
+                await _hubWrapper.Start(Url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                throw;
+            }
         }
 
         public virtual void sendData(DataToDisplay data, object[] args = null)
         {
-           Console.WriteLine("sendData");
-        }
-
-        public sealed override string ToString()
-        {
-            return base.ToString();
-        }
-
-        public virtual async void Hello()
-        {
             
-            Action @delegate = _typingClientNodeHubBase.ClientIsReady;
-            await _hubWrapper.InvokeAtServer(@delegate, null);
+        }
+
+        public virtual async Task Hello()
+        {
+            Action<string> @delegate = _typingClientNodeHubBase.RegisterMatrix;
+            await _hubWrapper.InvokeAtServer(@delegate, new object[]{Name});
         }
     }
 }

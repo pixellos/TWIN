@@ -12,7 +12,7 @@ namespace WebLedMatrix.Client
             Text, Image, Picture, WebPage
         }
             private Logger _logger = LogManager.GetCurrentClassLogger();
-
+        
             const string TooLowValue = "Value is too low";
             const string TooBigValueMessage = "{0} value is too big";
 
@@ -27,13 +27,13 @@ namespace WebLedMatrix.Client
             {
                 get { return parseWithExceptionHandling(resolutionYTextBox.Text); }
             }
-
+            
             public MainWindow()
             {
                 InitializeComponent();
                 Closing += (s, e) => ViewModelLocator.Cleanup();
             }
-
+        
             int parseWithExceptionHandling(string valueToParse)
             {
                 try
@@ -57,7 +57,7 @@ namespace WebLedMatrix.Client
             {
                 imageInGrid.Visibility = Visibility.Visible;
             }
-
+            
             private void changeButton_Click(object sender, RoutedEventArgs e)
             {
                 if (SystemParameters.PrimaryScreenWidth < _selectedXResolution)
@@ -77,7 +77,7 @@ namespace WebLedMatrix.Client
                     ChangeResolution(_selectedXResolution, _selectedYResolution);
                 }
             }
-
+        
             private void ChangeResolution(int x, int y)
             {
                 this.Width = x + MarginFromRightEdge;
@@ -85,5 +85,11 @@ namespace WebLedMatrix.Client
                 textInGrid.Width = viewbox.Width = commonGrid.Width = x;
                 textInGrid.Height = viewbox.Height = commonGrid.Height = y;
             }
+            
+
+        private void serverTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
+    }
     }

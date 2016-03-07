@@ -56,7 +56,7 @@ namespace WebLedMatrix.Controllers
                 return View("Error", new[] { "User Not Found" });
             }
         }
-
+        [HttpGet]
         [AllowAnonymous]
         public PartialViewResult Login(string returnUrl)
         {
@@ -76,16 +76,16 @@ namespace WebLedMatrix.Controllers
         [HttpPost]
         [AllowAnonymous]
 //        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginModel loginModel, string returnUrl)
+        public PartialViewResult Login(LoginModel loginModel, string returnUrl)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("Error", new[] { "Access Denied" });
+                return PartialView("Greetings", User.Identity.Name);
             }
 
             if (ModelState.IsValid)
             {
-                User user = await UserManager.FindAsync(loginModel.Name, loginModel.Password);
+                User user = UserManager.Find(loginModel.Name, loginModel.Password);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid name or password");
@@ -93,16 +93,16 @@ namespace WebLedMatrix.Controllers
                 else
                 {
                     ClaimsIdentity identity =
-                        await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                       UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthManager.SignOut();
                     AuthManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
                 }
 
                 ViewBag.returnUrl = returnUrl;
-                return View(loginModel);
+                return PartialView("Greetings", user.UserName);
             }
 
-            return View(loginModel);
+            return PartialView(loginModel);
         }
 
         [Authorize]
