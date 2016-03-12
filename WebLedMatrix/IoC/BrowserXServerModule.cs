@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using StorageTypes.HubWrappers;
 using WebLedMatrix.Hubs;
-using WebLedMatrix.Logic.ServerBrowser.Abstract;
-using WebLedMatrix.Logic.ServerBrowser.Concrete;
+using WebLedMatrix.Logic.Authentication.Abstract;
+using WebLedMatrix.Logic.Authentication.Models;
 
 namespace WebLedMatrix.IoC
 {
@@ -16,8 +15,8 @@ namespace WebLedMatrix.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c => new LoginStatusChecker()).As<ILoginStatusChecker>().SingleInstance();
-            builder.Register(x => new MatrixManager()).As<IMatrixManager>().SingleInstance();
-            builder.Register(x => new Something()).As<Something>().SingleInstance();
+            builder.Register(c => new MatrixManager()).SingleInstance();
+
         }
     }
 }

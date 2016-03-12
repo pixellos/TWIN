@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0d3ee649-722d-481b-a235-f57d6478b8fa" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://127.0.0.1/Matrix/MatrixService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MatrixService2.xsd" MetadataType="Schema" ID="3f89018b-8f2c-4736-a85b-d22ba5537d34" SourceId="1" SourceUrl="http://pc/Matrix/MatrixService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MatrixService1.wsdl" MetadataType="Wsdl" ID="e2eed1b8-7006-40f3-be5f-ff3ee37fb137" SourceId="1" SourceUrl="http://pc/Matrix/MatrixService.svc?wsdl" />
+    <MetadataFile FileName="MatrixService1.disco" MetadataType="Disco" ID="f9eb725f-3b4a-4d36-b915-932d45cd891e" SourceId="1" SourceUrl="http://pc/Matrix/MatrixService.svc?disco" />
+    <MetadataFile FileName="MatrixService21.xsd" MetadataType="Schema" ID="00c30c56-9e20-4814-80db-868c4dfb9e88" SourceId="1" SourceUrl="http://pc/Matrix/MatrixService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

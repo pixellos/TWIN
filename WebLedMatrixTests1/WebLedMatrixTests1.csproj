@@ -127,6 +127,7 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="ConnectionHubWrapperTests.cs" />
     <Compile Include="Hubs\UiManagerTests.cs" />
+    <Compile Include="MatrixManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +136,9 @@
     <None Include="Scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\StorageTypes.csproj">
+    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
       <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
-      <Name>StorageTypes</Name>
+      <Name>WebLedMatrix.Types</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebLedMatrix\WebLedMatrix.csproj">
       <Project>{E837F9A0-A50D-4979-81D0-A4C49874759A}</Project>

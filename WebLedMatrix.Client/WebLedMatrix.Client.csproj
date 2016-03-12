@@ -108,9 +108,7 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\HubNodeConnectionService.cs" />
     <Compile Include="Model\IDataService.cs" />
-    <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
@@ -159,9 +157,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\StorageTypes.csproj">
+    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
       <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
-      <Name>StorageTypes</Name>
+      <Name>WebLedMatrix.Types</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using WebLedMatrix.Client.Model;
-using WebLedMatrix.ClientNode.Model;
 
 namespace WebLedMatrix.Client.ViewModel
 {
@@ -21,23 +20,6 @@ namespace WebLedMatrix.Client.ViewModel
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
         public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private HubNodeConnectionService connectionService;
-        /// <summary>
-        /// Initializes a new instance of the ConnectionViewModel class.
-        /// </summary>
-        /// H
-        public MainViewModel(HubNodeConnectionService connectionService)
-        {
-            this.connectionService = connectionService;
-            ConnectCommand = new RelayCommand(async () =>
-            {
-                MessageBox.Show("Hitted");
-                await connectionService.Start();
-                await connectionService.Hello();
-                Url = "Seems Ok!";
-            });
-        }
 
         private string _url = "Hello";
         public string Url

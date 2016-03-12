@@ -30,7 +30,8 @@ Login: Administrator Password: Admin1
 
 <script type="text/javascript">
     $(function() {
-        var uiManagerHub = $.connection.uiManagerHub;
+        uiManagerHub = $.connection.uiManagerHub;
+        
         var circle;
 
         var circleState = function(status) {
@@ -62,12 +63,25 @@ Login: Administrator Password: Admin1
             circle.animate(1, function () { circle.animate(0.5) });
         }
 
-        uiManagerHub.client.updateMatrixes = function(name) {
-            $("#matrixDataPanel").append("<div class=col-xs-12>" + name + "</div>");
+        uiManagerHub.client.unRegisterAllMatrices = function() {
+            $("#matrixDataPanel").empty();
         };
 
         uiManagerHub.client.loginStatus = function(status) {
             circleState(status);
+        };
+
+        function addMatrice(matrix, index, array) {
+            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + "_matrix" + ">" + matrix.Name + "<input type=\"text\" id=\""+matrix.Name+"textbox\">" + 
+               "<img src=\"http://aguilografic.com/historica/sites/default/files/images/002-abstract-skydome-matrix.thumbnail.png\"/>"+"<button class=\"btn-default\" id=\""+matrix.Name+"button\">Send Text</button>"+"</div>");
+            $("#" + matrix.Name + "button").click(
+                function() {
+                    uiManagerHub.server.sendCommandToMatrix($("#"+matrix.Name+"textbox").val(), matrix.Name);
+                });
+        };
+
+        uiManagerHub.client.updateMatrices = function (status) {
+            status.forEach(addMatrice);
         };
 
         uiManagerHub.client.showSections = function(matrixes, sending, administration) {
@@ -92,11 +106,14 @@ Login: Administrator Password: Admin1
 
         $.connection.hub.start().done(function() {
             uiManagerHub.server.loginStatus();
+            x = function (x, y) {
+                uiManagerHub.server.loginStatus();
+                uiManagerHub.server.sendCommandToMatrix(x, y);
+            };
         });
         
         $("#progress").click(function() {
             uiManagerHub.server.loginStatus();
-                uiManagerHub.server.otherMethods();
             }
         );
     });

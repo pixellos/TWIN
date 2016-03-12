@@ -15,8 +15,8 @@ using Moq;
 using NSubstitute;
 using NSubstitute.Extensions;
 using NSubstitute.ReturnsExtensions;
-using WebLedMatrix.Logic.ServerBrowser.Abstract;
-using WebLedMatrix.Logic.ServerBrowser.Concrete;
+using WebLedMatrix.Logic.Authentication.Abstract;
+using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrixTests1;
 using CallInfo = NSubstitute.Core.CallInfo;
 
@@ -33,30 +33,24 @@ namespace WebLedMatrix.Hubs.Tests
 
             request.User.When(x=>x.IsInRole("Administrators")).DoNotCallBase();
             request.User.IsInRole("Administrators").Returns(isAdministrator);
-           
-
             request.User.Identity.IsAuthenticated.Returns(isAuthenticated);
 
             return request;
         }
 
-         UiManagerHub GetAccountHub(IRequest request)
-        {
-            var hub = new UiManagerHub(_loginStatusChecker,null);
-            hub.Context = new HubCallerContext(request, "1");
-            return hub;
-        }
-
         public delegate void showSectionsDelegate(bool matrixesSection, bool sendingSection, bool administrationSection);
-
 
         public void CoreAccountTest(State expectedState, IRequest identityRequest)
         {
-            UiManagerHub managerHub = Substitute.For<UiManagerHub>(_loginStatusChecker, null);
+
+            var matrixManager = Substitute.For<MatrixManager>();
+            matrixManager.When(x=>x.UpdateMatrices()).DoNotCallBase();
+
+            UiManagerHub managerHub = Substitute.For<UiManagerHub>(_loginStatusChecker, matrixManager);
             managerHub.Context = new HubCallerContext(identityRequest,"1");
+            managerHub.Clients = Substitute.For<IHubCallerConnectionContext<IUiManagerHub>>();
 
             string result = "";
-            managerHub.Clients = Substitute.For<IHubCallerConnectionContext<IUiManagerHub>>();
             managerHub.Clients.When(x => { var r = x.Caller; }).DoNotCallBase();
             managerHub.Clients.Caller.WhenForAnyArgs(x=>x.loginStatus("")).Do(x=> { result = x[0].ToString(); });
 
@@ -81,6 +75,5 @@ namespace WebLedMatrix.Hubs.Tests
         {
             CoreAccountTest(State.Admin, getIdentityRequest(true, true));
         }
-
     }
 }

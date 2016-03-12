@@ -17,7 +17,7 @@
     <AssemblyName>WebLedMatrix</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -35,7 +35,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IncludeIisSettings>false</IncludeIisSettings>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+    <IncludeAppPool>true</IncludeAppPool>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +56,10 @@
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac.Extras.Multitenant.Wcf, Version=3.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.Multitenant.Wcf.3.1.1\lib\net40\Autofac.Extras.Multitenant.Wcf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +74,10 @@
     </Reference>
     <Reference Include="Autofac.Integration.SignalR, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.SignalR.3.0.2\lib\net40\Autofac.Integration.SignalR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Wcf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Wcf.4.0.0\lib\net45\Autofac.Integration.Wcf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -160,6 +170,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -168,6 +179,9 @@
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.Channels" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -213,6 +227,8 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -241,8 +257,11 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Hubs\IUiManagerHub.cs" />
+    <Compile Include="Hubs\Matrix.cs" />
     <Compile Include="IMatrixService.cs" />
     <Compile Include="Logic\Authentication\Abstract\ITwinUser.cs" />
+    <Compile Include="Logic\Authentication\Abstract\State.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\IdentityHelper.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbContext.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbInitialize.cs" />
@@ -258,21 +277,22 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleAdministrationController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\UIManagerHub.cs" />
     <Compile Include="IoC\BrowserXServerModule.cs" />
-    <Compile Include="Logic\MatrixesManagement\Abstract\IMatrixesManager.cs" />
-    <Compile Include="Logic\MatrixesManagement\DataBase\Infrastructure\MatrixUnitDbContext.cs" />
-    <Compile Include="Logic\MatrixesManagement\DataBase\Infrastructure\MatrixUnitDbInitialize.cs" />
-    <Compile Include="Logic\MatrixesManagement\DataBase\Model\MatrixUnit.cs" />
-    <Compile Include="Logic\ServerBrowser\Abstract\ILoginStatusChecker.cs" />
-    <Compile Include="Logic\ServerBrowser\Concrete\LoginStatusChecker.cs" />
+    <Compile Include="Logic\Authentication\Abstract\ILoginStatusChecker.cs" />
+    <Compile Include="Logic\Authentication\Models\LoginStatusChecker.cs" />
+    <Compile Include="MatrixManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MatrixService.svc.cs">
       <DependentUpon>MatrixService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +311,10 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
@@ -334,9 +358,9 @@
     <Content Include="Scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\StorageTypes.csproj">
+    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
       <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
-      <Name>StorageTypes</Name>
+      <Name>WebLedMatrix.Types</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -364,7 +388,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>12663</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8080/</IISUrl>
+          <IISUrl>http://127.0.0.1/Matrix</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/WebLedMatrix</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -13,7 +13,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using WebLedMatrix.Client.Model;
-using WebLedMatrix.ClientNode.Model;
 
 namespace WebLedMatrix.Client.ViewModel
 {
@@ -40,9 +39,6 @@ namespace WebLedMatrix.Client.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<ConnectionViewModel>();
-
-            SimpleIoc.Default.Register<HubNodeConnectionService>();
         }
 
         /// <summary>
@@ -59,16 +55,6 @@ namespace WebLedMatrix.Client.ViewModel
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
-    "CA1822:MarkMembersAsStatic",
-    Justification = "This non-static member is needed for data binding purposes.")]
-        public ConnectionViewModel Connection
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<ConnectionViewModel>();
-            }
-        }
 
 
         /// <summary>
