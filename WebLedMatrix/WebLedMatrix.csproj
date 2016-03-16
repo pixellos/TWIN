@@ -257,11 +257,13 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdministrationRoleManager.cs" />
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Hubs\Matrix.cs" />
     <Compile Include="IMatrixService.cs" />
     <Compile Include="Logic\Authentication\Abstract\ITwinUser.cs" />
     <Compile Include="Logic\Authentication\Abstract\State.cs" />
+    <Compile Include="Logic\Authentication\Concrete\UserManaging.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\IdentityHelper.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbContext.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbInitialize.cs" />
@@ -311,6 +313,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\WebLedMatrix.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -356,6 +359,7 @@
     <Content Include="Views\RoleAdministration\Edit.cshtml" />
     <Content Include="Views\Account\Greetings.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="Views\Account\AccessGranted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">

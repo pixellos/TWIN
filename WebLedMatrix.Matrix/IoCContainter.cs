@@ -6,7 +6,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using WebLedMatrix.Matrix.MatrixService;
+using WebLedMatrix.Matrix.Logic;
 using WebLedMatrix.Matrix.ViewModel;
 
 namespace WebLedMatrix.Matrix
@@ -35,7 +35,6 @@ namespace WebLedMatrix.Matrix
             
             builder.RegisterType<ServiceWrapper>();
             //builder.RegisterType<MatrixService.MatrixServiceClient>().UsingConstructor(() => new MatrixServiceClient(new InstanceContext(new MatrixCallback())));
-                
         }
     }
 }

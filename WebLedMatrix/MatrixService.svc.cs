@@ -28,7 +28,6 @@ namespace WebLedMatrix
 
         public void RegisterMatrix(string name)
         {
-            
             _thisMatrix = _matrixManager.AddMatrix(name,OperationContext.Current.GetCallbackChannel<IMatrixServiceCallback>() );
         }
 

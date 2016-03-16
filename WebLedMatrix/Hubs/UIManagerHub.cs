@@ -31,7 +31,12 @@ namespace WebLedMatrix.Hubs
             _matrixManager = matrixManager;
         }
 
-        public void SendCommandToMatrix(string data,string name)
+        public void SendUri(string data,string name)
+        {
+            _matrixManager.SendCommandToMatirx(name,DisplayDataType.WebPage, data);
+        }
+
+        public void SendText(string data, string name)
         {
             _matrixManager.SendCommandToMatirx(name,DisplayDataType.Text, data);
         }

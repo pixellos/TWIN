@@ -6,5 +6,4 @@ namespace WebLedMatrix.Logic.Authentication.Abstract
     {
         string GetLoginStateString(IPrincipal user);
     }
-
 }

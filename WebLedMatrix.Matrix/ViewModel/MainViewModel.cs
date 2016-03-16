@@ -5,6 +5,8 @@ using System.Windows.Threading;
 using Autofac;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using WebLedMatrix.Matrix.Logic;
 using WebLedMatrix.Matrix.Model;
 
 namespace WebLedMatrix.Matrix.ViewModel
@@ -34,36 +36,8 @@ namespace WebLedMatrix.Matrix.ViewModel
             SetName = new RelayCommand(() =>
             {
                 _serviceWrapper.SetName(NodeName);
+                Messenger.Default.Send(new NotificationMessage(MessageStrings.Show));
             });
-
-            Task x = new Task(() =>
-            {
-                while (true)
-                {
-                    Task.Delay(1000);
-                    WelcomeTitle = DateTime.Now.ToString();
-                }
-            });
-            x.Start();
-        }
-
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private string _welcomeTitle = string.Empty;
-
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
         }
     }
 }

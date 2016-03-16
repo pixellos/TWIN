@@ -15,6 +15,7 @@ namespace WebLedMatrix.Controllers
 {
     public class RoleAdministrationController : Controller
     {
+        RoleAdministrating _roleAdministrating => new RoleAdministrating(RoleManager, UserManager);
         // GET: RoleAdministration
         public ActionResult Index()
         {
@@ -85,50 +86,44 @@ namespace WebLedMatrix.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(RoleModificationModel model)
         {
-            IdentityResult result;
             if (ModelState.IsValid)
             {
-                foreach (string userId in model.IdsToAdd ?? new string[] { })
+                try
                 {
-                    result = await UserManager.AddToRoleAsync(userId, model.RoleName);
-                    if (!result.Succeeded)
-                    {
-                        return View("Error", result.Errors);
-                    }
+                    await _roleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
+                    await _roleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
                 }
-                foreach (string userId in model.IdsToDelete ?? new string[] { })
+                catch (RoleResultException exception)
                 {
-                    result = await UserManager.RemoveFromRoleAsync(userId,
-                    model.RoleName);
-                    if (!result.Succeeded)
-                    {
-                        return View("Error", result.Errors);
-                    }
+                    return View("Error", exception.ErrorStrings);
                 }
-                return RedirectToAction("Index");
+                catch (RoleNotFoundException exception)
+                {
+                    return View("Error", new string[] { "Role Not Found" });
+                }
             }
-            return View("Error", new string[] { "Role Not Found" });
+            return View("Index");
         }
-
 
         [HttpPost]
         public async Task<ActionResult> Create([Required]string name)
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await RoleManager.CreateAsync(new AppRole(name));
-
-                if (result.Succeeded)
+                try
                 {
-                    return RedirectToAction("Index");
+                    await _roleAdministrating.AddRole(name);
                 }
-                else
+                catch (RoleResultException exception)
                 {
-                    AddErrorsFromResult(result);
+                    foreach (string errorString in exception.ErrorStrings)
+                    {
+                        ModelState.AddModelError(String.Empty, errorString);
+                    }
+                    return View(name);
                 }
             }
-            return View(name);
+            return RedirectToAction("Index");
         } 
-
     }
 }

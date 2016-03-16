@@ -71,13 +71,18 @@ Login: Administrator Password: Admin1
             circleState(status);
         };
 
+        var stringMatrixLiteral = "_matrix";
+        function addSignalRButton(matrixName,callback,functionName,buttonText)
+        {
+            $("#" + matrixName + stringMatrixLiteral).append(
+                "<button type=\"button\" class=\"btn btn-default\" id=\"" + matrixName + functionName + "Button\">" + buttonText + "</button>");
+            $("#" + matrixName + functionName + "Button").click(callback);
+        };
+
         function addMatrice(matrix, index, array) {
-            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + "_matrix" + ">" + matrix.Name + "<input type=\"text\" id=\""+matrix.Name+"textbox\">" + 
-               "<img src=\"http://aguilografic.com/historica/sites/default/files/images/002-abstract-skydome-matrix.thumbnail.png\"/>"+"<button class=\"btn-default\" id=\""+matrix.Name+"button\">Send Text</button>"+"</div>");
-            $("#" + matrix.Name + "button").click(
-                function() {
-                    uiManagerHub.server.sendCommandToMatrix($("#"+matrix.Name+"textbox").val(), matrix.Name);
-                });
+            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + matrix.Name + "<input type=\"text\" id=\""+matrix.Name+"textbox\">" + "</div>");
+            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendText($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "sendtext", "Send Text");
+            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendUri($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "senduri", "Send Uri");
         };
 
         uiManagerHub.client.updateMatrices = function (status) {

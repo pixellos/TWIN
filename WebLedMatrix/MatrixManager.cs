@@ -45,24 +45,19 @@ namespace WebLedMatrix
             Context.Clients.All.updateMatrices(matrices.ToArray());     
         }
 
-        public void RegisterCallBackToSendingCommandToMatrix(Action<DataToDisplay> callBackAction)
-        {
-            _sendCommandAction = callBackAction;
-        }
 
-        private Action<DataToDisplay> _sendCommandAction;
         public void SendCommandToMatirx(string name, DisplayDataType displayDataType, string data)
         {
-            try
+            switch (displayDataType)
             {
-                matrices.Single(x => x.Name == name).Callback.UpdateText(data);
+                    case DisplayDataType.Text:
+                    matrices.Single(x => x.Name.Equals(name)).Callback.UpdateText(data);
+                    break;
+
+                    case DisplayDataType.WebPage:
+                    matrices.Single(x=>x.Name.Equals(name)).Callback.UpdateWebPage(data);
+                    break;
             }
-            catch (Exception)
-            {
-                RemoveMatrix(name);
-                throw;
-            }
-           
         }
     }
 }

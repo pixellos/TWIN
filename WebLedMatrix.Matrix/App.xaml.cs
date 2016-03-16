@@ -12,6 +12,7 @@ namespace WebLedMatrix.Matrix
         {
             IoCContainter.Build();
             DispatcherHelper.Initialize();
+        
         }
     }
 }

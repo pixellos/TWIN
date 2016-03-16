@@ -126,7 +126,9 @@
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
     <Compile Include="ConnectionHubWrapperTests.cs" />
+    <Compile Include="Controllers\RoleAdministratingTests.cs" />
     <Compile Include="Hubs\UiManagerTests.cs" />
+    <Compile Include="Logic\Authentication\Concrete\UserManagingTests.cs" />
     <Compile Include="MatrixManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

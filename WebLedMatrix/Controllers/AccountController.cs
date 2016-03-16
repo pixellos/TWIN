@@ -5,10 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NLog;
+using WebLedMatrix.Logic.Authentication.Concrete;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models;
 
@@ -58,16 +60,11 @@ namespace WebLedMatrix.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public PartialViewResult Login(string returnUrl)
+        public PartialViewResult Login()
         {
             if (User.Identity.IsAuthenticated)
             {
                 return PartialView("Greetings", User.Identity.Name);
-            }
-
-            if (ModelState.IsValid)
-            {
-                ViewBag.returnUrl = returnUrl;
             }
 
             return PartialView();
@@ -76,32 +73,23 @@ namespace WebLedMatrix.Controllers
         [HttpPost]
         [AllowAnonymous]
 //        [ValidateAntiForgeryToken]
-        public PartialViewResult Login(LoginModel loginModel, string returnUrl)
+        public PartialViewResult Login(LoginModel loginModel)
         {
+            var manager = new UserManaging(UserManager,AuthManager);
+
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return PartialView("Greetings", User.Identity.Name);
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && manager.TryLogin(loginModel))
             {
-                User user = UserManager.Find(loginModel.Name, loginModel.Password);
-                if (user == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid name or password");
-                }
-                else
-                {
-                    ClaimsIdentity identity =
-                       UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-                    AuthManager.SignOut();
-                    AuthManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
-                }
-
-                ViewBag.returnUrl = returnUrl;
-                return PartialView("Greetings", user.UserName);
+                return PartialView("AccessGranted");
             }
-
+            else
+            {
+                ModelState.AddModelError(String.Empty,"Input incorrect data");
+            }
             return PartialView(loginModel);
         }
 

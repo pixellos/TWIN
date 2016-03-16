@@ -7,7 +7,7 @@ using WebLedMatrix.Logic.Authentication.Infrastructure;
 
 namespace WebLedMatrix.Logic.Authentication.Models.Roles
 {
-    class AppRoleManager : RoleManager<AppRole>, IDisposable
+    public class AppRoleManager : RoleManager<AppRole>, IDisposable
     {
         public AppRoleManager(RoleStore<AppRole> store ) : base(store) {}
 

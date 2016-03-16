@@ -28,9 +28,7 @@ namespace WebLedMatrix.Matrix.ViewModel
     {
         static ViewModelLocator()
         {
-            
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
             if (ViewModelBase.IsInDesignModeStatic)
             {
                 SimpleIoc.Default.Register<IDataService, Design.DesignDataService>();
@@ -41,6 +39,7 @@ namespace WebLedMatrix.Matrix.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ShowerViewModel>(true);
         }
 
         /// <summary>
@@ -56,6 +55,18 @@ namespace WebLedMatrix.Matrix.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+           "CA1822:MarkMembersAsStatic",
+           Justification = "This non-static member is needed for data binding purposes.")]
+        public ShowerViewModel Shower
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ShowerViewModel>();
+            }
+        }
+
 
         /// <summary>
         /// Cleans up all the resources.

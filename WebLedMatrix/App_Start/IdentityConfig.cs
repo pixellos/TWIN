@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Web;
 using System.Web.Helpers;
 using Autofac;
 using Autofac.Integration.SignalR;
@@ -9,6 +10,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.IoC;
+using WebLedMatrix.Logic.Authentication.Concrete;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
 using static Autofac.Integration.Wcf.AutofacHostFactory;
@@ -30,7 +32,7 @@ namespace WebLedMatrix
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
             builder.RegisterType(typeof (UiManagerHub)).AsSelf().InstancePerDependency();
             builder.RegisterModule(new BrowserXServerModule());
-
+            
             var container = builder.Build();
             config.Resolver = new AutofacDependencyResolver(container);
             Container = container;
@@ -50,6 +52,7 @@ namespace WebLedMatrix
             app.CreatePerOwinContext<UserIdentityDbContext>(UserIdentityDbContext.Create);
             app.CreatePerOwinContext<UserIdentityManager>(UserIdentityManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
+                
 
             app.UseCookieAuthentication(
                 new CookieAuthenticationOptions()

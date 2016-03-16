@@ -3,7 +3,6 @@ using Xunit;
 
 namespace StorageTypesTests
 {
-    
     public class DisplayDataTypeExtensionsMethodsTests
     {
         [Fact]
