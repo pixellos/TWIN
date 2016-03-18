@@ -260,6 +260,7 @@
     <Compile Include="Controllers\AdministrationRoleManager.cs" />
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Hubs\Matrix.cs" />
+    <Compile Include="Hubs\RoleManagingHub.cs" />
     <Compile Include="IMatrixService.cs" />
     <Compile Include="Logic\Authentication\Abstract\ITwinUser.cs" />
     <Compile Include="Logic\Authentication\Abstract\State.cs" />

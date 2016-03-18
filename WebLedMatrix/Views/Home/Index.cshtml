@@ -30,8 +30,21 @@ Login: Administrator Password: Admin1
 
 <script type="text/javascript">
     $(function() {
-        uiManagerHub = $.connection.uiManagerHub;
-        
+        var roleManagingHub = $.connection.roleManagingHub;
+
+        $.connection.hub.start().done(function () {
+            roleManagingHub.server.getRoles().done(function(result) {
+                $.each(result, function() {
+                    $("#administrationPanel").append(result.Name);
+                });
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        var uiManagerHub = $.connection.uiManagerHub;
         var circle;
 
         var circleState = function(status) {

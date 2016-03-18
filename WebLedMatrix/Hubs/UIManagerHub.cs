@@ -44,8 +44,8 @@ namespace WebLedMatrix.Hubs
 
         public void LoginStatus()
         {
-            Clients.Caller.loginStatus(
-                _loginStatusChecker.GetLoginStateString(Context.User));
+            Clients.Caller.loginStatus(_loginStatusChecker.GetLoginStateString(Context.User));
+
             if (_loginStatusChecker.GetLoginStateString(Context.User).Equals("NotLogged"))
             {
                 Clients.Caller.showSections(matrixesSection: false, sendingSection: false, administrationSection: false);

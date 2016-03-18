@@ -25,21 +25,21 @@ namespace WebLedMatrix.Controllers
 
         public IEnumerable<string> ErrorStrings { get; set; }
     }
-    class UsersAreRecurringException : Exception
+    class InputDataException : Exception
     {
-        public UsersAreRecurringException()
+        public InputDataException()
         {
         }
 
-        public UsersAreRecurringException(string message) : base(message)
+        public InputDataException(string message) : base(message)
         {
         }
 
-        public UsersAreRecurringException(string message, Exception innerException) : base(message, innerException)
+        public InputDataException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        protected UsersAreRecurringException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected InputDataException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
@@ -64,8 +64,6 @@ namespace WebLedMatrix.Controllers
 
     public class RoleAdministrating
     {
-
-
         private AppRoleManager _roleManager;
         private UserIdentityManager _identityManager;
 
@@ -75,14 +73,30 @@ namespace WebLedMatrix.Controllers
             _identityManager = identityManager;
         }
 
-        public async Task DeleteMembers(string name, IEnumerable<string> usersId)
+        public  IQueryable<AppRole> GetRoles()
         {
-            AppRole role = await _roleManager.FindByNameAsync(name);
-            if (role == null)
+            return _roleManager.Roles;
+        } 
+
+        public async Task<string> GetRoleName(string id)
+        {
+            AppRole role = await _roleManager.FindByIdAsync(id);
+            return role.Name;
+        } 
+
+        public async Task DeleteMembers(string roleName, IEnumerable<string> usersId)
+        {
+            if (!usersId.Any())
             {
-                throw new RoleNotFoundException("There isn't role named " + name);
+                return;
             }
-            
+            AppRole role = await FindRole(roleName);
+            var roleUsersId = role.Users.Select(x => x.UserId).ToList();
+            if (! usersId.Any(roleUsersId.Contains)) 
+            {
+                throw new InputDataException("You're trying to delete unexisting, noone were deleted.");
+            }
+
             foreach (var user in usersId)
             {
                 IdentityResult result = await _identityManager.RemoveFromRoleAsync(user, role.Name);
@@ -94,13 +108,29 @@ namespace WebLedMatrix.Controllers
             }
         }
 
+        private async Task<AppRole> FindRole(string roleName)
+        {
+
+            AppRole role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                throw new RoleNotFoundException("There isn't role named " + roleName);
+            }
+
+            return role;
+        }
+
         public async Task AddMembers(string roleName, IEnumerable<string> usersId)
         {
-            AppRole role = await _roleManager.FindByNameAsync(roleName);
+            if (!usersId.Any())
+            {
+                return;
+            }
+            AppRole role = await FindRole(roleName);
 
             if (role.Users.Select(x=>x.UserId).Intersect(usersId).Any())
             {
-                throw new UsersAreRecurringException("Users are recurring, no one were added.");
+                throw new InputDataException("Users are recurring, no one were added.");
             }
 
             foreach (var user in usersId)

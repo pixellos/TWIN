@@ -9,7 +9,7 @@ namespace WebLedMatrix.Logic.Authentication.Models
         {
             if (user.Identity.IsAuthenticated)
             {
-                if (user.IsInRole("Administrators")) //Context.User.IsInRole("Administrators"))
+                if (user.IsInRole(State.Admin.ToString())) //Context.User.IsInRole("Administrators"))
                 {
                     return (State.Admin.ToString());
                 }

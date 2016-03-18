@@ -19,7 +19,7 @@ namespace WebLedMatrix.Controllers
         // GET: RoleAdministration
         public ActionResult Index()
         {
-            return View(RoleManager.Roles);
+            return View(RoleManager.Roles.ToList());
         }
 
         public ActionResult Create()
