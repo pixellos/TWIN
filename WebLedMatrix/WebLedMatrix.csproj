@@ -367,7 +367,7 @@
     <Content Include="Views\Account\AccessGranted.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
+    <ProjectReference Include="..\WebLedMatrix.Types\WebLedMatrix.Types.csproj">
       <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
       <Name>WebLedMatrix.Types</Name>
     </ProjectReference>

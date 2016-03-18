@@ -178,12 +178,6 @@
   <ItemGroup>
     <None Include="Service References\MatrixService\MatrixService1.disco" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
-      <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
-      <Name>WebLedMatrix.Types</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

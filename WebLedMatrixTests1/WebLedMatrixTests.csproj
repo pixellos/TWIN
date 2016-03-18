@@ -138,16 +138,6 @@
     <None Include="Scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">
-      <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
-      <Name>WebLedMatrix.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WebLedMatrix\WebLedMatrix.csproj">
-      <Project>{E837F9A0-A50D-4979-81D0-A4C49874759A}</Project>
-      <Name>WebLedMatrix</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +145,16 @@
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebLedMatrix.Types\WebLedMatrix.Types.csproj">
+      <Project>{3067416e-79dc-4a7c-9d33-b9ee68285e83}</Project>
+      <Name>WebLedMatrix.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebLedMatrix\WebLedMatrix.csproj">
+      <Project>{e837f9a0-a50d-4979-81d0-a4c49874759a}</Project>
+      <Name>WebLedMatrix</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
