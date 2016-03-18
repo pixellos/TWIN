@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using StorageTypes;
 using StorageTypes.MatrixServiceCallback;
 using WebLedMatrix.Hubs;
+using WebLedMatrix.Types;
 
 namespace WebLedMatrix
 {

@@ -109,7 +109,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigWindow.xaml.cs">
+    <Compile Include="MainWindow.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

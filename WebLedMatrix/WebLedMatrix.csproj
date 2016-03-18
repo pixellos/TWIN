@@ -257,7 +257,11 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AdministrationRoleManager.cs" />
+    <Compile Include="Controllers\RoleResultException.cs" />
+    <Compile Include="Controllers\InputDataException.cs" />
+    <Compile Include="Controllers\RoleAdministrating.cs" />
+    <Compile Include="Controllers\RoleNotFoundException.cs" />
+    <Compile Include="Hubs\extensions.cs" />
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Hubs\Matrix.cs" />
     <Compile Include="Hubs\RoleManagingHub.cs" />

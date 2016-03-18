@@ -1,15 +1,10 @@
-﻿using Xunit;
+﻿using NSubstitute;
 using WebLedMatrix.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
+using Xunit;
 
-namespace WebLedMatrix.Controllers.Tests
+namespace WebLedMatrixTests1.Controllers
 {
     public class RoleAdministratingTests
     {

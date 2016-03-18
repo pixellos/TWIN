@@ -1,4 +1,5 @@
 ﻿using StorageTypes;
+using WebLedMatrix.Types;
 using Xunit;
 
 namespace StorageTypesTests

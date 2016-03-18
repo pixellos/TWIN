@@ -1,3 +1,5 @@
+using WebLedMatrix.Types;
+
 namespace StorageTypes
 {
     public class DataToDisplay

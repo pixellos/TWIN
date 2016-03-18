@@ -1,67 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
-using WebGrease.Css.Extensions;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
-using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
 
 namespace WebLedMatrix.Controllers
 {
-    public class RoleResultException : Exception
-    {
-        public RoleResultException(){}
-
-        public RoleResultException(string message) : base(message){}
-
-        public RoleResultException(string message, Exception innerException) : base(message, innerException){}
-
-        protected RoleResultException(SerializationInfo info, StreamingContext context) : base(info, context){}
-
-        public IEnumerable<string> ErrorStrings { get; set; }
-    }
-    class InputDataException : Exception
-    {
-        public InputDataException()
-        {
-        }
-
-        public InputDataException(string message) : base(message)
-        {
-        }
-
-        public InputDataException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InputDataException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-    class RoleNotFoundException : Exception
-    {
-        public RoleNotFoundException()
-        {
-        }
-
-        public RoleNotFoundException(string message) : base(message)
-        {
-        }
-
-        public RoleNotFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected RoleNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
     public class RoleAdministrating
     {
         private AppRoleManager _roleManager;

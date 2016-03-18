@@ -12,6 +12,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 using NLog;
 using StorageTypes;
 using WebLedMatrix.Logic.Authentication.Abstract;
+using WebLedMatrix.Types;
 
 namespace WebLedMatrix.Hubs
 {
