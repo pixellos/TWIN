@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using NLog;
-using StorageTypes;
 using WebLedMatrix.Logic.Authentication.Abstract;
 using WebLedMatrix.Types;
 

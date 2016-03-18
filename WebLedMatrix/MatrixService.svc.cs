@@ -6,9 +6,8 @@ using System.Text;
 using Autofac;
 using Autofac.Core.Registration;
 using Autofac.Integration.Wcf;
-using Microsoft.Ajax.Utilities;
-using StorageTypes.MatrixServiceCallback;
 using WebLedMatrix.Hubs;
+using WebLedMatrix.Types.MatrixServiceCallback;
 
 namespace WebLedMatrix
 {

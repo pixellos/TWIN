@@ -5,7 +5,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac.Integration.SignalR;
 using Microsoft.AspNet.SignalR;
-using SignalR.Extras.Autofac;
 using WebLedMatrix.Hubs;
 
 namespace WebLedMatrix

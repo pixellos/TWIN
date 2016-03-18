@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Dynamic;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;

@@ -1,5 +1,5 @@
 using System;
-using StorageTypes.MatrixServiceCallback;
+using WebLedMatrix.Types.MatrixServiceCallback;
 
 namespace WebLedMatrix.Hubs
 {

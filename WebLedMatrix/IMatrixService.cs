@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using StorageTypes.MatrixServiceCallback;
+using WebLedMatrix.Types.MatrixServiceCallback;
 
 namespace WebLedMatrix
 {

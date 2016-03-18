@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebLedMatrix.Types;
-
-namespace StorageTypes
+﻿namespace WebLedMatrix.Types
 {
     public static class DisplayDataTypeExtensionsMethods
     {
