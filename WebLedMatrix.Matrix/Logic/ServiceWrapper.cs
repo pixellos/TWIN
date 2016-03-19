@@ -11,6 +11,7 @@ namespace WebLedMatrix.Matrix.Logic
         public ServiceWrapper()
         {
             _client = new MatrixServiceClient(new InstanceContext(new MatrixCallback()));
+            _client.Open();
             _client.RegisterMatrix(_name);
             
             /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/

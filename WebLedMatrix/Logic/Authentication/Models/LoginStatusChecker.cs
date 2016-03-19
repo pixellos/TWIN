@@ -7,16 +7,14 @@ namespace WebLedMatrix.Logic.Authentication.Models
     {
         public string GetLoginStateString(IPrincipal user)
         {
+           
             if (user.Identity.IsAuthenticated)
             {
-                if (user.IsInRole(State.Admin.ToString())) //Context.User.IsInRole("Administrators"))
+                if (user.IsInRole("Admininstrator"))
                 {
-                    return (State.Admin.ToString());
+                    return State.Admin.ToString();
                 }
-                else
-                {
-                    return (State.Logged.ToString());
-                }
+                return (State.Logged.ToString());
             }
             else
             {

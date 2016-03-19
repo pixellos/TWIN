@@ -13,7 +13,6 @@ namespace WebLedMatrix.Matrix.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly IDataService _dataService;
         private readonly ServiceWrapper _serviceWrapper;
 
         private RelayCommand _SetName;

@@ -1,4 +1,6 @@
-namespace WebLedMatrix.Types
+using WebLedMatrix.Types;
+
+namespace StorageTypes
 {
     public class DataToDisplay
 #pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()

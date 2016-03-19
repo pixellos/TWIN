@@ -1,5 +1,5 @@
 ﻿@using WebLedMatrix.Logic.Authentication.Models
-@model WebLedMatrix.Logic.Authentication.Models.Roles.RoleEditModel
+@model WebLedMatrix.Controllers.RoleEditModel
 @{ ViewBag.Title = "Edit Role";}
 @Html.ValidationSummary()
 @using (Html.BeginForm()) {
@@ -7,7 +7,7 @@
  <div class="panel panel-primary">
  <div class="panel-heading">Add To @Model.Role.Name</div>
  <table class="table table-striped">
- @if (Model.NonMembers.Count() == 0) {
+ @if (!Model.NonMembers.Any()) {
  <tr><td colspan="2">All Users Are Members</td></tr>
  } else {
  <tr><td>User ID</td><td>Add To Role</td></tr>
@@ -25,7 +25,7 @@
  <div class="panel panel-primary">
  <div class="panel-heading">Remove from @Model.Role.Name</div>
  <table class="table table-striped">
- @if (Model.Members.Count() == 0) {
+ @if (!Model.Members.Any()) {
  <tr><td colspan="2">No Users Are Members</td></tr>
  } else {
  <tr><td>User ID</td><td>Remove From Role</td></tr>

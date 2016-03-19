@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNet.SignalR;
+using StorageTypes;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Types;
 using WebLedMatrix.Types.MatrixServiceCallback;

@@ -22,18 +22,7 @@ namespace WebLedMatrix.Controllers
             return View(RoleManager.Roles.ToList());
         }
 
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        private void AddErrorsFromResult(IdentityResult result)
-        {
-            foreach (string error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
-            }
-        }
         private UserIdentityManager UserManager
         {
             get
@@ -53,56 +42,46 @@ namespace WebLedMatrix.Controllers
         public async Task<ActionResult> Delete(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
-            if (role != null)
-            {
-                IdentityResult result = await RoleManager.DeleteAsync(role);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else {
-                    return View("Error", result.Errors);
-                }
-            }
-            else {
+            if (role == null)
                 return View("Error", new string[] { "Role Not Found" });
-            }
+
+            IdentityResult result = await RoleManager.DeleteAsync(role);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index");
+
+            return View("Error", result.Errors);
         }
 
         public async Task<ActionResult> Edit(string id)
         {
-            AppRole role = await RoleManager.FindByIdAsync(id);
-            string[] memberIDs = role.Users.Select(x => x.UserId).ToArray();
-            IEnumerable<User> members
-            = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
-            IEnumerable<User> nonMembers = UserManager.Users.Except(members);
-            return View(new RoleEditModel
-            {
-                Role = role,
-                Members = members,
-                NonMembers = nonMembers
-            });
+            return View(await _roleAdministrating.CreateRoleEditModel(id));
         }
+
         [HttpPost]
         public async Task<ActionResult> Edit(RoleModificationModel model)
         {
             if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _roleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
-                    await _roleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
-                }
-                catch (RoleResultException exception)
-                {
-                    return View("Error", exception.ErrorStrings);
-                }
-                catch (RoleNotFoundException exception)
-                {
-                    return View("Error", new string[] { "Role Not Found" });
-                }
+                await _roleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
+                await _roleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
             }
+            catch (RoleResultException exception)
+            {
+                return View("Error", exception.ErrorStrings);
+            }
+            catch (RoleNotFoundException)
+            {
+                return View("Error", new string[] { "Role Not Found" });
+            }
+
             return View("Index");
+        }
+
+        public ActionResult Create()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -123,7 +102,15 @@ namespace WebLedMatrix.Controllers
                     return View(name);
                 }
             }
-            return RedirectToAction("Index");
-        } 
+            return View("Index");
+        }
+
+        private void AddErrorsFromResult(IdentityResult result)
+        {
+            foreach (string error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
     }
 }

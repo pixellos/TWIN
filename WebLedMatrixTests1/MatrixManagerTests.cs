@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NSubstitute;
+﻿using Xunit;
 using WebLedMatrix;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using WebLedMatrix.Hubs;
-using Xunit;
+using NSubstitute;
 
-namespace WebLedMatrixTests1
+
+namespace WebLedMatrix.Tests
 {
     public class MatrixManagerTests
     {

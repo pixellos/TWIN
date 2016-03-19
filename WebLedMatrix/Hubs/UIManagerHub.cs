@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using NLog;
+using StorageTypes;
 using WebLedMatrix.Logic.Authentication.Abstract;
+using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrix.Types;
+
 
 namespace WebLedMatrix.Hubs
 {
-#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
-
     public class UiManagerHub : Hub<IUiManagerHub>
     {
         private readonly ILoginStatusChecker _loginStatusChecker;
@@ -42,13 +46,9 @@ namespace WebLedMatrix.Hubs
 
         public void LoginStatus()
         {
-            Clients.Caller.loginStatus(_loginStatusChecker.GetLoginStateString(Context.User));
-
-            if (_loginStatusChecker.GetLoginStateString(Context.User).Equals("NotLogged"))
-            {
-                Clients.Caller.showSections(matrixesSection: false, sendingSection: false, administrationSection: false);
-            }
-            else
+            Clients.Caller.loginStatus(
+                _loginStatusChecker.GetLoginStateString(Context.User));
+            if (Context.User.Identity.IsAuthenticated)
             {
                 Clients.Caller.showSections(matrixesSection: true, sendingSection: true, administrationSection: true);
                 _matrixManager.UpdateMatrices();
