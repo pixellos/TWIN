@@ -1,6 +1,6 @@
 using System;
 using System.ServiceModel;
-using WebLedMatrix.Matrix.Service_References.MatrixService;
+using WebLedMatrix.Matrix.MatrixService;
 
 namespace WebLedMatrix.Matrix.Logic
 {

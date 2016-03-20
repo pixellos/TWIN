@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebLedMatrix.Matrix.Service_References.MatrixService {
+namespace WebLedMatrix.Matrix.MatrixService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MatrixService.IMatrixService", CallbackContract=typeof(IMatrixServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MatrixService.IMatrixService", CallbackContract=typeof(WebLedMatrix.Matrix.MatrixService.IMatrixServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IMatrixService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMatrixService/RegisterMatrix")]
@@ -39,12 +39,12 @@ namespace WebLedMatrix.Matrix.Service_References.MatrixService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IMatrixServiceChannel : IMatrixService, System.ServiceModel.IClientChannel {
+    public interface IMatrixServiceChannel : WebLedMatrix.Matrix.MatrixService.IMatrixService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class MatrixServiceClient : System.ServiceModel.DuplexClientBase<IMatrixService>, IMatrixService {
+    public partial class MatrixServiceClient : System.ServiceModel.DuplexClientBase<WebLedMatrix.Matrix.MatrixService.IMatrixService>, WebLedMatrix.Matrix.MatrixService.IMatrixService {
         
         public MatrixServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
                 base(callbackInstance) {

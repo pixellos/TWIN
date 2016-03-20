@@ -46,7 +46,6 @@ namespace WebLedMatrix
             Context.Clients.All.updateMatrices(matrices.ToArray());     
         }
 
-
         public void SendCommandToMatirx(string name, DisplayDataType displayDataType, string data)
         {
             switch (displayDataType)

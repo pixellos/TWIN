@@ -117,10 +117,12 @@ namespace WebLedMatrix.Controllers
 
         public async Task AddMembers(string roleName, IEnumerable<string> usersId)
         {
-            AppRole role = await _roleManager.FindByNameAsync(roleName);
-
             if (usersId == null)
                 return;
+
+            AppRole role = await _roleManager.FindByNameAsync(roleName);
+
+            
 
             if (role.Users.Select(x=>x.UserId).Intersect(usersId).Any())
                 throw new UsersAreRecurringException("Users are recurring, no one were added.");

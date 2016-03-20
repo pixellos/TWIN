@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
-using WebLedMatrix.Matrix.Service_References.MatrixService;
+using WebLedMatrix.Matrix.MatrixService;
 using WebLedMatrix.Matrix.ViewModel;
 
 namespace WebLedMatrix.Matrix.Logic

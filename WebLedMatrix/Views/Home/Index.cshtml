@@ -31,12 +31,11 @@ Login: Administrator Password: Admin1
 <script type="text/javascript">
     $(function() {
         uiManagerHub = $.connection.uiManagerHub;
-        
-        var circle;
+        administrationHub = $.connection.administrationHub;
 
+        var circle;
         var circleState = function(status) {
             var colour = "#FFFFFF";
-
             switch (status) {
                 case "Admin":
                     colour = "#FF0000";
@@ -49,9 +48,7 @@ Login: Administrator Password: Admin1
                     break;
             }
 
-            if (circle != null) {
-                circle.destroy();
-            }
+            if (circle != null) circle.destroy();
 
             ///Extract method from there!
             circle = new ProgressBar.Circle('#progress', {
@@ -108,6 +105,17 @@ Login: Administrator Password: Admin1
                 $("#administrationSection").slideUp("slow");
             }
         }
+        
+
+        administrationHub.client.activeUsers = function (users) {
+            $("#administrationPanel").empty();
+            users.forEach(showConnectedUsers);
+        }
+
+        var stringUserLiteral = "_U";
+        function showConnectedUsers(item, index, array) {
+            $("#administrationPanel").append("<div class=col-xs-12 id=" + item+ stringUserLiteral + ">" + item+  "</div>");
+        }
 
         $.connection.hub.start().done(function() {
             uiManagerHub.server.loginStatus();
@@ -115,6 +123,10 @@ Login: Administrator Password: Admin1
                 uiManagerHub.server.loginStatus();
                 uiManagerHub.server.sendCommandToMatrix(x, y);
             };
+
+            administrationHub.server.getUsers();
+
+
         });
         
         $("#progress").click(function() {
