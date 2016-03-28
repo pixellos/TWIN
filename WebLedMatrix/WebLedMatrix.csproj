@@ -270,7 +270,8 @@
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbContext.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityDbInitialize.cs" />
     <Compile Include="Logic\Authentication\Infrastructure\UserIdentityManager.cs" />
-    <Compile Include="Logic\Authentication\Models\CreateModel.cs" />
+    <Compile Include="Logic\Authentication\Models\CreationModel.cs" />
+    <Compile Include="Logic\Authentication\Models\CreationModelExternalMethods.cs" />
     <Compile Include="Logic\Authentication\Models\LoginModel.cs" />
     <Compile Include="Logic\Authentication\Models\Roles\AppRoleManager.cs" />
     <Compile Include="Logic\Authentication\Models\Roles\AppRole.cs" />
@@ -361,6 +362,7 @@
     <Content Include="Views\Account\Greetings.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Account\AccessGranted.cshtml" />
+    <Content Include="Views\Account\Succeded.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">

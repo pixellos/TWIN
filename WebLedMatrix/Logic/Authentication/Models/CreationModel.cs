@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using WebLedMatrix.Logic.Authentication.Abstract;
+
 
 namespace WebLedMatrix.Logic.Authentication.Models
 {
-    public class CreateModel : ITwinUser
+    public class CreationModel : ITwinUser
     {
         [Required]
         public string Name { get; set; }

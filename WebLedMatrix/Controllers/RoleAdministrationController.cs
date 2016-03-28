@@ -42,6 +42,7 @@ namespace WebLedMatrix.Controllers
         public async Task<ActionResult> Delete(string id)
         {
             AppRole role = await RoleManager.FindByIdAsync(id);
+
             if (role == null)
                 return View("Error", new string[] { "Role Not Found" });
 

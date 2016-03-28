@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
+using WebLedMatrix.Logic.Authentication.Infrastructure;
 
 namespace WebLedMatrix.Controllers
 {
@@ -18,6 +20,13 @@ namespace WebLedMatrix.Controllers
         public ActionResult OtherAction()
         {
             return View("Index", GetData("OtherAction"));
+        }
+
+        public ActionResult DropDataBase()
+        {
+            UserIdentityDbContext.Create().Database.Initialize(true);
+
+            return View("Index");
         }
 
         private Dictionary<string, object> GetData(string actionName)

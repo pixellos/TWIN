@@ -29,33 +29,26 @@ namespace WebLedMatrix.Controllers
             return View();
         }
 
-        private UserIdentityManager UserManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>();
-            }
-        }
+        private UserIdentityManager UserManager => HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>();
+
+        private IAuthenticationManager AuthManager => HttpContext.GetOwinContext().Authentication;
+
+        private DefaultUserValidator Validator => new DefaultUserValidator(UserManager,AuthManager);
+
+        private UserManaging Manager => new UserManaging(Validator,UserManager,AuthManager);
 
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            User user = await UserManager.FindByIdAsync(id);
-            if (user != null)
+            try
             {
-                IdentityResult result = await UserManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View("Error", result.Errors);
-                }
+                await Manager.TryDeleteUser(id);
+                return RedirectToAction("Index");
             }
-            else
+            catch (ResultException exception)
             {
-                return View("Error", new[] { "User Not Found" });
+                AddErrorsFromResult(exception.ResultErrors);
+                return View("Error");
             }
         }
         [HttpGet]
@@ -75,21 +68,14 @@ namespace WebLedMatrix.Controllers
 //        [ValidateAntiForgeryToken]
         public PartialViewResult Login(LoginModel loginModel)
         {
-            var manager = new UserManaging(UserManager,AuthManager);
-
             if (HttpContext.User.Identity.IsAuthenticated)
-            {
                 return PartialView("Greetings", User.Identity.Name);
-            }
 
-            if (ModelState.IsValid && manager.TryLogin(loginModel))
-            {
+            if (ModelState.IsValid && Manager.TryLogin(loginModel))
                 return PartialView("AccessGranted");
-            }
-            else
-            {
-                ModelState.AddModelError(String.Empty,"Input incorrect data");
-            }
+
+            ModelState.AddModelError(string.Empty,"Input incorrect data");
+
             return PartialView(loginModel);
         }
 
@@ -100,36 +86,21 @@ namespace WebLedMatrix.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private IAuthenticationManager AuthManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateModel model)
+        public async Task<ActionResult> Create(CreationModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) AddErrorsFromResult(new []{"Something goes wrong - model is invalid, try reloading page"});
+            try
             {
-                User user = new User()
-                                {
-                                    FirstName = model.FirstName, 
-                                    LastName = model.LastName, 
-                                    PhoneNumber = model.TelephoneNumber, 
-                                    UserName = model.Name, 
-                                    Email = model.Email
-                                };
-                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    AddErrorsFromResult(result);
-                }
+                await Manager.TryCreateUser(model);
+                return RedirectToAction("Succeded",this.GetType().Name);
+            }
+            catch (ResultException resultException)
+            {
+                AddErrorsFromResult(resultException.ResultErrors);
+                    
             }
 
             return View(model);
@@ -143,66 +114,35 @@ namespace WebLedMatrix.Controllers
             }
         }
 
+        private void AddErrorsFromResult(IEnumerable<String> errors)
+        {
+            foreach (var error in errors)
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
+        }
+
         public async Task<ActionResult> Edit(string id)
         {
             User user = await UserManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                return View(user);
-            }
-            else
-            {
+            if (user == null)
                 return RedirectToAction("Index");
-            }
+
+            return View(user);
         }
 
         [HttpPost]
         public async Task<ActionResult> Edit(string id, string email, string password)
         {
-            User user = await UserManager.FindByIdAsync(id);
-            if (user != null)
+            try
             {
-                user.Email = email;
-                IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
-                if (!validEmail.Succeeded)
-                {
-                    AddErrorsFromResult(validEmail);
-                }
-
-                IdentityResult validPass = null;
-                if (password != string.Empty)
-                {
-                    validPass = await UserManager.PasswordValidator.ValidateAsync(password);
-                    if (validPass.Succeeded)
-                    {
-                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(password);
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(validPass);
-                    }
-                }
-
-                if ((validEmail.Succeeded && validPass == null)
-                    || (validEmail.Succeeded && password != string.Empty && validPass.Succeeded))
-                {
-                    IdentityResult result = await UserManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(result);
-                    }
-                }
+                await  Manager.TryUpdateUser(id, email, password);
             }
-            else
+            catch (ResultException exception)
             {
-                ModelState.AddModelError(string.Empty, "User Not Found");
+                AddErrorsFromResult(exception.ResultErrors);
             }
-
-            return View(user);
+            return View(new User() {Id = id, Email = email});
         }
     }
 }

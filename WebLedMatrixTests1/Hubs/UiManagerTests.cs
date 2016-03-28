@@ -27,18 +27,14 @@ namespace WebLedMatrix.Hubs.Tests
         private readonly ILoginStatusChecker _loginStatusChecker = new LoginStatusChecker();
 
 
-        static IRequest getIdentityRequest(bool isAuthenticated, bool isAdministrator)
+        static IRequest GetIdentityRequest(bool isAuthenticated)
         {
             var request = Substitute.For<IRequest>();
-
-            request.User.When(x=>x.IsInRole("Administrators")).DoNotCallBase();
-            request.User.IsInRole("Administrators").Returns(isAdministrator);
+            
             request.User.Identity.IsAuthenticated.Returns(isAuthenticated);
 
             return request;
         }
-
-        public delegate void showSectionsDelegate(bool matrixesSection, bool sendingSection, bool administrationSection);
 
         public void CoreAccountTest(State expectedState, IRequest identityRequest)
         {
@@ -61,19 +57,14 @@ namespace WebLedMatrix.Hubs.Tests
         [Fact()]
         public void NotLoggedCaseTest()
         {
-            CoreAccountTest(State.NotLogged, getIdentityRequest(false, false));
+            CoreAccountTest(State.NotLogged, GetIdentityRequest(false));
         }
 
         [Fact()]
         public void LoggedCaseTest()
         {
-            CoreAccountTest(State.Logged, getIdentityRequest(true, false));
+            CoreAccountTest(State.Logged, GetIdentityRequest(true));
         }
 
-        [Fact()]
-        public void AdminCaseTest()
-        {
-            CoreAccountTest(State.Admin, getIdentityRequest(true, true));
-        }
     }
 }
