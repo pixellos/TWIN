@@ -8,10 +8,7 @@ namespace WebLedMatrix.Logic.Authentication.Infrastructure
 {
     public class UserIdentityManager : UserManager<User>
     {
-        public UserIdentityManager(IUserStore<User> store ) : base(store) 
-        {
-
-        }
+        public UserIdentityManager(IUserStore<User> store ) : base(store) {}
 
         public static UserIdentityManager Create(IdentityFactoryOptions<UserIdentityManager> options, IOwinContext context)
         {

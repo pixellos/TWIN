@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using WebLedMatrix.Logic.Authentication.Abstract;
-
 
 namespace WebLedMatrix.Logic.Authentication.Models
 {

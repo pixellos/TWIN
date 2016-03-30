@@ -13,60 +13,66 @@ using WebLedMatrix.Logic.Authentication.Models.Roles;
 
 namespace WebLedMatrix.Controllers
 {
+    public static class IdentityResultWrapper
+    {
+        public static void FoldMessages(this System.Web.Mvc.Controller controller, IdentityResult result,string notSucceededMessage)
+        {
+            if (!result.Succeeded)
+            {
+                controller.ModelState.AddModelError("",notSucceededMessage);    
+            }
+
+            foreach (string error in result.Errors)
+            {
+                controller.ModelState.AddModelError("",error);
+            }
+        }
+    }
+
     public class RoleAdministrationController : Controller
     {
-        RoleAdministrating _roleAdministrating => new RoleAdministrating(RoleManager, UserManager);
-        // GET: RoleAdministration
+        RoleAdministrating RoleAdministrating => new RoleAdministrating(RoleManager, UserManager);
+
+        private UserIdentityManager UserManager => HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>();
+
+        private AppRoleManager RoleManager => HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
+
         public ActionResult Index()
         {
             return View(RoleManager.Roles.ToList());
         }
 
-
-        private UserIdentityManager UserManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<UserIdentityManager>();
-            }
-        }
-        private AppRoleManager RoleManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<AppRoleManager>();
-            }
-        }
-
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            AppRole role = await RoleManager.FindByIdAsync(id);
-
-            if (role == null)
-                return View("Error", new string[] { "Role Not Found" });
-
-            IdentityResult result = await RoleManager.DeleteAsync(role);
-
-            if (result.Succeeded)
+            try
+            {
+                await RoleAdministrating.DeleteRole(id);
                 return RedirectToAction("Index");
 
-            return View("Error", result.Errors);
+            }
+            catch (RoleResultException exception)
+            {
+                return View("Error", exception.ErrorStrings);
+            }
         }
 
         public async Task<ActionResult> Edit(string id)
         {
-            return View(await _roleAdministrating.CreateRoleEditModel(id));
+            return View(await RoleAdministrating.CreateRoleEditModel(id));
         }
 
         [HttpPost]
         public async Task<ActionResult> Edit(RoleModificationModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View("Error", new[] {"Model is wrong. Please reload website and try again later."});
+
             try
             {
-                await _roleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
-                await _roleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
+                await RoleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
+                await RoleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
+                return RedirectToAction("Index");
             }
             catch (RoleResultException exception)
             {
@@ -74,10 +80,8 @@ namespace WebLedMatrix.Controllers
             }
             catch (RoleNotFoundException)
             {
-                return View("Error", new string[] { "Role Not Found" });
+                return View("Error", new[]  { "Role Not Found" });
             }
-
-            return View("Index");
         }
 
         public ActionResult Create()
@@ -92,13 +96,13 @@ namespace WebLedMatrix.Controllers
             {
                 try
                 {
-                    await _roleAdministrating.AddRole(name);
+                    await RoleAdministrating.AddRole(name);
                 }
                 catch (RoleResultException exception)
                 {
                     foreach (string errorString in exception.ErrorStrings)
                     {
-                        ModelState.AddModelError(String.Empty, errorString);
+                        ModelState.AddModelError("", errorString);
                     }
                     return View(name);
                 }

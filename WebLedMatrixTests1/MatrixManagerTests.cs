@@ -13,6 +13,7 @@ namespace WebLedMatrix.Tests
 {
     public class MatrixManagerTests
     {
+
         private string testString = "Teststs";
         private string testString1 = "testststst";
         [Fact()]
@@ -52,5 +53,7 @@ namespace WebLedMatrix.Tests
         {
             Assert.True(true,"It'S working, trust me");
         }
+
+        
     }
 }

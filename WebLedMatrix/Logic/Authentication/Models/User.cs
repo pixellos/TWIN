@@ -6,6 +6,5 @@ namespace WebLedMatrix.Logic.Authentication.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool IsMuted { get; set; }
     }
 }

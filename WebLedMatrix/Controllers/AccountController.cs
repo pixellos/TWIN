@@ -86,8 +86,6 @@ namespace WebLedMatrix.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
-
         [HttpPost]
         public async Task<ActionResult> Create(CreationModel model)
         {
@@ -95,15 +93,38 @@ namespace WebLedMatrix.Controllers
             try
             {
                 await Manager.TryCreateUser(model);
-                return RedirectToAction("Succeded",this.GetType().Name);
+                return View("Succeded",(object)"Create was successfull");
             }
             catch (ResultException resultException)
             {
                 AddErrorsFromResult(resultException.ResultErrors);
-                    
             }
 
             return View(model);
+        }
+
+        public async Task<ActionResult> Edit(string id)
+        {
+            User user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+                return RedirectToAction("Index","Home");
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(string id, string email, string password)
+        {
+            try
+            {
+                await  Manager.TryUpdateUser(id, email, password);
+            }
+            catch (ResultException exception)
+            {
+                AddErrorsFromResult(exception.ResultErrors);
+            }
+
+            return View(new User() {Id = id, Email = email});
         }
 
         private void AddErrorsFromResult(IdentityResult result)
@@ -120,29 +141,6 @@ namespace WebLedMatrix.Controllers
             {
                 ModelState.AddModelError(string.Empty, error);
             }
-        }
-
-        public async Task<ActionResult> Edit(string id)
-        {
-            User user = await UserManager.FindByIdAsync(id);
-            if (user == null)
-                return RedirectToAction("Index");
-
-            return View(user);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Edit(string id, string email, string password)
-        {
-            try
-            {
-                await  Manager.TryUpdateUser(id, email, password);
-            }
-            catch (ResultException exception)
-            {
-                AddErrorsFromResult(exception.ResultErrors);
-            }
-            return View(new User() {Id = id, Email = email});
         }
     }
 }

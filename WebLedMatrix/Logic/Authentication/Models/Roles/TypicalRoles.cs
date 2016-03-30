@@ -6,6 +6,7 @@
         Speaker,
         Teacher,
         Admin,
-        Root
+        Root,
+        Muted
     }
 }

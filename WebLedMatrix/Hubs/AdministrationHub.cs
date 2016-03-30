@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.SignalR;
+using Microsoft.Owin.Logging;
+using NLog;
 using WebLedMatrix.Controllers;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
@@ -17,18 +21,6 @@ using static System.Web.HttpContext;
 
 namespace WebLedMatrix.Hubs
 {
-    public class AdministrationModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-
-    }
-
-    public static class Repo
-    {
-        public static Dictionary<string,string> Dictionary = new Dictionary<string, string>(); 
-    }
-
     public class AdministrationHub : Hub
     {
         private static Dictionary<AdministrationHub, AdministrationModel> _models =
@@ -43,54 +35,50 @@ namespace WebLedMatrix.Hubs
 
         public void GetUsers()
         {
-            if (Context.User.Identity.IsAuthenticated)
-            {
-                Repo.Dictionary.Add(Context.ConnectionId, Context.User.Identity.Name);
-                Clients.All.activeUsers(new HashSet<string>(Repo.Dictionary.Select(x => x.Value)));
-            }
+            Clients.Caller.activeUsers(UserRepository.Repository.HubUsers);
         }
 
         public async void MuteUser(string name)
         {
-            RoleAdministrating role = new RoleAdministrating(HttpContext.Current.GetOwinContext().GetUserManager<AppRoleManager>(), Current.GetOwinContext().GetUserManager<UserIdentityManager>());
-            await role.AddMembers("Muted", new List<string>() { Current.GetOwinContext().GetUserManager<UserIdentityManager>().FindByName(name).Id });
+            UserRepository.Repository.SetMuteState(name,true);
+            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
         }
 
         public async void UnMuteUser(string name)
         {
-            RoleAdministrating role = new RoleAdministrating(HttpContext.Current.GetOwinContext().GetUserManager<AppRoleManager>(), Current.GetOwinContext().GetUserManager<UserIdentityManager>());
-            try
-            {
-                await role.DeleteMembers("Muted", new List<string>() { Current.GetOwinContext().GetUserManager<UserIdentityManager>().FindByName(name).Id });
-            }
-            catch (Exception)
-            {}
+            UserRepository.Repository.SetMuteState(name, false);
+            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+        }
 
+        public override Task OnConnected()
+        {
+            if (Context.User.Identity.IsAuthenticated)
+            {
+                UserRepository.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
+            }
+            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+
+            return base.OnConnected();
         }
 
         public override Task OnReconnected()
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                Repo.Dictionary.Add(Context.ConnectionId, Context.User.Identity.Name);
+                UserRepository.Repository.AddConnection(Context.ConnectionId,Context.User.Identity.Name);
             }
-            
+            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+
             return base.OnReconnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            try
+            if (Context.User.Identity.IsAuthenticated)
             {
-                if (Context.User.Identity.IsAuthenticated)
-                {
-
-                    Repo.Dictionary.Remove(Context.ConnectionId);
-                }
+                UserRepository.Repository.DeleteConnection(Context.ConnectionId);
             }
-            catch (Exception) { }
-           
-            Clients.All.activeUsers(new HashSet<string>(Repo.Dictionary.Select(x => x.Value)));
+            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
             return base.OnDisconnected(stopCalled);
         }
     }

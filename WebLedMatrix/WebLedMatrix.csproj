@@ -260,6 +260,7 @@
     <Compile Include="Controllers\RoleAdministrating.cs" />
     <Compile Include="Controllers\RoleEditModel.cs" />
     <Compile Include="Hubs\AdministrationHub.cs" />
+    <Compile Include="Hubs\AdministrationModel.cs" />
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Hubs\Matrix.cs" />
     <Compile Include="IMatrixService.cs" />
@@ -362,7 +363,7 @@
     <Content Include="Views\Account\Greetings.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Account\AccessGranted.cshtml" />
-    <Content Include="Views\Account\Succeded.cshtml" />
+    <Content Include="Views\Shared\Succeded.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StorageTypes\WebLedMatrix.Types.csproj">

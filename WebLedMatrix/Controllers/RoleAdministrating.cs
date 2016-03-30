@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using WebGrease.Css.Extensions;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models;
@@ -64,13 +66,12 @@ namespace WebLedMatrix.Controllers
 
     public class RoleAdministrating
     {
-        private AppRoleManager _roleManager;
-        private UserIdentityManager _identityManager;
+        private AppRoleManager _roleManager => HttpContext.Current.GetOwinContext().GetUserManager<AppRoleManager>();
+        private UserIdentityManager _identityManager => HttpContext.Current.GetOwinContext().GetUserManager<UserIdentityManager>();
 
         public RoleAdministrating(AppRoleManager roleManager, UserIdentityManager identityManager)
         {
-            _roleManager = roleManager;
-            _identityManager = identityManager;
+
         }
 
         public async Task<RoleEditModel> CreateRoleEditModel(string id)
@@ -92,20 +93,6 @@ namespace WebLedMatrix.Controllers
             return roleModel;
         }
 
-        public async Task DeleteMembers(string name, IEnumerable<string> usersId)
-        {
-            AppRole role = await _roleManager.FindByNameAsync(name);
-            if (role == null)
-                throw new RoleNotFoundException("There isn't role named " + name);
-
-            if (usersId == null) return;
-               
-            foreach (var user in usersId)
-            {
-                IdentityResult result = await _identityManager.RemoveFromRoleAsync(user, role.Name);
-                CheckResult(result);
-            }
-        }
 
         private static void CheckResult(IdentityResult result)
         {
@@ -117,14 +104,18 @@ namespace WebLedMatrix.Controllers
 
         public async Task AddMembers(string roleName, IEnumerable<string> usersId)
         {
+            if (roleName == null)
+                throw new RoleNotFoundException("Role is null");
+
             if (usersId == null)
+                return;
+
+            if (! usersId.Any())
                 return;
 
             AppRole role = await _roleManager.FindByNameAsync(roleName);
 
-            
-
-            if (role.Users.Select(x=>x.UserId).Intersect(usersId).Any())
+            if (role.Users.ToList().Select(x=>x.UserId).Intersect(usersId).Any())
                 throw new UsersAreRecurringException("Users are recurring, no one were added.");
 
             foreach (var user in usersId)
@@ -132,7 +123,26 @@ namespace WebLedMatrix.Controllers
                 IdentityResult result =  await _identityManager.AddToRoleAsync(user, role.Name);
                 CheckResult(result);
             }
-        } 
+        }
+
+        public async Task DeleteMembers(string name, IEnumerable<string> usersId)
+        {
+            if (name == null)
+                throw new RoleResultException("Role is null");
+
+            if (usersId == null)
+                return;
+
+            AppRole role = await _roleManager.FindByNameAsync(name);
+            if (role == null)
+                throw new RoleNotFoundException("There isn't role named " + name);
+           
+            foreach (var user in usersId)
+            {
+                IdentityResult result = await _identityManager.RemoveFromRoleAsync(user, role.Name);
+                CheckResult(result);
+            }
+        }
 
         public async Task AddRole(string roleName)
         {
@@ -140,6 +150,20 @@ namespace WebLedMatrix.Controllers
 
             if (!result.Succeeded)
                 throw new RoleResultException(){    ErrorStrings = result.Errors    };
+        }
+
+        public async Task DeleteRole(string id)
+        {
+
+            AppRole role = await _roleManager.FindByIdAsync(id);
+
+            if (role == null)
+                throw new RoleNotFoundException($"There is no role of id: {id}");
+
+            IdentityResult result = await _roleManager.DeleteAsync(role);
+
+            if (!result.Succeeded)
+                throw new RoleResultException() {ErrorStrings = result.Errors};
         }
     }
 }
