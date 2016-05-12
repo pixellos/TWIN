@@ -18,6 +18,5 @@ namespace WebLedMatrixTests1
             builder.RegisterModule(new BrowserXServerModule());
             _Container = builder.Build();
         }
-
     }
 }

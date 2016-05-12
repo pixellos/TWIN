@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -33,9 +31,8 @@ namespace WebLedMatrix.Controllers
 
         private IAuthenticationManager AuthManager => HttpContext.GetOwinContext().Authentication;
 
-        private DefaultUserValidator Validator => new DefaultUserValidator(UserManager,AuthManager);
 
-        private UserManaging Manager => new UserManaging(Validator,UserManager,AuthManager);
+        private UserManaging Manager => new UserManaging(UserManager,AuthManager);
 
         [HttpPost]
         public async Task<ActionResult> Delete(string id)

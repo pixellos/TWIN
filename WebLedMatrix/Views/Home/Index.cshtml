@@ -93,11 +93,6 @@ Login: Administrator Password: Admin1
                 $("#matrixSection").slideUp("slow");
             }
 
-            if (sending) {
-                $("#sendingSection").slideDown("slow");
-            } else {
-                $("#sendingSection").slideUp("slow");
-            }
 
             if (administration) {
                 $("#administrationSection").slideDown("slow");
@@ -142,10 +137,6 @@ Login: Administrator Password: Admin1
             $("#matrixDataPanel").slideToggle("slow");
         });
 
-        $("#sendingPanelButton").click(function() {
-            $("#sendingPanel").slideToggle("slow");
-        });
-
         $("#administrationPanelButton").click(function() {
             $("#administrationPanel").slideToggle("slow");
         });
@@ -153,30 +144,20 @@ Login: Administrator Password: Admin1
 </script>
 
 <div id="matrixSection" class="container-fluid" >
-    <center>
-        <input type="button" value="Click IT" id="matrixDataPanelClickIt"/>
-    </center>
+    <div class="text-center" id="matrixDataPanelClickIt">
+        Matrices
+    </div>
 
     <div id="matrixDataPanel" class="container-fluid" style="background-color: rosybrown; display: none">
 
     </div>
 </div>
 
-<div id="sendingSection">
-    <center>
-        <input type="button" value="Click IT" id="sendingPanelButton"/>
-    </center>
-
-    <div id="sendingPanel" class="jumbotron" style="display: none">
-        MatrixServiceMatrixService MatrixService
-        MatrixService
-    </div>
-</div>
 
 <div id="administrationSection">
-    <center>
-        <input type="button" value="Click IT" id="administrationPanelButton" />
-    </center>
+        <div class="text-center" id="administrationPanelButton">
+            User Administration
+        </div>
 
     <div id="administrationPanel" class="jumbotron" style="display: none">
         MatrixServiceMatrixService MatrixService

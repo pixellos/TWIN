@@ -1,23 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net.WebSockets;
-using System.Security.Principal;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using Microsoft.Ajax.Utilities;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin.Logging;
-using NLog;
-using WebLedMatrix.Controllers;
-using WebLedMatrix.Logic.Authentication.Infrastructure;
-using WebLedMatrix.Logic.Authentication.Models.Roles;
-using static System.Web.HttpContext;
+using WebLedMatrix.Logic;
+using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Hubs
 {
@@ -35,28 +20,28 @@ namespace WebLedMatrix.Hubs
 
         public void GetUsers()
         {
-            Clients.Caller.activeUsers(UserRepository.Repository.HubUsers);
+            Clients.Caller.activeUsers(HubConnections.Repository.HubUserList);
         }
 
-        public async void MuteUser(string name)
+        public void MuteUser(string name)
         {
-            UserRepository.Repository.SetMuteState(name,true);
-            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+            HubConnections.Repository.SetMuteState(name,true);
+            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
         }
 
-        public async void UnMuteUser(string name)
+        public void UnMuteUser(string name)
         {
-            UserRepository.Repository.SetMuteState(name, false);
-            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+            HubConnections.Repository.SetMuteState(name, false);
+            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
         }
 
         public override Task OnConnected()
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                UserRepository.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
+                HubConnections.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
             }
-            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
 
             return base.OnConnected();
         }
@@ -65,9 +50,9 @@ namespace WebLedMatrix.Hubs
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                UserRepository.Repository.AddConnection(Context.ConnectionId,Context.User.Identity.Name);
+                HubConnections.Repository.AddConnection(Context.ConnectionId,Context.User.Identity.Name);
             }
-            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
 
             return base.OnReconnected();
         }
@@ -76,9 +61,9 @@ namespace WebLedMatrix.Hubs
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                UserRepository.Repository.DeleteConnection(Context.ConnectionId);
+                HubConnections.Repository.DeleteConnection(Context.ConnectionId);
             }
-            Clients.All.activeUsers(UserRepository.Repository.HubUsers);
+            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
             return base.OnDisconnected(stopCalled);
         }
     }

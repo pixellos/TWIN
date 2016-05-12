@@ -15,12 +15,13 @@ using Moq;
 using NSubstitute;
 using NSubstitute.Extensions;
 using NSubstitute.ReturnsExtensions;
+using WebLedMatrix;
 using WebLedMatrix.Logic.Authentication.Abstract;
 using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrixTests1;
 using CallInfo = NSubstitute.Core.CallInfo;
 
-namespace WebLedMatrix.Hubs.Tests
+namespace Hubs.Tests
 {
     public class UiManagerTests : BaseTest
     {

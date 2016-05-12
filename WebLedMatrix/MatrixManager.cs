@@ -1,27 +1,39 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNet.SignalR;
-using StorageTypes;
 using WebLedMatrix.Hubs;
-using WebLedMatrix.Types;
-using WebLedMatrix.Types.MatrixServiceCallback;
+using WebLedMatrix.Models;
+using WebLedMatrix.WebService;
 
 namespace WebLedMatrix
 {
     public class MatrixManager
     {
-        private List<Matrix> matrices = new List<Matrix>();
+        private HashSet<Matrix> matrices = new HashSet<Matrix>();
         public List<Matrix> Matrices => new List<Matrix>(matrices);
 
-        private IHubContext<IUiManagerHub> Context
-            => GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
+        IMatrixServiceCallback matrixCallback(string name) => matrices.Single(x => x.Name.Equals(name)).Callback;
 
-        public Matrix AddMatrix(string name, IMatrixServiceCallback callbackAction )
+        private IHubContext<IUiManagerHub> Context { get; set; }
+
+        public MatrixManager(IHubContext<IUiManagerHub> hubContext)
         {
+            Context = hubContext;
+        }
+
+        public MatrixManager()
+        {
+            Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
+        }
+
+        public Matrix AddMatrix(string name, IMatrixServiceCallback callbackAction)
+        {
+            
             var matrix = new Matrix() {Name = name, Callback = callbackAction};
-            if (matrices.Exists(x=>x.Name == name))
+            if (matrices.Any(x=>x.Name == name))
             {
                 matrix = matrices.Single(x => x.Name == name);
             }
@@ -36,7 +48,7 @@ namespace WebLedMatrix
 
         public void RemoveMatrix(string name)
         {
-            matrices.RemoveAll(x => x.Name == name);
+            matrices.RemoveWhere(x => x.Name == name);
             UpdateMatrices();
         }
 
@@ -46,18 +58,15 @@ namespace WebLedMatrix
             Context.Clients.All.updateMatrices(matrices.ToArray());     
         }
 
-        public void SendCommandToMatirx(string name, DisplayDataType displayDataType, string data)
+        public void SendWebPage(string name, string data)
         {
-            switch (displayDataType)
-            {
-                    case DisplayDataType.Text:
-                    matrices.Single(x => x.Name.Equals(name)).Callback.UpdateText(data);
-                    break;
+            
+            matrixCallback(name).UpdateWebPage(data);
+        }
 
-                    case DisplayDataType.WebPage:
-                    matrices.Single(x=>x.Name.Equals(name)).Callback.UpdateWebPage(data);
-                    break;
-            }
+        public void SendText(string name, string text)
+        {
+            matrixCallback(name).UpdateText(text);
         }
     }
 }

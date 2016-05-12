@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.UI;
-using Microsoft.Ajax.Utilities;
+using System.ServiceModel.Security;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 using NLog;
-using StorageTypes;
+using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
-using WebLedMatrix.Logic.Authentication.Models;
-using WebLedMatrix.Types;
-
+using WebLedMatrix.Logic.Text_Processing;
+using static WebLedMatrix.Logic.HubConnections;
 
 namespace WebLedMatrix.Hubs
 {
@@ -23,26 +13,40 @@ namespace WebLedMatrix.Hubs
     {
         private readonly ILoginStatusChecker _loginStatusChecker;
         private readonly MatrixManager _matrixManager;
+        private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        
-        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
 
-        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager)
+        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository)
         {
             _loginStatusChecker = statusChecker;
             _matrixManager = matrixManager;
+            _repository = repository;
+            _webpageValidation = new WebpageValidation();
         }
+
+        public void IfNotMuted(Action x, string userName = null)
+        {
+            if (!_repository.IsMuted(userName ?? Context.User.Identity.Name))
+            {
+                x?.Invoke();
+            }
+        }
+
+        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
+        private readonly WebpageValidation _webpageValidation;
+
 
         public void SendUri(string data,string name)
         {
-            _matrixManager.SendCommandToMatirx(name,DisplayDataType.WebPage, data);
+            IfNotMuted(()=>
+                _matrixManager.SendWebPage(name, _webpageValidation.ParseAddress(data)));
         }
 
         public void SendText(string data, string name)
         {
-            _matrixManager.SendCommandToMatirx(name,DisplayDataType.Text, data);
+            IfNotMuted(() =>
+                _matrixManager.SendText(name, data));
         }
-
 
         public void LoginStatus()
         {

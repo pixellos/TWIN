@@ -2,7 +2,7 @@
 using WebLedMatrix.Types;
 using Xunit;
 
-namespace StorageTypesTests
+namespace Test.WebLedMatrix.Types
 {
     public class DisplayDataTypeExtensionsMethodsTests
     {

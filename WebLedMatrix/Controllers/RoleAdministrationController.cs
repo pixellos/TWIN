@@ -10,25 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
+using WebLedMatrix.Models.Authentication.Roles;
 
 namespace WebLedMatrix.Controllers
 {
-    public static class IdentityResultWrapper
-    {
-        public static void FoldMessages(this System.Web.Mvc.Controller controller, IdentityResult result,string notSucceededMessage)
-        {
-            if (!result.Succeeded)
-            {
-                controller.ModelState.AddModelError("",notSucceededMessage);    
-            }
-
-            foreach (string error in result.Errors)
-            {
-                controller.ModelState.AddModelError("",error);
-            }
-        }
-    }
-
     public class RoleAdministrationController : Controller
     {
         RoleAdministrating RoleAdministrating => new RoleAdministrating(RoleManager, UserManager);

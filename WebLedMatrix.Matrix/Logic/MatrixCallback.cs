@@ -17,7 +17,7 @@ namespace WebLedMatrix.Matrix.Logic
                Uri = new UriBuilder(text).Uri;
                viewModelInstance.WebAddress = Uri;
             }
-            catch (UriFormatException exception)
+            catch (UriFormatException)
             {
                 viewModelInstance.Text = "Cant display webpage \n " + text;
             }

@@ -1,3 +1,5 @@
+using WebLedMatrix.Models;
+
 namespace WebLedMatrix.Hubs
 {
     public interface IUiManagerHub

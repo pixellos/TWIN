@@ -76,7 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataToDisplay.cs" />
     <Compile Include="DisplayDataType.cs" />
     <Compile Include="DisplayDataTypeExtensionsMethods.cs" />
     <Compile Include="MatrixServiceCallback\IMatrixServiceCallback.cs" />

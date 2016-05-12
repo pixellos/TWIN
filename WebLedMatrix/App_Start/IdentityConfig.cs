@@ -43,7 +43,6 @@ namespace WebLedMatrix
 
         private static void WCFIoC()
         {
-            
         }
 
         private static void RegisterIdentity(IAppBuilder app, HubConfiguration config)

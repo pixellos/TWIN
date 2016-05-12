@@ -5,8 +5,8 @@
     <title>@ViewBag.Title</title>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <style>
+
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script><style>
         .container {
             padding-top: 10px;
         }
@@ -24,9 +24,8 @@
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>
 
-    
-    <script src="../../Matrix/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="../../Matrix/Scripts/jquery.signalR-2.2.0.js"></script>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
     <script src="../Matrix/signalr/hubs"></script>
     @RenderSection("scripts", required: false)
 </body>
