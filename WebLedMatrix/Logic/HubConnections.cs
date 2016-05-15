@@ -11,12 +11,14 @@ namespace WebLedMatrix.Logic
         public List<HubUser> HubUserList = new List<HubUser>();
         private readonly object _lock = new object();
 
+
         public void DeleteConnection(string connectionId)
         {
             lock (_lock)
             {
                 var user = HubUserList.Single(x => x.Ids.Any(y=>y.Equals(connectionId)));
                 user.Ids.Remove(connectionId);
+
                 if (! user.Ids.Any())
                 {
                     HubUserList.Remove(user);

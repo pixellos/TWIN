@@ -1,73 +1,98 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Policy;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Logic;
 using WebLedMatrix.Models;
 using Xunit;
+using static Test.WebLedMatrix.Server.Logic.Authentication.Concrete.Constants;
 
 namespace Test.WebLedMatrix.Server.Logic.Authentication.Concrete
 {
-    [ExcludeFromCodeCoverage]
-    public class UserManagingTests
+    public static class Constants
     {
-        string userName = nameof(userName);
-        string anotherId = nameof(anotherId); 
-        string id = nameof(id);
+        public static string UserName = nameof(UserName);
+        public static string AnotherId = nameof(AnotherId);
+        public static string Id = nameof(Id);
+    }
+    [ExcludeFromCodeCoverage]
+    public class UserManagingFixture : IDisposable
+    {
+        public HubConnections Repository;
+
+        public UserManagingFixture()
+        {
+            Repository = new HubConnections();
+            Repository.AddConnection(Id, UserName);
+        }
+
+        public void Dispose()
+        {
+            Repository = null;
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class UserManagingTests : IClassFixture<UserManagingFixture>
+    {
+        private UserManagingFixture _fixture;
+
+        public UserManagingTests(UserManagingFixture fixture)
+        {
+            _fixture = fixture;
+        }
 
         private bool OptionalPredicateDefault(HubUser model)
         {
             return true;
         }
 
-        HubConnections _repository = new HubConnections();
+        HubConnections _repository = HubConnections.Repository;
 
         bool UserRepositoryPredicate_IsTherePredefinedUser(HubConnections repository, Predicate<HubUser> optionalPredicate = null)
-         => repository.HubUserList.Any(x => x.UserName.Equals(userName) && x.Ids.Contains(id) && 
+         => _fixture.Repository.HubUserList.Any(x => x.UserName.Equals(UserName) && x.Ids.Contains(Id) && 
          (optionalPredicate?.Invoke(x) ?? true)
          );
 
-        public UserManagingTests()
-        {
-            _repository.AddConnection(id, userName);
-        }
+  
 
         [Fact()]
         public void AddConnection_IsExist() //User was added in constructor
         {
-            Assert.True(UserRepositoryPredicate_IsTherePredefinedUser(_repository));
+            Assert.True(UserRepositoryPredicate_IsTherePredefinedUser(_fixture.Repository));
         }
 
         [Fact()]
         public void AddConnection_IsAddingNewConnectionIdToExisiting() //User was added in constructor
         {
-            _repository.AddConnection(anotherId,userName);
+            _fixture.Repository.AddConnection(AnotherId,UserName);
 
-            Assert.True(UserRepositoryPredicate_IsTherePredefinedUser(_repository,x=>x.Ids.Contains(anotherId)));
+            Assert.True(UserRepositoryPredicate_IsTherePredefinedUser(_fixture.Repository,x=>x.Ids.Contains(AnotherId)));
         }
 
         [Fact]
         public void DeleteConnection()
         {
-            _repository.DeleteConnection(id);
+            _fixture.Repository.DeleteConnection(Id);
             
-            Assert.False(UserRepositoryPredicate_IsTherePredefinedUser(_repository));
+            Assert.False(UserRepositoryPredicate_IsTherePredefinedUser(_fixture.Repository));
         }
         [Fact()]
         public void Mute()
         {
-            _repository.SetMuteState(userName, isMuted: true);
+            _fixture.Repository.SetMuteState(UserName, isMuted: true);
 
-            Assert.True(_repository.IsMuted(userName));
+            Assert.True(_fixture.Repository.IsMuted(UserName));
         }
 
         [Fact]
         public void UnMute()
         {
-            _repository.SetMuteState(userName, isMuted: true);
-            _repository.SetMuteState(userName, isMuted: false);
+            _fixture.Repository.SetMuteState(UserName, isMuted: true);
+            _fixture.Repository.SetMuteState(UserName, isMuted: false);
 
-            Assert.False(_repository.IsMuted(userName));
+            Assert.False(_fixture.Repository.IsMuted(UserName));
         }
     }
 }

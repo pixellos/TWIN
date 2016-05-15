@@ -18,7 +18,7 @@ namespace WebLedMatrix.IoC
         {
             builder.Register(c => new LoginStatusChecker()).As<ILoginStatusChecker>().SingleInstance();
             builder.Register(c => new MatrixManager()).SingleInstance();
-            builder.Register(c => new HubConnections()).SingleInstance();
+            builder.Register(c => HubConnections.Repository);
         }
     }
 }

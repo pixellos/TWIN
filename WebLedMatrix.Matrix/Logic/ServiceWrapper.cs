@@ -4,7 +4,7 @@ using WebLedMatrix.Matrix.MatrixService;
 
 namespace WebLedMatrix.Matrix.Logic
 {
-        public class ServiceWrapper 
+    public class ServiceWrapper 
     {
         private MatrixServiceClient _client;
 
@@ -17,16 +17,14 @@ namespace WebLedMatrix.Matrix.Logic
             set { Properties.Settings.Default._name = value; }
         }
 
-
         public ServiceWrapper()
         {
-            _client = new MatrixServiceClient(new InstanceContext(new MatrixCallback()));
+            _client = new MatrixServiceClient(
+                new InstanceContext(new MatrixCallback()));
             _client.Open();
             _client.RegisterMatrix(_name);
-            
             /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/
         }
-
     
         public void SetName(string name)
         {
