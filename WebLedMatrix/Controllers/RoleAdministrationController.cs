@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Web.SessionState;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity.Owin;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models;
@@ -14,6 +16,7 @@ using WebLedMatrix.Models.Authentication.Roles;
 
 namespace WebLedMatrix.Controllers
 {
+
     public class RoleAdministrationController : Controller
     {
         RoleAdministrating RoleAdministrating => new RoleAdministrating(RoleManager, UserManager);
@@ -55,8 +58,16 @@ namespace WebLedMatrix.Controllers
 
             try
             {
-                await RoleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
-                await RoleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
+                if (model.IdsToAdd != null)
+                {
+                    await RoleAdministrating.AddMembers(model.RoleName, model.IdsToAdd);
+                }
+
+                if (model.IdsToDelete!= null)
+                {
+                    await RoleAdministrating.DeleteMembers(model.RoleName, model.IdsToDelete);
+                }
+
                 return RedirectToAction("Index");
             }
             catch (RoleResultException exception)

@@ -17,6 +17,7 @@ namespace WebLedMatrix.Controllers
     public class AccountController : Controller
     {
         // GET: Admin
+        [Authorize]
         public ActionResult Index()
         {
             return View(UserManager.Users);

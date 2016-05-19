@@ -52,9 +52,7 @@ namespace Test.WebLedMatrix.Server.Logic.Authentication.Concrete
 
         bool UserRepositoryPredicate_IsTherePredefinedUser(HubConnections repository, Predicate<HubUser> optionalPredicate = null)
          => _fixture.Repository.HubUserList.Any(x => x.UserName.Equals(UserName) && x.Ids.Contains(Id) && 
-         (optionalPredicate?.Invoke(x) ?? true)
-         );
-
+         (optionalPredicate?.Invoke(x) ?? true));
   
 
         [Fact()]
