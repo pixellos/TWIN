@@ -9,6 +9,8 @@ namespace WebLedMatrix.Matrix.Logic
     {
         private ShowerViewModel viewModelInstance => ServiceLocator.Current.GetInstance<ShowerViewModel>();
 
+        private ITextFormater textFormater = new XamlFormater();
+
         public void UpdateWebPage(string text)
         {
             Uri Uri = null;
@@ -25,7 +27,7 @@ namespace WebLedMatrix.Matrix.Logic
 
         public void UpdateText(string text)
         {
-            viewModelInstance.Text = text;
+            viewModelInstance.Text = textFormater.Format(text);
         }
     }
 }
