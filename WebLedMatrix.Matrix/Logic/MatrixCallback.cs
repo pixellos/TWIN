@@ -9,7 +9,7 @@ namespace WebLedMatrix.Matrix.Logic
     {
         private ShowerViewModel viewModelInstance => ServiceLocator.Current.GetInstance<ShowerViewModel>();
 
-        private ITextFormater textFormater = new XamlFormater();
+        private ITextFormater textFormater = new BasicUnEscaper();
 
         public void UpdateWebPage(string text)
         {

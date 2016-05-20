@@ -15,9 +15,9 @@ namespace Tests.WebLedMatrix.Matrix.Logic
         public void FormatTest_ReplaceAllOccurences()
         {
             string TextWithThreeLineBreaks = @"FirstLine\nSecondLine\nThirdLine";
-            string ExpectedResult = "FirstLine&#x0a;SecondLine&#x0a;ThirdLine";
+            string ExpectedResult = "FirstLine\nSecondLine\nThirdLine";
 
-            ITextFormater formater = new XamlFormater();
+            ITextFormater formater = new BasicUnEscaper();
 
             Assert.Equal(
                 ExpectedResult,

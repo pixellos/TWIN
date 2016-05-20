@@ -85,7 +85,7 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="IoCContainter.cs" />
     <Compile Include="Logic\ITextFormater.cs" />
-    <Compile Include="Logic\XamlFormater.cs" />
+    <Compile Include="Logic\BasicUnEscaper.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
