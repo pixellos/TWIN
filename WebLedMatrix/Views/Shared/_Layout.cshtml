@@ -17,14 +17,14 @@
     </style> 
 </head>
 <body>
-    
+
     @RenderBody()
     <hr />
     <footer>
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>
 
-
+    <link rel="Matrix stylesheet" type="text/css" href="~/Content/mxstyle.css">
     <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
     <script src="../Matrix/signalr/hubs"></script>
     @RenderSection("scripts", required: false)

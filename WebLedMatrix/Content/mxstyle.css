@@ -1,0 +1,63 @@
+﻿@keyframes spin{
+	0% {top: -20%;}
+	20% {top: 49%;}
+	80% {top: 51%;}
+	100% {top: 130%;}
+}
+
+.panel-primary{
+	margin-top: 5%;
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	-moz-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+}
+#status > #progress > svg{ 
+	position: fixed;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	margin-top: -100px;
+	transition: 1s;
+	animation: forwards;
+	animation-name: spin;
+	animation-duration: 0.8s;
+}
+
+.col-xs-9{
+	height: 220px;
+	position: fixed;
+	transition: 1s;
+	background-color: #767b7c;
+	width: 100%;
+	top: -190px;
+	left: 0%;
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	-moz-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	border-left: 0px solid #65ea59;
+}
+
+.col-xs-9 > .container > form{
+	display: none;
+	transition: 1s;
+}
+.col-xs-9:hover > .container > form{
+	display: initial;
+	transition: 1s;
+}
+.col-xs-9:hover {
+	border-left: 10px solid #65ea59;
+	background-color: lightgrey;
+	transition: 1s;
+	top: 0%;
+}
+#Name{
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	-moz-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1;
+}
+#Password{
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	-moz-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+}

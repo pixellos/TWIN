@@ -52,12 +52,12 @@ Login: Administrator Password: Admin1
 
             ///Extract method from there!
             circle = new ProgressBar.Circle('#progress', {
-                duration: 200,
+                duration: 350,
                 color: colour,
                 trailColor: "#ddd",
                 strokeWidth: 30
             });
-            circle.animate(1, function () { circle.animate(0.5) });
+            circle.animate(1, function () { circle.animate(1) });
         }
 
         uiManagerHub.client.unRegisterAllMatrices = function() {
