@@ -2,7 +2,7 @@
     <div class="col-xs-12" id="Status">
         <div class="col-xs-3" id="progress">
         </div>
-        <div class="col-xs-9">
+        <div class="col-xs-9" id="slider">
             @{
                Html.RenderAction("Login", "Account");
             }
@@ -148,11 +148,17 @@ Login: Administrator Password: Admin1
         Matrices
     </div>
 
-    <div id="matrixDataPanel" class="container-fluid" style="background-color: rosybrown; display: none">
-        Please notice: Unescaping works - if you want to show something at new line \n, tab \n.
+    <div id="matrixDataPanel" class="container-fluid" style="background-color: rgba(0,0,0,0,); display: none">
+        No Displays found.
     </div>
 </div>
 
+<div id="iecontent" style="display: none; position: fixed; bottom: 0%; right: 0%; text-align: right;">
+    We have detected that you are using Internet Explorer. Please bear in mind that it is not recommended to use IE<br/>
+    due to lack of support, and You may have problems using this site. <br/>
+</div>
+
+<hr id="separatormid"/> 
 
 <div id="administrationSection">
         <div class="text-center" id="administrationPanelButton">
