@@ -26,8 +26,6 @@
     </table>
 </div>
 
-Login: Administrator Password: Admin1
-
 <script type="text/javascript">
     $(function() {
         uiManagerHub = $.connection.uiManagerHub;
@@ -77,7 +75,7 @@ Login: Administrator Password: Admin1
         };
 
         function addMatrice(matrix, index, array) {
-            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + matrix.Name + "<input type=\"text\" id=\""+matrix.Name+"textbox\">" + "</div>");
+            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + matrix.Name + "<input class=matrixtinp type=\"text\" id=\"" + matrix.Name + "textbox\">" + "</div>");
             addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendText($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "sendtext", "Send Text",stringMatrixLiteral);
             addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendUri($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "senduri", "Send Uri",stringMatrixLiteral);
         };
@@ -111,7 +109,7 @@ Login: Administrator Password: Admin1
         function showConnectedUsers(item, index, array) {
             $("#administrationPanel").append("<div class=col-xs-12 id=" + item.UserName + stringUserLiteral + ">" + item.UserName + "   Is Muted: " + item.IsMuted + "</div>");
             addSignalRButton(item.UserName, function() {administrationHub.server.muteUser(item.UserName);}, "muteUser", "Mute User",stringUserLiteral);
-        addSignalRButton(item.UserName, function() {administrationHub.server.unMuteUser(item.UserName);}, "unMuteUser", "UnMute User",stringUserLiteral);
+            addSignalRButton(item.UserName, function() {administrationHub.server.unMuteUser(item.UserName);}, "unMuteUser", "UnMute User",stringUserLiteral);
         }
 
         $.connection.hub.start().done(function() {
@@ -153,13 +151,6 @@ Login: Administrator Password: Admin1
     </div>
 </div>
 
-<div id="iecontent" style="display: none; position: fixed; bottom: 0%; right: 0%; text-align: right;">
-    We have detected that you are using Internet Explorer. Please bear in mind that it is not recommended to use IE<br/>
-    due to lack of support, and You may have problems using this site. <br/>
-</div>
-
-<hr id="separatormid"/> 
-
 <div id="administrationSection">
         <div class="text-center" id="administrationPanelButton">
             User Administration
@@ -172,3 +163,9 @@ Login: Administrator Password: Admin1
 </div>
 
 
+<div id="iecontent" style="display: none; position: fixed; bottom: 0%; right: 0%; text-align: right;">
+    We have detected that you are using Internet Explorer. Please bear in mind that it is not recommended to use IE<br />
+    due to lack of support, and You may have problems using this site. <br />
+</div>
+
+<hr id="separatormid" /> 
