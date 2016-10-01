@@ -17,14 +17,35 @@
     </style> 
 </head>
 <body>
-    
     @RenderBody()
-    <hr />
     <footer>
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>
-
-
+    <link href="https://fonts.googleapis.com/css?family=David+Libre&subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Content/mxstyle.css" id="mxstyle"/>
+    <!--[if gte IE 8]>
+        <script type="text/javascript">
+            document.getElementById('iecontent').style.display = 'block';
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('slider').style.display = 'block';
+            $("#mxstyle").attr("disabled", "disabled");
+        </script>
+    <![endif]-->
+    <script type="text/javascript">
+        var UAString = navigator.userAgent;
+        if (navigator.appVersion.indexOf("MSIE 10") !== -1) {
+            document.getElementById('iecontent').style.display = 'block';
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('slider').style.display = 'block';
+            $("#mxstyle").attr("disabled", "disabled");
+        } else if (UAString.indexOf("Trident") !== -1 && UAString.indexOf("rv:11") !== -1){
+            document.getElementById('iecontent').style.display = 'block';
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('slider').style.display = 'block';
+            $("#mxstyle").attr("disabled", "disabled");
+        }
+ 
+    </script>
     <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
     <script src="../Matrix/signalr/hubs"></script>
     @RenderSection("scripts", required: false)
