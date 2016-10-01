@@ -31,14 +31,13 @@ namespace WebLedMatrix.Matrix.Logic
             try
             {
                 _client.UnRegisterMatrix(_name);
+                _name = name;
+                _client.RegisterMatrix(_name);
             }
             catch (Exception )
             {
                 //Connection has been lost
             }
-            
-            _name = name;
-            _client.RegisterMatrix(_name);
         }
     }
 }

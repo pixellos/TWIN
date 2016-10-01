@@ -34,6 +34,11 @@ namespace WebLedMatrix.Matrix.ViewModel
             _serviceWrapper = IoCContainter.Resolve<ServiceWrapper>();
             SetName = new RelayCommand(() =>
             {
+                if (NodeName.Contains(" "))
+                {
+                    MessageBox.Show("Name cannot contain spaces", "Error!");
+                    return;
+                }
                 _serviceWrapper.SetName(NodeName);
                 Messenger.Default.Send(new NotificationMessage(MessageStrings.Show));
             });

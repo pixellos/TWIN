@@ -1,6 +1,6 @@
 ﻿namespace WebLedMatrix.Logic.Authentication.Models.Roles
 {
-    enum TypicalRoles
+    public enum TypicalRoles
     {
         User,
         Speaker,

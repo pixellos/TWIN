@@ -17,5 +17,7 @@ namespace WebLedMatrix.Logic.Authentication.Models
         public string LastName { get; set; }
         [Required]
         public string TelephoneNumber { get; set; }
+        [Required]
+        public string About { get; set; }
     }
 }
