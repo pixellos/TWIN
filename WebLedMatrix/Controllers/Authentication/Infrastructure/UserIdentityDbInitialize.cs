@@ -16,8 +16,8 @@ namespace WebLedMatrix.Logic.Authentication.Infrastructure
             base.Seed(context);
         }
 
-        private string userName = "Admin";
-        private string password = "ChangeThisPassword1";
+        private string userName = "Administrator";
+        private string password = "Admin1";
         private string email = "admin@admin.admin";
         private string firstName = "TWIN";
         private string lastName= "TWIN";

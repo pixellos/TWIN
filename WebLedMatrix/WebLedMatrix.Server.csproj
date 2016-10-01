@@ -269,6 +269,7 @@
     <Compile Include="Controllers\Authentication\Concrete\DefaultUserValidatorHelper.cs" />
     <Compile Include="Controllers\Authentication\Concrete\ResultException.cs" />
     <Compile Include="Logic\HubConnections.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdministrationModel.cs" />
     <Compile Include="Models\Authentication\Roles\RoleAdministrating.cs" />
     <Compile Include="Models\HubUser.cs" />
