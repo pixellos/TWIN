@@ -56,6 +56,25 @@ namespace WebLedMatrix.Hubs
             this._matrixManager.SendToAll("Up was clicked");
         }
 
+        public void DownClick()
+        {
+            this._matrixManager.SendToAll("Down was clicked");
+        }
+        public void LeftClick()
+        {
+            this._matrixManager.SendToAll("Left was clicked");
+        }
+
+        public void RightClick()
+        {
+            this._matrixManager.SendToAll("right was clicked");
+        }
+
+        public void OkClick()
+        {
+            this._matrixManager.SendToAll("Ok was clicked");
+        }
+
 
         public void SendText(string data, string name)
         {

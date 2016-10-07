@@ -128,6 +128,26 @@
             uiManagerHub.server.upClick();
         }
            );
+        $("#bottom").click(function ()
+        {
+            uiManagerHub.server.downClick();
+        }
+          ); 
+        $("#left").click(function ()
+          {
+              uiManagerHub.server.leftClick();
+          }
+           );
+        $("#right").click(function ()
+        {
+            uiManagerHub.server.rightClick();
+        }
+          );
+        $("#enter").click(function ()
+        {
+            uiManagerHub.server.okClick();
+        }
+          );
         $("#sendrq").click(function ()
         {
             uiManagerHub.server.requestActivate();
