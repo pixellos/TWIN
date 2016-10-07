@@ -72,7 +72,17 @@
 
         uiManagerHub.client.userIsActiveStatus = function(b) {
             if (b) {
-                
+                  
+                $('#notactive').removeClass('active');
+                $('#notactive').addClass('inactive');
+                $('#active').removeClass('inactive');
+                $('#active').addClass('active');
+            } else {
+                $('#active').removeClass('active');
+                $('#active').addClass('inactive');
+                $('#notactive').removeClass('inactive');
+                $('#notactive').addClass('active');
+                   
             }
         }
 
@@ -202,22 +212,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $("#sendrq").click(function () {
-        if ($("#notactive").hasClass('active')) {
-            $('#notactive').removeClass('active');
-            $('#notactive').addClass('inactive');
-            $('#active').removeClass('inactive');
-            $('#active').addClass('active');
-        }
-        else {
-            $('#active').removeClass('active');
-            $('#active').addClass('inactive');
-            $('#notactive').removeClass('inactive');
-            $('#notactive').addClass('active');
-        }
-    });
-</script>
 
 <div id="iecontent" style="display: none; position: fixed; bottom: 0%; right: 0%; text-align: right;">
     We have detected that you are using Internet Explorer. Please bear in mind that it is not recommended to use IE<br />

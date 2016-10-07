@@ -16,7 +16,7 @@ namespace WebLedMatrix.Hubs
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private string _currentActiveUser = "";
-        private DateTime _lastDate = DateTime.Now;
+        private static DateTime LastDate = DateTime.Now;
 
         public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
         {
@@ -73,12 +73,12 @@ namespace WebLedMatrix.Hubs
         {
             IfNotMuted(() =>
                 {
-                    if ((DateTime.Now - this._lastDate) > new TimeSpan(0, 0, 0, 30))
+                    if ((DateTime.Now - LastDate) > new TimeSpan(0,0,0,20))
                     {
                         this._currentActiveUser = this.Context.User.Identity.Name;
                         this.Clients.All.userIsActiveStatus(false);
                         this.Clients.Caller.userIsActiveStatus(true);
-                        this._lastDate = DateTime.Now;
+                        UiManagerHub.LastDate = DateTime.Now;
                     }
                 }
             );
