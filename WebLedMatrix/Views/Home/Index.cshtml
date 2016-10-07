@@ -4,7 +4,7 @@
         </div>
         <div class="col-xs-9" id="slider">
             @{
-                Html.RenderAction("Login", "Account");
+               Html.RenderAction("Login", "Account");
             }
         </div>
     </div>
@@ -12,15 +12,27 @@
 
 <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.6.0/dist/progressbar.js"></script>
 
-@{ ViewBag.Title = "Led wall"; }
+@{ ViewBag.Title = "Index"; }
+<div class="panel panel-primary">
+    <div class="panel-heading">User Details</div>
+    <table class="table table-striped">
+        @foreach (string key in Model.Keys)
+        {
+            <tr>
+                <th>@key</th>
+                <td>@Model[key]</td>
+            </tr>
+        }
+    </table>
+</div>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         uiManagerHub = $.connection.uiManagerHub;
         administrationHub = $.connection.administrationHub;
 
         var circle;
-        var circleState = function (status) {
+        var circleState = function(status) {
             var colour = "#FFFFFF";
             switch (status) {
                 case "Admin":
@@ -46,16 +58,17 @@
             circle.animate(1, function () { circle.animate(1) });
         }
 
-        uiManagerHub.client.unRegisterAllMatrices = function () {
+        uiManagerHub.client.unRegisterAllMatrices = function() {
             $("#matrixDataPanel").empty();
         };
 
-        uiManagerHub.client.loginStatus = function (status) {
+        uiManagerHub.client.loginStatus = function(status) {
             circleState(status);
         };
 
         var stringMatrixLiteral = "_matrix";
-        function addSignalRButton(fieldName, callback, functionName, buttonText, stringLiteral) {
+        function addSignalRButton(fieldName,callback,functionName,buttonText,stringLiteral)
+        {
             $("#" + fieldName + stringLiteral).append(
                 "<button type=\"button\" class=\"btn btn-default\" id=\"" + fieldName + functionName + "Button\">" + buttonText + "</button>");
             $("#" + fieldName + functionName + "Button").click(callback);
@@ -63,15 +76,15 @@
 
         function addMatrice(matrix, index, array) {
             $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + matrix.Name + "<input class=matrixtinp type=\"text\" id=\"" + matrix.Name + "textbox\">" + "</div>");
-            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendText($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "sendtext", "Send Text", stringMatrixLiteral);
-            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendUri($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "senduri", "Send Uri", stringMatrixLiteral);
+            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendText($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "sendtext", "Send Text",stringMatrixLiteral);
+            addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendUri($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "senduri", "Send Uri",stringMatrixLiteral);
         };
 
         uiManagerHub.client.updateMatrices = function (status) {
             status.forEach(addMatrice);
         };
 
-        uiManagerHub.client.showSections = function (matrixes, sending, administration) {
+        uiManagerHub.client.showSections = function(matrixes, sending, administration) {
             if (matrixes) {
                 $("#matrixSection").slideDown("slow");
             } else {
@@ -85,7 +98,7 @@
                 $("#administrationSection").slideUp("slow");
             }
         }
-
+        
 
         administrationHub.client.activeUsers = function (users) {
             $("#administrationPanel").empty();
@@ -95,11 +108,11 @@
         var stringUserLiteral = "_U";
         function showConnectedUsers(item, index, array) {
             $("#administrationPanel").append("<div class=col-xs-12 id=" + item.UserName + stringUserLiteral + ">" + item.UserName + "   Is Muted: " + item.IsMuted + "</div>");
-            addSignalRButton(item.UserName, function () { administrationHub.server.muteUser(item.UserName); }, "muteUser", "Mute User", stringUserLiteral);
-            addSignalRButton(item.UserName, function () { administrationHub.server.unMuteUser(item.UserName); }, "unMuteUser", "UnMute User", stringUserLiteral);
+            addSignalRButton(item.UserName, function() {administrationHub.server.muteUser(item.UserName);}, "muteUser", "Mute User",stringUserLiteral);
+            addSignalRButton(item.UserName, function() {administrationHub.server.unMuteUser(item.UserName);}, "unMuteUser", "UnMute User",stringUserLiteral);
         }
 
-        $.connection.hub.start().done(function () {
+        $.connection.hub.start().done(function() {
             uiManagerHub.server.loginStatus();
             x = function (x, y) {
                 uiManagerHub.server.loginStatus();
@@ -108,28 +121,21 @@
 
             administrationHub.server.getUsers();
         });
-
-        $("#progress").click(function () {
+        
+        $("#progress").click(function() {
             uiManagerHub.server.loginStatus();
-        }
+            }
         );
-
-        $("#top")
-            .click(
-                function () {
-                    uiManagerHub.server.upClick();
-                }
-            );
     });
 </script>
 
 <script>
-    $(document).ready(function () {
-        $("#matrixDataPanelClickIt").click(function () {
+    $(document).ready(function() {
+        $("#matrixDataPanelClickIt").click(function() {
             $("#matrixDataPanel").slideToggle("slow");
         });
 
-        $("#administrationPanelButton").click(function () {
+        $("#administrationPanelButton").click(function() {
             $("#administrationPanel").slideToggle("slow");
         });
     });
