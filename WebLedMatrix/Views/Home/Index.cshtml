@@ -70,6 +70,11 @@
             status.forEach(addMatrice);
         };
 
+        uiManagerHub.client.userIsActiveStatus = function(b) {
+            if (b) {
+                
+            }
+        }
 
         uiManagerHub.client.showSections = function(matrixes, sending, administration) {
             if (matrixes) {
@@ -77,8 +82,6 @@
             } else {
                 $("#matrixSection").slideUp("slow");
             }
-
-
             if (administration) {
                 $("#administrationSection").slideDown("slow");
             } else {
@@ -90,8 +93,6 @@
         administrationHub.client.activeUsers = function (users) {
             $("#administrationPanel").empty();
             users.forEach(showConnectedUsers);
-
-
         }
 
         var stringUserLiteral = "_U";
@@ -112,10 +113,15 @@
         });
 
 
-        $("#top").click(function () {
+        $("#top").click(function ()
+        {
             uiManagerHub.server.upClick();
         }
            );
+        $("#sendrq").click(function ()
+        {
+            uiManagerHub.server.requestActivate();
+        });
     $("#progress").click(function() {
         uiManagerHub.server.loginStatus();
     }
