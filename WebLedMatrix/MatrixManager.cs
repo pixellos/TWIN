@@ -64,6 +64,14 @@ namespace WebLedMatrix
             matrixCallback(name).UpdateWebPage(data);
         }
 
+        public void SendToAll(string text)
+        {
+            foreach (var matrix in this.matrices)
+            {
+                matrix.Callback.UpdateText(text);
+            }
+        }
+
         public void SendText(string name, string text)
         {
             matrixCallback(name).UpdateText(text);

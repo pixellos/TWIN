@@ -16,8 +16,9 @@ namespace WebLedMatrix.Hubs
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private string _currentActiveUser = "";
+        private DateTime _lastDate = DateTime.Now;
 
-        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository)
+        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
         {
             _loginStatusChecker = statusChecker;
             _matrixManager = matrixManager;
@@ -37,20 +38,50 @@ namespace WebLedMatrix.Hubs
         private readonly WebpageValidation _webpageValidation;
 
 
-        public void SendUri(string data,string name)
+        public void SendUri(string data, string name)
         {
-            IfNotMuted(()=>
-                _matrixManager.SendWebPage(name, _webpageValidation.ParseAddress(data)));
+            RequestActivate();
+            IfNotMuted(() =>
+                {
+                    if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
+                    {
+                        _matrixManager.SendWebPage(name, _webpageValidation.ParseAddress(data));
+                    }
+                }
+                );
         }
+
+        public void UpClick()
+        {
+            this._matrixManager.SendToAll("Up was clicked");
+        }
+
 
         public void SendText(string data, string name)
         {
+            RequestActivate();
             IfNotMuted(() =>
-                _matrixManager.SendText(name, data));
+            {
+                if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
+                {
+                    _matrixManager.SendText(name, data);
+                }
+            });
         }
 
         public void RequestActivate()
         {
+            IfNotMuted(() =>
+                {
+                    if ((DateTime.Now - this._lastDate) > new TimeSpan(0, 0, 0, 30))
+                    {
+                        this._currentActiveUser = this.Context.User.Identity.Name;
+                        this.Clients.All.userIsActiveStatus(false);
+                        this.Clients.Caller.userIsActiveStatus(true);
+                        this._lastDate = DateTime.Now;
+                    }
+                }
+            );
         }
 
         public void LoginStatus()

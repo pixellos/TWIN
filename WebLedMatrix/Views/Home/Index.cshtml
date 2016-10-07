@@ -4,7 +4,7 @@
         </div>
         <div class="col-xs-9" id="slider">
             @{
-               Html.RenderAction("Login", "Account");
+                Html.RenderAction("Login", "Account");
             }
         </div>
     </div>
@@ -70,6 +70,7 @@
             status.forEach(addMatrice);
         };
 
+
         uiManagerHub.client.showSections = function(matrixes, sending, administration) {
             if (matrixes) {
                 $("#matrixSection").slideDown("slow");
@@ -84,11 +85,13 @@
                 $("#administrationSection").slideUp("slow");
             }
         }
-        
+
 
         administrationHub.client.activeUsers = function (users) {
             $("#administrationPanel").empty();
             users.forEach(showConnectedUsers);
+
+
         }
 
         var stringUserLiteral = "_U";
@@ -107,11 +110,16 @@
 
             administrationHub.server.getUsers();
         });
-        
-        $("#progress").click(function() {
-            uiManagerHub.server.loginStatus();
-            }
-        );
+
+
+        $("#top").click(function () {
+            uiManagerHub.server.upClick();
+        }
+           );
+    $("#progress").click(function() {
+        uiManagerHub.server.loginStatus();
+    }
+    );
     });
 </script>
 
