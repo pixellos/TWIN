@@ -57,5 +57,13 @@ namespace WebLedMatrix.Matrix.ViewModel
             get { return _text; }
             set { Set(ref _text, value); }
         }
+
+        private string _ImageAddress = "http://i.imgur.com/SQLoKHY.jpg";
+
+        public string ImageAddress
+        {
+            get { return _ImageAddress; }
+            set { Set(ref _ImageAddress, value); }
+        }
     }
 }

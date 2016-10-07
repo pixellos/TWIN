@@ -19,13 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://127.0.0.1/Matrix/WebService/MatrixService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://stacja22//Matrix/WebService/MatrixService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MatrixService.xsd" MetadataType="Schema" ID="7bb5f8a1-bb28-4059-baa8-903638e8ab74" SourceId="1" SourceUrl="http://pc/Matrix/WebService/MatrixService.svc?xsd=xsd0" />
-    <MetadataFile FileName="MatrixService.wsdl" MetadataType="Wsdl" ID="0aa69f7c-86ac-4036-a6c5-81a3cd241b89" SourceId="1" SourceUrl="http://pc/Matrix/WebService/MatrixService.svc?wsdl" />
-    <MetadataFile FileName="MatrixService.disco" MetadataType="Disco" ID="1b827533-61c3-4e93-8de0-3a5d7dcddd88" SourceId="1" SourceUrl="http://pc/Matrix/WebService/MatrixService.svc?disco" />
-    <MetadataFile FileName="MatrixService1.xsd" MetadataType="Schema" ID="59e58705-346a-4a1e-b672-0d2593eca9c8" SourceId="1" SourceUrl="http://pc/Matrix/WebService/MatrixService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MatrixService1.disco" MetadataType="Disco" ID="01c56711-b2d8-44ec-bff0-e21abc9d78ff" SourceId="1" SourceUrl="http://stacja22/Matrix/WebService/MatrixService.svc?disco" />
+    <MetadataFile FileName="MatrixService2.xsd" MetadataType="Schema" ID="e56a0630-baca-4ed1-a979-a0ac72be6b64" SourceId="1" SourceUrl="http://stacja22/Matrix/WebService/MatrixService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MatrixService21.xsd" MetadataType="Schema" ID="f139b028-e2e9-4bd9-a002-bac13a6f84e2" SourceId="1" SourceUrl="http://stacja22/Matrix/WebService/MatrixService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MatrixService1.wsdl" MetadataType="Wsdl" ID="2de48bfe-a086-4abd-ae13-6daedfad0a92" SourceId="1" SourceUrl="http://stacja22/Matrix/WebService/MatrixService.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

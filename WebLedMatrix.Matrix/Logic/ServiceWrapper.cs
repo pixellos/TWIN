@@ -1,5 +1,6 @@
 using System;
 using System.ServiceModel;
+using System.Windows;
 using WebLedMatrix.Matrix.MatrixService;
 
 namespace WebLedMatrix.Matrix.Logic
@@ -19,10 +20,19 @@ namespace WebLedMatrix.Matrix.Logic
 
         public ServiceWrapper()
         {
-            _client = new MatrixServiceClient(
-                new InstanceContext(new MatrixCallback()));
-            _client.Open();
-            _client.RegisterMatrix(_name);
+            try
+            {
+                _client = new MatrixServiceClient(
+                    new InstanceContext(new MatrixCallback()));
+                _client.Open();
+                _client.RegisterMatrix(_name);
+            }
+            catch (Exception e )
+            {
+                MessageBox.Show(e.ToString());
+                throw;
+            }
+
             /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/
         }
     
