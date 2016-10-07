@@ -5,8 +5,9 @@
     <title>@ViewBag.Title</title>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script><style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <style>
         .container {
             padding-top: 10px;
         }
@@ -14,15 +15,100 @@
         .validation-summary-errors {
             color: #f00;
         }
-    </style> 
+    </style>
+
+    <style>
+        #wrapper {
+            position: relative;
+            height: 500px;
+            width: 220px;
+            margin: auto;
+            max-width: 100%;
+            z-index: 1000;
+        }
+
+        .steeringbutton, #enter {
+            margin-top: -35px;
+            margin-left: -35px;
+            position: absolute;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            width: 70px;
+            height: 70px;
+            transition: 0.5s;
+        }
+
+            .steeringbutton:hover, .steeringbutton:active {
+                cursor: pointer;
+            }
+
+        #bgwrap {
+            width: 100%;
+            height: 100%;
+            right: 0%;
+            background: url(http://cdn.pcwallart.com/images/gradient-wallpaper-4.jpg) no-repeat center center;
+            position: fixed;
+            overflow: auto;
+            z-index: -10;
+        }
+
+        #enter {
+            left: 50%;
+            top: 45%;
+        }
+
+
+
+        .buttoncontent {
+        }
+
+            .buttoncontent .fa {
+                line-height: 70px;
+                color: white;
+            }
+
+        #left {
+            top: 45%;
+            background-size: 100%;
+            margin-left: 0px;
+        }
+
+        #right {
+            right: 0%;
+            top: 45%;
+        }
+
+        #top {
+            top: 30%;
+            left: 50%;
+        }
+
+        #bottom {
+            top: 60%;
+            left: 50%;
+        }
+
+        #banner {
+            position: fixed;
+            bottom: 2%;
+            width: 50%;
+            left: 50%;
+            margin-left: -25%;
+            height: 10%;
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+        }
+    </style>
 </head>
-<body>
+<body background="http://cdn.pcwallart.com/images/gradient-wallpaper-4.jpg">
     @RenderBody()
     <footer>
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>
     <link href="https://fonts.googleapis.com/css?family=David+Libre&subset=latin-ext" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="~/Content/mxstyle.css" id="mxstyle"/>
+    <!--<link rel="stylesheet" type="text/css" href="~/Content/mxstyle.css" id="mxstyle"/>-->
     <!--[if gte IE 8]>
         <script type="text/javascript">
             document.getElementById('iecontent').style.display = 'block';
@@ -38,13 +124,13 @@
             document.getElementById('progress').style.display = 'none';
             document.getElementById('slider').style.display = 'block';
             $("#mxstyle").attr("disabled", "disabled");
-        } else if (UAString.indexOf("Trident") !== -1 && UAString.indexOf("rv:11") !== -1){
+        } else if (UAString.indexOf("Trident") !== -1 && UAString.indexOf("rv:11") !== -1) {
             document.getElementById('iecontent').style.display = 'block';
             document.getElementById('progress').style.display = 'none';
             document.getElementById('slider').style.display = 'block';
             $("#mxstyle").attr("disabled", "disabled");
         }
- 
+
     </script>
     <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
     <script src="../Matrix/signalr/hubs"></script>

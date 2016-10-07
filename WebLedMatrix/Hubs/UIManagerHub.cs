@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using Microsoft.AspNet.SignalR;
 using NLog;
@@ -34,6 +35,17 @@ namespace WebLedMatrix.Hubs
 
         private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
         private readonly WebpageValidation _webpageValidation;
+
+
+        public void UpClick()
+        {
+            
+        }
+
+        public void DownClick()
+        {
+
+        }
 
 
         public void SendUri(string data,string name)
