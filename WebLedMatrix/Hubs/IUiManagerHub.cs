@@ -8,5 +8,6 @@ namespace WebLedMatrix.Hubs
         void loginStatus(string userText);
         void updateMatrices(Matrix[] matrices);
         void showSections(bool matrixesSection,bool sendingSection,bool administrationSection);
+        void userIsActiveStatus(bool isActive);
     }
 }

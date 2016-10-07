@@ -12,20 +12,6 @@
 
 <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.6.0/dist/progressbar.js"></script>
 
-@{ ViewBag.Title = "Index"; }
-<div class="panel panel-primary">
-    <div class="panel-heading">User Details</div>
-    <table class="table table-striped">
-        @foreach (string key in Model.Keys)
-        {
-            <tr>
-                <th>@key</th>
-                <td>@Model[key]</td>
-            </tr>
-        }
-    </table>
-</div>
-
 <script type="text/javascript">
     $(function() {
         uiManagerHub = $.connection.uiManagerHub;
@@ -146,7 +132,7 @@
         Matrices
     </div>
 
-    <div id="matrixDataPanel" class="container-fluid" style="background-color: rgba(0, 0, 0, 0); display: none">
+    <div id="matrixDataPanel" class="container-fluid" style="background-color: blue; display: none">
         No Displays found.
     </div>
 </div>
@@ -196,4 +182,3 @@
     due to lack of support, and You may have problems using this site. <br />
 </div>
 
-<hr id="separatormid" /> 

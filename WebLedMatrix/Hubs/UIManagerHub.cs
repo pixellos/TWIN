@@ -15,6 +15,7 @@ namespace WebLedMatrix.Hubs
         private readonly MatrixManager _matrixManager;
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private string _currentActiveUser = "";
 
         public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository)
         {
@@ -46,6 +47,10 @@ namespace WebLedMatrix.Hubs
         {
             IfNotMuted(() =>
                 _matrixManager.SendText(name, data));
+        }
+
+        public void RequestActivate()
+        {
         }
 
         public void LoginStatus()
