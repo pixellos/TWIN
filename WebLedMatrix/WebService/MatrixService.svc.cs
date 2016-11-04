@@ -20,7 +20,7 @@ namespace WebLedMatrix.WebService
 
         public void RegisterMatrix(string name)
         {
-            _thisMatrix = _matrixManager.AddMatrix(name,OperationContext.Current.GetCallbackChannel<IMatrixServiceCallback>() );
+            _thisMatrix = _matrixManager.AddMatrix(name);
         }
 
         public void UnRegisterMatrix(string name)

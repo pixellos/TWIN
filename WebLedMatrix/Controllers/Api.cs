@@ -9,35 +9,44 @@ namespace WebLedMatrix.Controllers
 {
     public class Api : ApiController
     {
-        [Route("api/RefreshState/{name}")]
+        private MatrixManager MatrixManager;
+        public Api(MatrixManager matrixManager)
+        {
+            MatrixManager = matrixManager;
+        }
+
+        [Route("clientApi/RefreshState/{name}")]
         [HttpPost]
         public string RefreshState(string name)
         {
-            if (true)
+            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            if (matrix == null)
+            {
+                return "Registered";
+                //Todo: Add timeout and forcing reregistering
+            }
+            else
             {
                 return "Refreshed";
             }
-            else
-            {
-                return "Error";
-            }
         }
 
-        [Route("api/Commands/{name}")]
+        [Route("clientApi/Commands/{name}")]
         [HttpGet]
         public string Commands(string name)
         {
-            if (true)//)there are pending commands for name client
+            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            if (matrix == null)
             {
-                return "Up, Down, :url:=\"SomeTypedUll\"";
+                return "ERROR: Sorry, your matrix is not registered. Please register it before getting data.";
             }
             else
             {
-                return "0";
+                return matrix.PendingData;
             }
         }
 
-        [Route("api/Users/{name}")]
+        [Route("clientApi/Users/{name}")]
         [HttpGet]
         public List<string> Users(string name)
         {

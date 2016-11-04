@@ -45,7 +45,7 @@ namespace WebLedMatrix.Hubs
                 {
                     if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                     {
-                        _matrixManager.SendWebPage(name, _webpageValidation.ParseAddress(data));
+                        _matrixManager.AppendData(name, _webpageValidation.ParseAddress(data));
                     }
                 }
                 );
@@ -83,7 +83,7 @@ namespace WebLedMatrix.Hubs
             {
                 if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                 {
-                    _matrixManager.SendText(name, data);
+                    _matrixManager.AppendData(name, data);
                 }
             });
         }
