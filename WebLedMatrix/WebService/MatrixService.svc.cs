@@ -14,7 +14,7 @@ namespace WebLedMatrix.WebService
 
         public MatrixService()
         {
-            _matrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>();
+            _matrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>(); //Shit, it is antipattern called service resolver//Todo: Resolve it by constructor injecting //But it's quite imposible 'coz i already have other type of di
             OperationContext.Current.Channel.Faulted += Channel_Faulted;
         }
 

@@ -4,15 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Autofac.Integration.Wcf;
+using Autofac;
 
 namespace WebLedMatrix.Controllers
 {
     public class ApiController : System.Web.Http.ApiController
     {
         private MatrixManager MatrixManager;
-        public ApiController(MatrixManager matrixManager)
+        public ApiController()
         {
-            MatrixManager = matrixManager;
+            MatrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>();
         }
 
         [Route("clientApi/RefreshState/{name}")]
