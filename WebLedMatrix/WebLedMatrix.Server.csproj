@@ -259,7 +259,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\Api.cs" />
+    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\IdentityResultExtensions.cs" />
     <Compile Include="Controllers\NullExpressionsExtensions.cs" />
     <Compile Include="Controllers\Exceptions\RoleNotFoundException.cs" />

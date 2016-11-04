@@ -48,11 +48,10 @@ namespace WebLedMatrix
         private static void RegisterIdentity(IAppBuilder app, HubConfiguration config)
         {
             WCFIoC();
-            app.CreatePerOwinContext<UserIdentityDbContext>(UserIdentityDbContext.Create);
+            app.CreatePerOwinContext(UserIdentityDbContext.Create);
             app.CreatePerOwinContext<UserIdentityManager>(UserIdentityManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
                 
-
             app.UseCookieAuthentication(
                 new CookieAuthenticationOptions()
                 {

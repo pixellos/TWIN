@@ -7,10 +7,10 @@ using System.Web.Http;
 
 namespace WebLedMatrix.Controllers
 {
-    public class Api : ApiController
+    public class ApiController : System.Web.Http.ApiController
     {
         private MatrixManager MatrixManager;
-        public Api(MatrixManager matrixManager)
+        public ApiController(MatrixManager matrixManager)
         {
             MatrixManager = matrixManager;
         }
