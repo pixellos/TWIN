@@ -6,11 +6,14 @@ using System.Net.Http;
 using System.Web.Http;
 using Autofac.Integration.Wcf;
 using Autofac;
+using WebLedMatrix.Logic;
 
 namespace WebLedMatrix.Controllers
 {
     public class ApiController : System.Web.Http.ApiController
     {
+        public List<string> Users => HubConnections.Repository.HubUserList.Select(x => x.UserName).ToList();
+
         private MatrixManager MatrixManager;
         public ApiController()
         {
@@ -50,9 +53,10 @@ namespace WebLedMatrix.Controllers
 
         [Route("clientApi/Users/{name}")]
         [HttpGet]
-        public List<string> Users(string name)
+        public List<string> GetUsers(string name)
         {
-            return null; //;
+            return Users;//;
+            //Todo: unregister user when log out
         }
     }
 }

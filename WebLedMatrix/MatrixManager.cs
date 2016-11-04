@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
 using WebLedMatrix.WebService;
+using WebLedMatrix.Logic;
 
 namespace WebLedMatrix
 {
@@ -26,6 +27,7 @@ namespace WebLedMatrix
         {
             Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
         }
+
 
         public Matrix AddMatrix(string name)
         {
