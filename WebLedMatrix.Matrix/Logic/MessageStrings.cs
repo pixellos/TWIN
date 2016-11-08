@@ -1,4 +1,4 @@
-namespace WebLedMatrix.Matrix.Logic
+    namespace WebLedMatrix.Matrix.Logic
 {
     public static class MessageStrings
     {
