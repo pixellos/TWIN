@@ -1,9 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Net;
-using System.Net.Http;
-using System.ServiceModel;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Threading;
 using WebLedMatrix.Matrix.MatrixService;
 
 namespace WebLedMatrix.Matrix.Logic
@@ -37,26 +35,36 @@ namespace WebLedMatrix.Matrix.Logic
 
         }
 
-        void Method()
+        public int HttpGet { get; private set; }
+
+        public string parseCommand(string command)
         {
-            this.CurrentCommands = "tajoktjtea";
+            if (command.LastIndexOf("/") > 0)
+                return command.Substring((command.LastIndexOf('/') + 1), command.Length - 1 - command.LastIndexOf('/'));
+            else
+                return "";
         }
 
         public ServiceWrapper()
         {
             //Todo: Check at another thread is new data available once at second
-            string URI = "http://webledmatrix.azurewebsites.net/clientApi/RefreshState/MyClient";
-            using (System.Net.WebClient wc = new System.Net.WebClient())
+
+            new Thread(() =>
             {
-                wc.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                string HtmlResult = wc.UploadString(URI, "");
-                Console.WriteLine(HtmlResult);
-                Task.Run( () =>
+                Thread.CurrentThread.IsBackground = true;
+                    string URI = "http://webledmatrix.azurewebsites.net/clientApi/RefreshState/MyClient";
+                using (System.Net.WebClient wc = new System.Net.WebClient())
                 {
-                    Task.Delay(100);
-                    var x = this._name;
-                });
-            }
+                    wc.Headers[System.Net.HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    while (true)
+                    {
+                        Thread.Sleep(1000);
+                        string HtmlResult = wc.UploadString(URI, "");
+                        Debug.WriteLine("Registered status: ");
+                        Debug.WriteLine(HtmlResult);
+                    }
+                }
+            }).Start();
             /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/
         }
 
