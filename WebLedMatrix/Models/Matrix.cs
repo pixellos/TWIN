@@ -1,4 +1,3 @@
-using WebLedMatrix.WebService;
 
 namespace WebLedMatrix.Models
 {

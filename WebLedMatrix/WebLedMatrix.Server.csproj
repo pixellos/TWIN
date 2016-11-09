@@ -276,7 +276,6 @@
     <Compile Include="Models\HubUser.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\RoleEditModel.cs" />
-    <Compile Include="WebService\IMatrixService.cs" />
     <Compile Include="Controllers\Authentication\Abstract\ITwinUser.cs" />
     <Compile Include="Controllers\Authentication\Abstract\State.cs" />
     <Compile Include="Controllers\Authentication\Concrete\UserManaging.cs" />
@@ -305,15 +304,11 @@
     <Compile Include="Logic\Text Processing\WebpageValidation.cs" />
     <Compile Include="MatrixManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebService\MatrixService.svc.cs">
-      <DependentUpon>MatrixService.svc</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="WebService\IMatrixServiceCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -353,7 +348,6 @@
     <Content Include="Content\Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Content\Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Content\Scripts\respond.min.js" />
-    <Content Include="WebService\MatrixService.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
