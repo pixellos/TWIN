@@ -23,7 +23,7 @@ namespace WebLedMatrix.Hubs
             _loginStatusChecker = statusChecker;
             _matrixManager = matrixManager;
             _repository = repository;
-            _webpageValidation = validation;
+            _webpageValidation = new WebpageValidation();
         }
 
         public void IfNotMuted(Action x, string userName = null)
@@ -34,11 +34,7 @@ namespace WebLedMatrix.Hubs
             }
         }
 
-        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
-        private readonly WebpageValidation _webpageValidation;
-
-
-        public void SendUri(string data, string name)
+               public void SendUri(string data, string name)
         {
             RequestActivate();
             IfNotMuted(() =>

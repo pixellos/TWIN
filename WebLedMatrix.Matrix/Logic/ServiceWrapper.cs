@@ -61,7 +61,7 @@ namespace WebLedMatrix.Matrix.Logic
 
         public void Dispose()
         {
-            _client.Close();
+            
         }
     }
 }

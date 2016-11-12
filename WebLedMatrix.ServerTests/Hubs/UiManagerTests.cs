@@ -24,7 +24,7 @@ namespace Test.WebLedMatrix.Server.Hubs
         public UiManagerFixture()
         {
             MatrixManagerInsideManagerHub = new MatrixManager();
-            ManagerHub = new UiManagerHub(new LoginStatusChecker(), MatrixManagerInsideManagerHub,HubConnections.Repository,new WebpageValidation());
+            ManagerHub = new UiManagerHub(new LoginStatusChecker(), MatrixManagerInsideManagerHub,HubConnections.Repository);
 
             HubConnections.Repository.AddConnection("",UserName);
             HubConnections.Repository.SetMuteState(UserName,false);

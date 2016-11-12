@@ -61,7 +61,7 @@ namespace Test.WebLedMatrix.Server
         {
             _fixture.SetupMock(x=>x.AssertIfCallUpdateMatrices());
 
-            _fixture.MatrixManager.AddMatrix(nameOfMatrix);
+            //_fixture.MatrixManager.ddMatrix(nameOfMatrix);
             
             _fixture.IHubMock.Verify(x=>x.Clients.All.unRegisterAllMatrices());
             Assert.True(
@@ -74,7 +74,7 @@ namespace Test.WebLedMatrix.Server
         {
             _fixture.SetupMock(x => x.AssertIfCallUpdateMatrices());
 
-            _fixture.MatrixManager.AddMatrix(nameOfMatrix);
+            //_fixture.MatrixManager.AddMatrix(nameOfMatrix);
             _fixture.MatrixManager.RemoveMatrix(nameOfMatrix);
 
             _fixture.IHubMock.Verify(x => x.Clients.All.unRegisterAllMatrices());

@@ -4,6 +4,7 @@ using Microsoft.AspNet.SignalR;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
 using WebLedMatrix.Logic;
+using System;
 
 namespace WebLedMatrix
 {
