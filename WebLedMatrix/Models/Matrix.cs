@@ -1,4 +1,3 @@
-using WebLedMatrix.WebService;
 
 namespace WebLedMatrix.Models
 {
@@ -7,7 +6,25 @@ namespace WebLedMatrix.Models
         public string Name { get; set; }
         public bool Connected { get; set; }
         public bool Enabled { get; set; }
-        public IMatrixServiceCallback Callback { get; set; }
+        public string Ip { get; set; }
+        private string _PendingData;
+        /// <summary>
+        /// If this is geted pendingData is cleared
+        /// </summary>
+        public string PendingData
+        {
+            get
+            {
+                var data = _PendingData;
+                _PendingData = null;
+                return data;
+            }
+        }
+
+        public void AppendData(string data)
+        {
+            _PendingData += data;
+        }
 
         public override bool Equals(object obj)
         {

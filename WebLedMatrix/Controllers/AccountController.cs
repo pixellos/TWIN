@@ -17,6 +17,7 @@ namespace WebLedMatrix.Controllers
     public class AccountController : Controller
     {
         // GET: Admin
+        [Authorize]
         public ActionResult Index()
         {
             return View(UserManager.Users);
@@ -67,10 +68,8 @@ namespace WebLedMatrix.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 return PartialView("Greetings", User.Identity.Name);
-
             if (ModelState.IsValid && Manager.TryLogin(loginModel))
                 return PartialView("AccessGranted");
-
             ModelState.AddModelError(string.Empty,"Input incorrect data");
 
             return PartialView(loginModel);

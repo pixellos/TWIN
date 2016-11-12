@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNet.SignalR;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
-using WebLedMatrix.WebService;
+using WebLedMatrix.Logic;
 
 namespace WebLedMatrix
 {
@@ -11,8 +11,6 @@ namespace WebLedMatrix
     {
         private HashSet<Matrix> matrices = new HashSet<Matrix>();
         public List<Matrix> Matrices => new List<Matrix>(matrices);
-
-        IMatrixServiceCallback matrixCallback(string name) => matrices.Single(x => x.Name.Equals(name)).Callback;
 
         private IHubContext<IUiManagerHub> Context { get; set; }
 
@@ -26,9 +24,10 @@ namespace WebLedMatrix
             Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
         }
 
-        public Matrix AddMatrix(string name, IMatrixServiceCallback callbackAction)
+
+        public Matrix AddMatrix(string name)
         {
-            var matrix = new Matrix() {Name = name, Callback = callbackAction};
+            var matrix = new Matrix() {Name = name};
             if (matrices.Any(x=>x.Name == name))
             {
                 matrix = matrices.Single(x => x.Name == name);
@@ -37,7 +36,6 @@ namespace WebLedMatrix
             {
                 matrices.Add(matrix);
             }
-
             UpdateMatrices();
             return matrix;
         }
@@ -54,14 +52,22 @@ namespace WebLedMatrix
             Context.Clients.All.updateMatrices(matrices.ToArray());     
         }
 
-        public void SendWebPage(string name, string data)
+        public void SendToAll(string text)
         {
-            matrixCallback(name).UpdateWebPage(data);
+            foreach (var matrix in this.matrices)
+            {
+                matrix.AppendData(text);
+            }
         }
 
-        public void SendText(string name, string text)
+        public void AppendData(string name, string text)
         {
-            matrixCallback(name).UpdateText(text);
+            var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(name));
+            if (searchedMatrice == null)
+            {
+                throw new Exception($"Matrice named {name} does not exist at our cache. Please consider refreshing browser");
+            }
+            searchedMatrice.AppendData(text);
         }
     }
 }

@@ -1,44 +1,62 @@
+using RestSharp;
 using System;
-using System.ServiceModel;
-using WebLedMatrix.Matrix.MatrixService;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebLedMatrix.Matrix.Logic
 {
-    public class ServiceWrapper: IDisposable 
+    public class ServiceWrapper
     {
-        private MatrixServiceClient _client;
+        string ServerName => "http://webledmatrix.azurewebsites.net/";
 
-        private string _name
+        string ApiDefaultAddress => $"{this.ServerName}clientApi/";
+        string RegisterNameAddress => $"RefreshState/{Name}";
+        string CommandsAddress => $"Commands/{Name}";
+
+        RestClient RestClient { get; set; }
+        public ServiceWrapper()
+        {
+            this.RestClient = new RestClient(ApiDefaultAddress);
+        }
+
+        public String Name
         {
             get
             {
                 return Properties.Settings.Default._name;
             }
-            set { Properties.Settings.Default._name = value; }
+            private set { Properties.Settings.Default._name = value; }
         }
 
-        public ServiceWrapper()
+        //Todo: Bind it later to some model
+        List<object> CurrentCommands
         {
-            _client = new MatrixServiceClient(
-                new InstanceContext(new MatrixCallback()));
-            _client.Open();
-            _client.RegisterMatrix(_name);
-            /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/
+            get
+            {
+                var request = new RestRequest(this.RegisterNameAddress, Method.POST);
+                request.RequestFormat = DataFormat.Xml;
+                var result = this.RestClient.Execute<List<object>>(request);
+                return result.Data;
+            }
         }
 
         public void SetName(string name)
         {
-            try
+            this.Name = name;
+            Task.Run(() =>
             {
-                _client.UnRegisterMatrix(_name);
-            }
-            catch (Exception )
-            {
-                //Connection has been lost
-            }
-            
-            _name = name;
-            _client.RegisterMatrix(_name);
+                while (true)
+                {
+                    Task.Delay(1000);
+                    var request = new RestRequest(this.CommandsAddress, Method.POST);
+                    request.RequestFormat = DataFormat.Xml;
+                    var result = this.RestClient.Execute(request);
+                }
+            }).Start();
         }
 
         public void Dispose()

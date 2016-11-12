@@ -1,13 +1,14 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
-using WebLedMatrix.Matrix.MatrixService;
 using WebLedMatrix.Matrix.ViewModel;
 
 namespace WebLedMatrix.Matrix.Logic
 {
-    public class MatrixCallback :IMatrixServiceCallback
+    public class MatrixCallback
     {
         private ShowerViewModel viewModelInstance => ServiceLocator.Current.GetInstance<ShowerViewModel>();
+
+        private ITextFormater textFormater = new BasicUnEscaper();
 
         public void UpdateWebPage(string text)
         {
@@ -25,7 +26,7 @@ namespace WebLedMatrix.Matrix.Logic
 
         public void UpdateText(string text)
         {
-            viewModelInstance.Text = text;
+            viewModelInstance.Text = textFormater.Format(text);
         }
     }
 }

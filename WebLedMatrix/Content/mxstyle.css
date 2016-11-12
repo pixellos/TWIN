@@ -1,0 +1,177 @@
+﻿@keyframes spin{
+	0% {top: -20%;}
+	20% {top: 49%;}
+	80% {top: 51%;}
+	100% {top: 130%;}
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    #iecontent{display: none;}
+}
+
+.btn{
+	border-radius: 0px;
+}
+
+#matrixDataPanel .btn, #administrationSection .btn{
+	padding: 0px;
+    font-size: 17px;
+    width: 100px;
+    height: 35px;
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+    margin-top: 4px;
+    margin-bottom: 5px;
+}
+
+body{
+    background-image: url("bg.jpg");
+    font-family: 'David Libre', serif;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+}
+
+#bgwrap{
+    width: 100%;
+    height: 100%;
+    background: url(bg.jpg) no-repeat center center;  
+    position: fixed;
+    overflow: auto;
+    z-index: -10;
+}
+
+.matrixtinp{
+    transition: 1s;
+    margin-top: 10px;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 5px;
+}
+
+#matrixDataPanelClickIt, #administrationPanelButton{
+    background-color: rgba(255,255,255,0.8);
+    width: 100%;
+    box-sizing:  content-box;
+    transition: 0.5s;
+}
+
+#matrixDataPanelClickIt:hover , #administrationPanelButton:hover{
+    background-color: rgba(255,255,255,1);
+    transition: 0.5s;
+}
+.col-xs-9{
+	z-index: 10;
+	height: 230px;
+	position: fixed;
+	transition: 1s;
+	background-color: #848484;
+	width: 100%;
+	top: -200px;
+	left: 0%;
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	border-left: 0px solid #2C2877;
+}
+
+
+#separatormid{
+    border-top: 0px;
+    height: 80%;
+    width: 20px;
+    position: fixed;
+    left: 50%;
+    margin-left: -5px;
+    top: 10%;
+    background: rgba(255,255,255,0);
+    background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(90,89,181,0.49) 51%, rgba(0,0,0,0) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,0)), color-stop(51%, rgba(90,89,181,0.49)), color-stop(100%, rgba(0,0,0,0)));
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(90,89,181,0.49) 51%, rgba(0,0,0,0)100%);
+    background: -o-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(90,89,181,0.49) 51%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(90,89,181,0.49) 51%, rgbargba(0,0,0,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+}
+
+.jumbotron{
+        background-color: rgba(0,0,0,0);
+}
+
+#matrixSection{
+    min-height: 10$;
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    width: 40%;
+    -webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+    background: rgba(255,255,255, 0.2);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 );
+
+}
+
+#administrationSection{
+    min-height: 10$;
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 40%;
+    -webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+    background: rgba(255,255,255, 0.2);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 );
+}
+
+
+footer{
+    position: absolute;
+    bottom: 0%;
+}
+.panel-primary{
+	display: none;
+	margin-top: 5%;
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+}
+#status > #progress > svg{ 
+	position: fixed;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	margin-top: -100px;
+	transition: 1s;
+	animation: forwards;
+	animation-name: spin;
+	animation-duration: 0.8s;
+    z-index: 11;
+
+}
+
+.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.col-xs-9 > .container > form{
+	display: none;
+	transition: 1s;
+}
+.col-xs-9:hover > .container > form{
+	display: initial;
+	transition: 1s;
+}
+.col-xs-9:hover {
+	border-left: 10px solid #2C2877;
+	background-color: #9897A8;
+	transition: 1s;
+	top: 0%;
+}
+#Name{
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1;
+}
+#Password{
+	-webkit-box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+	box-shadow: 4px 2px 22px -10px rgba(0,0,0,1);
+}

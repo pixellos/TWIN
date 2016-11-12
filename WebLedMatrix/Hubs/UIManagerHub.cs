@@ -15,8 +15,10 @@ namespace WebLedMatrix.Hubs
         private readonly MatrixManager _matrixManager;
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private string _currentActiveUser = "";
+        private static DateTime LastDate = DateTime.Now;
 
-        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository, WebpageValidation validation)
+        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
         {
             _loginStatusChecker = statusChecker;
             _matrixManager = matrixManager;
@@ -32,16 +34,73 @@ namespace WebLedMatrix.Hubs
             }
         }
 
-        public void SendUri(string data,string name)
+        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
+        private readonly WebpageValidation _webpageValidation;
+
+
+        public void SendUri(string data, string name)
         {
-            IfNotMuted(()=>
-                _matrixManager.SendWebPage(name, _webpageValidation.ParseAddress(data)));
+            RequestActivate();
+            IfNotMuted(() =>
+                {
+                    if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
+                    {
+                        _matrixManager.AppendData(name, _webpageValidation.ParseAddress(data));
+                    }
+                }
+                );
         }
+
+        public void UpClick()
+        {
+            this._matrixManager.SendToAll("Up was clicked");
+        }
+
+        public void DownClick()
+        {
+            this._matrixManager.SendToAll("Down was clicked");
+        }
+        public void LeftClick()
+        {
+            this._matrixManager.SendToAll("Left was clicked");
+        }
+
+        public void RightClick()
+        {
+            this._matrixManager.SendToAll("right was clicked");
+        }
+
+        public void OkClick()
+        {
+            this._matrixManager.SendToAll("Ok was clicked");
+        }
+
 
         public void SendText(string data, string name)
         {
+            RequestActivate();
             IfNotMuted(() =>
-                _matrixManager.SendText(name, data));
+            {
+                if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
+                {
+                    _matrixManager.AppendData(name, data);
+                }
+            });
+        }
+
+        public void RequestActivate()
+        {
+            IfNotMuted(() =>
+                {
+                    if ((DateTime.Now - LastDate) > new TimeSpan(0,0,0,20))
+                    {
+                        this._currentActiveUser = this.Context.User.Identity.Name;
+                        this.Clients.All.userIsActiveStatus(false);
+                        this.Clients.Caller.userIsActiveStatus(true);
+                        UiManagerHub.LastDate = DateTime.Now;
+                    }
+                }
+            );
         }
 
         public void LoginStatus()

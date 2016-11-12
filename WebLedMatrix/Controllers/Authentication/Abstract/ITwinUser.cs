@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebLedMatrix.Logic.Authentication.Models.Roles;
 
 namespace WebLedMatrix.Logic.Authentication.Abstract
 {
@@ -12,5 +13,8 @@ namespace WebLedMatrix.Logic.Authentication.Abstract
 
         [Required]
         string TelephoneNumber { get; set; }
+
+        [Required]
+        string About { get; set; }
     }
 }
