@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNet.SignalR;
 using WebLedMatrix.Hubs;
@@ -31,7 +28,6 @@ namespace WebLedMatrix
 
         public Matrix AddMatrix(string name, IMatrixServiceCallback callbackAction)
         {
-            
             var matrix = new Matrix() {Name = name, Callback = callbackAction};
             if (matrices.Any(x=>x.Name == name))
             {
@@ -60,7 +56,6 @@ namespace WebLedMatrix
 
         public void SendWebPage(string name, string data)
         {
-            
             matrixCallback(name).UpdateWebPage(data);
         }
 

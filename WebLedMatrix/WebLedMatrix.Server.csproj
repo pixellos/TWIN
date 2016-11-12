@@ -260,7 +260,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\IdentityResultExtensions.cs" />
-    <Compile Include="Controllers\NullExpressionsExtensions.cs" />
+    <Compile Include="Controllers\Exceptions\NullExpressionsExtensions.cs" />
     <Compile Include="Controllers\Exceptions\RoleNotFoundException.cs" />
     <Compile Include="Controllers\Exceptions\RoleResultException.cs" />
     <Compile Include="Controllers\Exceptions\UsersAreRecurringException.cs" />
@@ -268,6 +268,7 @@
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Controllers\Authentication\Concrete\DefaultUserValidatorHelper.cs" />
     <Compile Include="Controllers\Authentication\Concrete\ResultException.cs" />
+    <Compile Include="Logic\BehaviorPlugin.cs" />
     <Compile Include="Logic\HubConnections.cs" />
     <Compile Include="Models\AdministrationModel.cs" />
     <Compile Include="Models\Authentication\Roles\RoleAdministrating.cs" />
@@ -400,9 +401,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>12663</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://127.0.0.1/Matrix</IISUrl>
+          <IISUrl>http://localhost:8080/Matrix</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/WebLedMatrix</IISAppRootUrl>
+          <IISAppRootUrl>http://localhost:8080/Matrix</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

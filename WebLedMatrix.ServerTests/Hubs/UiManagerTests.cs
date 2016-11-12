@@ -1,7 +1,6 @@
 ﻿using Xunit;
 using WebLedMatrix.Hubs;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -10,7 +9,7 @@ using WebLedMatrix;
 using WebLedMatrix.Controllers.Authentication.Models;
 using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
-using WebLedMatrix.Logic.Authentication.Models;
+using WebLedMatrix.Server.Logic.Text_Processing;
 
 namespace Test.WebLedMatrix.Server.Hubs
 {
@@ -25,7 +24,7 @@ namespace Test.WebLedMatrix.Server.Hubs
         public UiManagerFixture()
         {
             MatrixManagerInsideManagerHub = new MatrixManager();
-            ManagerHub = new UiManagerHub(new LoginStatusChecker(), MatrixManagerInsideManagerHub,HubConnections.Repository);
+            ManagerHub = new UiManagerHub(new LoginStatusChecker(), MatrixManagerInsideManagerHub,HubConnections.Repository,new WebpageValidation());
 
             HubConnections.Repository.AddConnection("",UserName);
             HubConnections.Repository.SetMuteState(UserName,false);

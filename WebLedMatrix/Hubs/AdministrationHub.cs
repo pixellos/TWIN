@@ -24,15 +24,15 @@ namespace WebLedMatrix.Hubs
         }
 
         public void MuteUser(string name)
-        {
+        {                                                                                       
             HubConnections.Repository.SetMuteState(name,true);
-            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
+            GetUsers();
         }
 
         public void UnMuteUser(string name)
         {
             HubConnections.Repository.SetMuteState(name, false);
-            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
+            GetUsers();
         }
 
         public override Task OnConnected()
@@ -41,19 +41,13 @@ namespace WebLedMatrix.Hubs
             {
                 HubConnections.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
             }
-            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
-
+            GetUsers();
             return base.OnConnected();
         }
 
         public override Task OnReconnected()
         {
-            if (Context.User.Identity.IsAuthenticated)
-            {
-                HubConnections.Repository.AddConnection(Context.ConnectionId,Context.User.Identity.Name);
-            }
-            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
-
+            OnConnected();
             return base.OnReconnected();
         }
 
@@ -63,7 +57,7 @@ namespace WebLedMatrix.Hubs
             {
                 HubConnections.Repository.DeleteConnection(Context.ConnectionId);
             }
-            Clients.All.activeUsers(HubConnections.Repository.HubUserList);
+            GetUsers();
             return base.OnDisconnected(stopCalled);
         }
     }

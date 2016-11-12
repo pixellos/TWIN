@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace WebLedMatrix.Logic.Text_Processing
+namespace WebLedMatrix.Server.Logic.Text_Processing
 {
     public class WebpageValidation
     {
@@ -33,9 +33,9 @@ namespace WebLedMatrix.Logic.Text_Processing
             var youtubeRegex = regex.Match(address);
             if (youtubeRegex.Success)
             {
-                return  BuildVideoAddress(youtubeRegex.Groups[2].Value);
+                return BuildVideoAddress(youtubeRegex.Groups[2].Value);
             }
-            return null;
+            return GoogleSiteAddress;
         }
     }
 }

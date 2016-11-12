@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using WebLedMatrix.Logic.Text_Processing;
+using WebLedMatrix.Server.Logic.Text_Processing;
 using Xunit;
 
 namespace Test.WebLedMatrix.Server.Logic

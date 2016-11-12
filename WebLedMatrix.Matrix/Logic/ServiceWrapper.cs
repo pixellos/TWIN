@@ -4,11 +4,11 @@ using WebLedMatrix.Matrix.MatrixService;
 
 namespace WebLedMatrix.Matrix.Logic
 {
-    public class ServiceWrapper 
+    public class ServiceWrapper: IDisposable 
     {
         private MatrixServiceClient _client;
 
-        private String _name
+        private string _name
         {
             get
             {
@@ -25,7 +25,7 @@ namespace WebLedMatrix.Matrix.Logic
             _client.RegisterMatrix(_name);
             /* _client = IoCContainter.Resolve<MatrixServiceClient>();*/
         }
-    
+
         public void SetName(string name)
         {
             try
@@ -39,6 +39,11 @@ namespace WebLedMatrix.Matrix.Logic
             
             _name = name;
             _client.RegisterMatrix(_name);
+        }
+
+        public void Dispose()
+        {
+            _client.Close();
         }
     }
 }

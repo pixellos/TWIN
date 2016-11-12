@@ -1,27 +1,27 @@
 ﻿using System;
-using System.ServiceModel.Security;
 using Microsoft.AspNet.SignalR;
 using NLog;
 using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
-using WebLedMatrix.Logic.Text_Processing;
-using static WebLedMatrix.Logic.HubConnections;
+using WebLedMatrix.Server.Logic.Text_Processing;
 
 namespace WebLedMatrix.Hubs
 {
     public class UiManagerHub : Hub<IUiManagerHub>
     {
+        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
         private readonly ILoginStatusChecker _loginStatusChecker;
+        private readonly WebpageValidation _webpageValidation;
         private readonly MatrixManager _matrixManager;
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository)
+        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager,HubConnections repository, WebpageValidation validation)
         {
             _loginStatusChecker = statusChecker;
             _matrixManager = matrixManager;
             _repository = repository;
-            _webpageValidation = new WebpageValidation();
+            _webpageValidation = validation;
         }
 
         public void IfNotMuted(Action x, string userName = null)
@@ -31,10 +31,6 @@ namespace WebLedMatrix.Hubs
                 x?.Invoke();
             }
         }
-
-        private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
-        private readonly WebpageValidation _webpageValidation;
-
 
         public void SendUri(string data,string name)
         {

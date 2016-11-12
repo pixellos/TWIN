@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Logic
@@ -10,7 +9,6 @@ namespace WebLedMatrix.Logic
         public static HubConnections Repository = new HubConnections();
         public List<HubUser> HubUserList = new List<HubUser>();
         private readonly object _lock = new object();
-
 
         public void DeleteConnection(string connectionId)
         {
