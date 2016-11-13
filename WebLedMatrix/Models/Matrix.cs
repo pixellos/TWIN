@@ -15,15 +15,18 @@ namespace WebLedMatrix.Models
         {
             get
             {
-                var data = _PendingData;
-                _PendingData = null;
-                return data;
+                lock (this)
+                {
+                    var data = _PendingData;
+                    _PendingData = null;
+                    return data;
+                }
             }
         }
 
         public void AppendData(string data)
         {
-            _PendingData += data;
+            _PendingData += "<" + data + "/>";
         }
 
         public override bool Equals(object obj)

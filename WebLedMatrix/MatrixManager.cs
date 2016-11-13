@@ -25,7 +25,6 @@ namespace WebLedMatrix
             Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
         }
 
-
         public Matrix AddMatrix(string name)
         {
             var matrix = new Matrix() {Name = name};

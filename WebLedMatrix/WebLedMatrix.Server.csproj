@@ -328,6 +328,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="4pBot.PublishSettings" />
+    <None Include="Properties\PublishProfiles\4pBot - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\4pBot - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WebLedMatrix %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\WebLedMatrix.pubxml" />
     <None Include="Properties\Settings.settings">

@@ -20,19 +20,37 @@ namespace WebLedMatrix.Controllers
             MatrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>();
         }
 
-        [Route("clientApi/RefreshState/{name}")]
-        [HttpPost]
-        public string RefreshState(string name)
+        [Route("clientApi/Register/{name}")]
+        [HttpGet]
+        public string Register(string name)
         {
             var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
+                this.MatrixManager.AddMatrix(name);
                 return "Registered";
                 //Todo: Add timeout and forcing reregistering
             }
             else
             {
                 return "Refreshed";
+            }
+        }
+
+        [Route("clientApi/UnRegister/{name}")]
+        [HttpGet]
+        public HttpResponseMessage CloseConnection(string name)
+        {
+            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            if (matrix == null)
+            {
+                var respond = new HttpResponseMessage(HttpStatusCode.Forbidden) {ReasonPhrase = "This connection has not be established"};
+                return respond;
+            }
+            else
+            {
+                MatrixManager.RemoveMatrix(name);
+                return new HttpResponseMessage(HttpStatusCode.OK) { ReasonPhrase = $"Matrix {name} has been successfully removed" };
             }
         }
 
