@@ -20,7 +20,7 @@ namespace WebLedMatrix.Models
                 lock (this)
                 {
                     var data = _PendingData;
-                    _PendingData = null;
+                    _PendingData = new List<string>();
                     return data;
                 }
             }

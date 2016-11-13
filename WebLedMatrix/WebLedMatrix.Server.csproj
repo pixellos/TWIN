@@ -332,6 +332,8 @@
     <None Include="Properties\PublishProfiles\4pBot - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\4pBot - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WebLedMatrix %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\WebLedMatrix - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\WebLedMatrix - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WebLedMatrix.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -61,11 +61,19 @@ namespace WebLedMatrix.Controllers
             var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                return new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
+                return  new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
             }
             else
             {
-                return matrix.PendingData.ToArray();
+                var data = matrix.PendingData;
+                if (data == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return data.ToArray();
+                }
             }
         }
 
