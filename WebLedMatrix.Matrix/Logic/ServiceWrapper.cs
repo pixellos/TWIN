@@ -33,13 +33,13 @@ namespace WebLedMatrix.Matrix.Logic
         }
 
         //Todo: Bind it later to some model
-        List<object> CurrentCommands
+        List<string> CurrentCommands
         {
             get
             {
-                var request = new RestRequest(this.RegisterNameAddress, Method.POST);
+                var request = new RestRequest(this.RegisterNameAddress, Method.GET);
                 request.RequestFormat = DataFormat.Xml;
-                var result = this.RestClient.Execute<List<object>>(request);
+                var result = this.RestClient.Execute<List<string>>(request);
                 return result.Data;
             }
         }

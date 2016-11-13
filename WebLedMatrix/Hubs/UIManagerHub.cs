@@ -49,37 +49,42 @@ namespace WebLedMatrix.Hubs
 
         public void UpClick()
         {
-            this._matrixManager.SendToAll(_currentActiveUser, "Up was clicked");
+            this.SendTo(_currentActiveUser, "Up was clicked");
         }
 
         public void DownClick()
         {
-            this._matrixManager.SendToAll(_currentActiveUser, "Down was clicked");
+            this.SendTo(_currentActiveUser, "Down was clicked");
         }
         public void LeftClick()
         {
-            this._matrixManager.SendToAll(_currentActiveUser, "Left was clicked");
+            this.SendTo(_currentActiveUser, "Left was clicked");
         }
 
         public void RightClick()
         {
-            this._matrixManager.SendToAll(_currentActiveUser, "right was clicked");
+            this.SendTo(_currentActiveUser, "right was clicked");
         }
 
         public void OkClick()
         {
-            this._matrixManager.SendToAll(_currentActiveUser, "Ok was clicked");
+            this.SendTo(_currentActiveUser, "Ok was clicked");
         }
 
 
-        public void SendText(string data, string name)
+        public void SendText(string data, string clientName)
+        {
+            this.SendTo(data, clientName);
+        }
+
+        private void SendTo(String clientName, String data)
         {
             RequestActivate();
             IfNotMuted(() =>
             {
                 if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                 {
-                    _matrixManager.AppendData(this.Context.User.Identity.Name, name, data);
+                    _matrixManager.AppendData(this.Context.User.Identity.Name, clientName, data);
                 }
             });
         }
