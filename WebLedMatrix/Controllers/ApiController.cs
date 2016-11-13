@@ -56,16 +56,16 @@ namespace WebLedMatrix.Controllers
 
         [Route("clientApi/Commands/{name}")]
         [HttpGet]
-        public string Commands(string name)
+        public string[] Commands(string name)
         {
             var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                return "ERROR: Sorry, your matrix is not registered. Please register it before getting data.";
+                return new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
             }
             else
             {
-                return matrix.PendingData;
+                return matrix.PendingData.ToArray();
             }
         }
 

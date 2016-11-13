@@ -52,22 +52,22 @@ namespace WebLedMatrix
             Context.Clients.All.updateMatrices(matrices.ToArray());     
         }
 
-        public void SendToAll(string text)
+        public void SendToAll(string username, string text)
         {
             foreach (var matrix in this.matrices)
             {
-                matrix.AppendData(text);
+                matrix.AppendData(username,text);
             }
         }
 
-        public void AppendData(string name, string text)
+        public void AppendData(string user, string name, string text)
         {
             var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(name));
             if (searchedMatrice == null)
             {
                 throw new Exception($"Matrice named {name} does not exist at our cache. Please consider refreshing browser");
             }
-            searchedMatrice.AppendData(text);
+            searchedMatrice.AppendData(user, text);
         }
     }
 }

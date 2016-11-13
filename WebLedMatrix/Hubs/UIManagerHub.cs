@@ -41,7 +41,7 @@ namespace WebLedMatrix.Hubs
                 {
                     if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                     {
-                        _matrixManager.AppendData(name, _webpageValidation.ParseAddress(data));
+                        _matrixManager.AppendData(_currentActiveUser, name, _webpageValidation.ParseAddress(data));
                     }
                 }
                 );
@@ -49,26 +49,26 @@ namespace WebLedMatrix.Hubs
 
         public void UpClick()
         {
-            this._matrixManager.SendToAll("Up was clicked");
+            this._matrixManager.SendToAll(_currentActiveUser, "Up was clicked");
         }
 
         public void DownClick()
         {
-            this._matrixManager.SendToAll("Down was clicked");
+            this._matrixManager.SendToAll(_currentActiveUser, "Down was clicked");
         }
         public void LeftClick()
         {
-            this._matrixManager.SendToAll("Left was clicked");
+            this._matrixManager.SendToAll(_currentActiveUser, "Left was clicked");
         }
 
         public void RightClick()
         {
-            this._matrixManager.SendToAll("right was clicked");
+            this._matrixManager.SendToAll(_currentActiveUser, "right was clicked");
         }
 
         public void OkClick()
         {
-            this._matrixManager.SendToAll("Ok was clicked");
+            this._matrixManager.SendToAll(_currentActiveUser, "Ok was clicked");
         }
 
 
@@ -79,7 +79,7 @@ namespace WebLedMatrix.Hubs
             {
                 if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                 {
-                    _matrixManager.AppendData(name, data);
+                    _matrixManager.AppendData(this._currentActiveUser, name, data);
                 }
             });
         }

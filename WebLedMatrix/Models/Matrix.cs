@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 namespace WebLedMatrix.Models
 {
     public class Matrix
@@ -7,11 +9,11 @@ namespace WebLedMatrix.Models
         public bool Connected { get; set; }
         public bool Enabled { get; set; }
         public string Ip { get; set; }
-        private string _PendingData;
+        private List<string> _PendingData;
         /// <summary>
         /// If this is geted pendingData is cleared
         /// </summary>
-        public string PendingData
+        public List<string> PendingData
         {
             get
             {
@@ -24,9 +26,9 @@ namespace WebLedMatrix.Models
             }
         }
 
-        public void AppendData(string data)
+        public void AppendData(string name, string data)
         {
-            _PendingData += "<" + data + "/>";
+            _PendingData.Add($"<{name}>{data}</{name}>");
         }
 
         public override bool Equals(object obj)
