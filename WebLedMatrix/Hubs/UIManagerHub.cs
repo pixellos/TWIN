@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNet.SignalR;
 using NLog;
 using WebLedMatrix.Logic;
@@ -61,6 +62,7 @@ namespace WebLedMatrix.Hubs
         {
             this.SendTo("Down", targetName);
         }
+
         public void LeftClick(string targetName)
         {
             this.SendTo("Left", targetName);
@@ -76,13 +78,14 @@ namespace WebLedMatrix.Hubs
             this.SendTo("OK", targetName);
         }
 
-        public void SendText(string data, string targetName)
+        public void SendText(string targetName, string data)
         {
             this.SendTo(data, targetName);
         }
 
         private void SendTo(String clientName, String data)
         {
+            Debug.WriteLine($"ClientName: {clientName}, data: {data}");
             RequestActivate();
             IfNotMuted(() =>
             {

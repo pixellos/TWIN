@@ -70,19 +70,20 @@
             status.forEach(addMatrice);
         };
 
-        uiManagerHub.client.userIsActiveStatus = function(b) {
-            if (b) {
-                  
+        uiManagerHub.client.userIsActiveStatus = function (b)
+        {
+            if (b)
+            {
                 $('#notactive').removeClass('active');
                 $('#notactive').addClass('inactive');
                 $('#active').removeClass('inactive');
                 $('#active').addClass('active');
-            } else {
+            } else
+            {
                 $('#active').removeClass('active');
                 $('#active').addClass('inactive');
                 $('#notactive').removeClass('inactive');
                 $('#notactive').addClass('active');
-                   
             }
         }
 
@@ -98,7 +99,6 @@
                 $("#administrationSection").slideUp("slow");
             }
         }
-
 
         administrationHub.client.activeUsers = function (users) {
             $("#administrationPanel").empty();
