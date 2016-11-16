@@ -34,7 +34,7 @@ namespace WebLedMatrix.Hubs
             }
         }
 
-               public void SendUri(string data, string name)
+        public void SendUri(string data, string name)
         {
             RequestActivate();
             IfNotMuted(() =>
@@ -47,43 +47,38 @@ namespace WebLedMatrix.Hubs
                 );
         }
 
-        private void TestAndSend(string text, string sendername)
-        {
-            if (sendername != "")
-                this._matrixManager.SendToUser(_currentActiveUser, text, sendername);
-        }
         private void TestAndSend(string text)
         {
             this.SendTo(_currentActiveUser, text);
         }
 
-        public void UpClick(string sendername)
+        public void UpClick(string targetName)
         {
-            TestAndSend("Up", sendername);
+            this.SendTo("Up", targetName);
         }
 
-        public void DownClick(string sendername)
+        public void DownClick(string targetName)
         {
-            TestAndSend("Down", sendername);
+            this.SendTo("Down", targetName);
         }
-        public void LeftClick(string sendername)
+        public void LeftClick(string targetName)
         {
-            TestAndSend("Left", sendername);
-        }
-
-        public void RightClick(string sendername)
-        {
-            TestAndSend("Right", sendername);
+            this.SendTo("Left", targetName);
         }
 
-        public void OkClick(string sendername)
+        public void RightClick(string targetName)
         {
-            TestAndSend("OK", sendername);
+            this.SendTo("Right", targetName);
         }
 
-        public void SendText(string data, string clientName)
+        public void OkClick(string targetName)
         {
-            this.SendTo(data, clientName);
+            this.SendTo("OK", targetName);
+        }
+
+        public void SendText(string data, string targetName)
+        {
+            this.SendTo(data, targetName);
         }
 
         private void SendTo(String clientName, String data)
@@ -102,7 +97,7 @@ namespace WebLedMatrix.Hubs
         {
             IfNotMuted(() =>
                 {
-                    if ((DateTime.Now - LastDate) > new TimeSpan(0,0,0,20))
+                    if ((DateTime.Now - LastDate) > new TimeSpan(0, 0, 0, 20))
                     {
                         this._currentActiveUser = this.Context.User.Identity.Name;
                         this.Clients.All.userIsActiveStatus(false);

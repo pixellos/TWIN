@@ -28,7 +28,7 @@ namespace WebLedMatrix.Models
 
         public void AppendData(string name, string data)
         {
-            _PendingData.Add($"<{name}>{data}</{name}>");
+            _PendingData.Add($"{name}:{data}");
         }
 
         public override bool Equals(object obj)

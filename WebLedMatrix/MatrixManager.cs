@@ -60,23 +60,12 @@ namespace WebLedMatrix
             }
         }
 
-        public void SendToUser(string username, string text, string target)
+        public void AppendData(string user, string clientName, string text)
         {
-            foreach (var matrix in this.matrices)
-            {
-                if (matrix.Name == target)
-                {
-                    matrix.AppendData(username, text);
-                }
-            }
-        }
-
-        public void AppendData(string user, string name, string text)
-        {
-            var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(name));
+            var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(clientName));
             if (searchedMatrice == null)
             {
-                throw new Exception($"Matrice named {name} does not exist at our cache. Please consider refreshing browser");
+                throw new Exception($"Matrice named {clientName} does not exist at our cache. Please consider refreshing browser");
             }
             searchedMatrice.AppendData(user, text);
         }
