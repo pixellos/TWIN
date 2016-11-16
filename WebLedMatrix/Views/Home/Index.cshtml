@@ -61,7 +61,7 @@
         };
 
         function addMatrice(matrix, index, array) {
-            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + matrix.Name + "<input class=matrixtinp type=\"text\" id=\"" + matrix.Name + "textbox\">" + "</div>");
+            $("#matrixDataPanel").append("<div class=col-xs-12 id=" + matrix.Name + stringMatrixLiteral + ">" + "<input type=\"radio\" name=\"selectedtarget\" value=\"" + matrix.Name + "\">" + matrix.Name + "<input class=matrixtinp type=\"text\" id=\"" + matrix.Name + "textbox\">" + "</div>");
             addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendText($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "sendtext", "Send Text",stringMatrixLiteral);
             addSignalRButton(matrix.Name, function () { uiManagerHub.server.sendUri($("#" + matrix.Name + "textbox").val(), matrix.Name); }, "senduri", "Send Uri",stringMatrixLiteral);
         };
@@ -122,30 +122,38 @@
             administrationHub.server.getUsers();
         });
 
+        function checkselected() {
+            var got = ($('input[name=selectedtarget]:checked', '#matrixDataPanel').val());
+            if (got == undefined)
+                return "";
+            else
+                return got;
+        }
+
 
         $("#top").click(function ()
         {
-            uiManagerHub.server.upClick();
+            uiManagerHub.server.upClick(checkselected());
         }
            );
         $("#bottom").click(function ()
         {
-            uiManagerHub.server.downClick();
+            uiManagerHub.server.downClick(checkselected());
         }
           ); 
         $("#left").click(function ()
           {
-              uiManagerHub.server.leftClick();
+            uiManagerHub.server.leftClick(checkselected());
           }
            );
         $("#right").click(function ()
         {
-            uiManagerHub.server.rightClick();
+            uiManagerHub.server.rightClick(checkselected());
         }
           );
         $("#enter").click(function ()
         {
-            uiManagerHub.server.okClick();
+            uiManagerHub.server.okClick(checkselected());
         }
           );
         $("#sendrq").click(function ()
