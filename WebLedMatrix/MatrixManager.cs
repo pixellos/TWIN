@@ -60,6 +60,17 @@ namespace WebLedMatrix
             }
         }
 
+        public void SendToUser(string username, string text, string target)
+        {
+            foreach (var matrix in this.matrices)
+            {
+                if (matrix.Name == target)
+                {
+                    matrix.AppendData(username, text);
+                }
+            }
+        }
+
         public void AppendData(string user, string name, string text)
         {
             var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(name));
