@@ -156,6 +156,10 @@
             uiManagerHub.server.okClick(checkselected());
         }
           );
+        $("#exit").click(function () {
+            uiManagerHub.server.exitClick(checkselected());
+        }
+          );
         $("#sendrq").click(function ()
         {
             uiManagerHub.server.requestActivate();
@@ -218,7 +222,7 @@
             <i class="fa fa-check fa-2x" aria-hidden="true"></i>
         </div>
     </div>
-    <div class="steeringbutton up-row right-column">
+    <div class="steeringbutton up-row right-column" id="exit">
         <div class="buttoncontent">
             <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
         </div>

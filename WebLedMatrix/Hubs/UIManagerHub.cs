@@ -77,7 +77,11 @@ namespace WebLedMatrix.Hubs
         {
             this.SendTo("OK", targetName);
         }
-
+        public void ExitClick(string targetName)
+        {
+            this.SendTo("Exit", targetName);
+        }
+        
         public void SendText(string targetName, string data)
         {
             this.SendTo(data, targetName);
