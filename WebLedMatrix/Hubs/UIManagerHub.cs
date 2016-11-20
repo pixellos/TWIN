@@ -82,20 +82,20 @@ namespace WebLedMatrix.Hubs
             this.SendTo("Exit", targetName);
         }
         
-        public void SendText(string targetName, string data)
+        public void SendText(string data, string targetName)
         {
             this.SendTo(data, targetName);
         }
 
-        private void SendTo(String clientName, String data)
+        private void SendTo(string data, string targetName)
         {
-            Debug.WriteLine($"ClientName: {clientName}, data: {data}");
+            Debug.WriteLine($"ClientName: {targetName}, data: {data}");
             RequestActivate();
             IfNotMuted(() =>
             {
                 if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
                 {
-                    _matrixManager.AppendData(this.Context.User.Identity.Name, clientName, data);
+                    _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
                 }
             });
         }
