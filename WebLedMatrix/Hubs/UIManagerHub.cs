@@ -89,15 +89,7 @@ namespace WebLedMatrix.Hubs
 
         private void SendTo(string data, string targetName)
         {
-            Debug.WriteLine($"ClientName: {targetName}, data: {data}");
-            RequestActivate();
-            IfNotMuted(() =>
-            {
-                if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
-                {
-                    _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
-                }
-            });
+            _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
         }
 
         public void RequestActivate()
