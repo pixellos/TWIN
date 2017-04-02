@@ -20,6 +20,16 @@ namespace WebLedMatrix.Controllers
             MatrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>();
         }
 
+        [Route("clientApi/Reference")]
+        [HttpGet]
+        public string ApiReference()
+        {
+            var apiMethods = typeof(ApiController).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+                .Where(x => x.CustomAttributes.Any(a => a.AttributeType == typeof(RouteAttribute)));
+            var strings = apiMethods.Select(x => x.Name + "(" + String.Join(", ", x.GetParameters().Select(p => p.ParameterType)) + ")");
+            return String.Join(Environment.NewLine, strings);
+        }
+
         [Route("clientApi/Register/{name}")]
         [HttpGet]
         public string Register(string name)

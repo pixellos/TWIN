@@ -81,7 +81,7 @@ namespace WebLedMatrix.Hubs
         {
             this.SendTo("Exit", targetName);
         }
-        
+
         public void SendText(string data, string targetName)
         {
             this.SendTo(data, targetName);
@@ -89,14 +89,17 @@ namespace WebLedMatrix.Hubs
 
         private void SendTo(string data, string targetName)
         {
-            _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
+            if (this._currentActiveUser == this.Context.User.Identity.Name)
+            {
+                _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
+            }
         }
 
         public void RequestActivate()
         {
             IfNotMuted(() =>
                 {
-                    if ((DateTime.Now - LastDate) > new TimeSpan(0, 0, 0, 20))
+                    if ((DateTime.Now - LastDate) > new TimeSpan(0, 0, 0, 200))
                     {
                         this._currentActiveUser = this.Context.User.Identity.Name;
                         this.Clients.All.userIsActiveStatus(false);
