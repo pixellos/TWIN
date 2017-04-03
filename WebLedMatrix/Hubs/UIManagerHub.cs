@@ -7,42 +7,47 @@ using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
 using WebLedMatrix.Server.Logic.Text_Processing;
 using System.Collections.Generic;
+using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Hubs
 {
     public class UiManagerHub : Hub<IUiManagerHub>
     {
         private static string LogInfoUserCheckedState = "User {0} has checked his authentication state {1}";
-        private readonly ILoginStatusChecker _loginStatusChecker;
-        private readonly WebpageValidation _webpageValidation;
-        private readonly MatrixManager _matrixManager;
-        private readonly HubConnections _repository;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private static string currentActiveUser = "";
         private static DateTime LastDate = DateTime.Now;
-        private List<Tuple<string, string, string>> UserToTargetToData { get; set; }
+        private readonly ILoginStatusChecker StatusChecker;
+        private readonly WebpageValidation Validator;
+        private readonly MatrixManager MatrixManager;
+        private readonly HubConnections Repository;
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+       
+        private List<DelayedMessage> UserToTargetToData { get; set; }
+
+        private List<Session> Sessions { get; }
 
         public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
         {
-            _loginStatusChecker = statusChecker;
-            _matrixManager = matrixManager;
-            _repository = repository;
-            _webpageValidation = new WebpageValidation();
-            this.UserToTargetToData = new List<Tuple<string, string, string>>();
+            this.Sessions = new List<Session>();
+            this.Validator = new WebpageValidation();
+            this.UserToTargetToData = new List<DelayedMessage>();
+            this.StatusChecker = statusChecker;
+            this.MatrixManager = matrixManager;
+            this.Repository = repository;
         }
 
         public void IfNotMuted(Action x, string userName = null)
         {
-            if (!_repository.IsMuted(userName ?? Context.User.Identity.Name))
+            if (!Repository.IsMuted(userName ?? Context.User.Identity.Name))
             {
                 x?.Invoke();
             }
         }
 
-        public void SendUri(string data, string name)
+        public void SendUri(string data, string targetName)
         {
-            RequestActivate();
-            this.SendTo(_webpageValidation.ParseAddress(data), this.Context.User.Identity.Name);
+            this.RequestActivate(targetName);
+            this.SendTo(Validator.ParseAddress(data), this.Context.User.Identity.Name);
         }
 
         private void TestAndSend(string text)
@@ -90,21 +95,21 @@ namespace WebLedMatrix.Hubs
             if (currentActiveUser == user)
             {
                 this.SendQueuedString(targetName, user);
-                _matrixManager.AppendData(user, targetName, data);
+                MatrixManager.AppendData(user, targetName, data);
             }
             else
             {
-                this.UserToTargetToData.Add(new Tuple<string, string, string>(user, targetName, data));
+                this.UserToTargetToData.Add(new DelayedMessage(user, targetName, data));
             }
         }
 
         private void SendQueuedString(string targetName, string user)
         {
-            var queuedStrings = this.UserToTargetToData.Where(x => x.Item1 == user && x.Item2 == targetName);
+            var queuedStrings = this.UserToTargetToData.Where(x => x.User == user && x.TargetId == targetName);
             this.UserToTargetToData.RemoveAll(t => queuedStrings.Contains(t));
-            foreach (var str in queuedStrings)
+            foreach (var msg in queuedStrings)
             {
-                _matrixManager.AppendData(user, targetName, str.Item3);
+                MatrixManager.AppendData(user, targetName, msg.Data);
             }
         }
  
@@ -129,11 +134,11 @@ namespace WebLedMatrix.Hubs
         public void LoginStatus()
         {
             Clients.Caller.loginStatus(
-                _loginStatusChecker.GetLoginStateString(Context.User));
+                StatusChecker.GetLoginStateString(Context.User));
             if (Context.User.Identity.IsAuthenticated)
             {
                 Clients.Caller.showSections(matrixesSection: true, sendingSection: true, administrationSection: true);
-                _matrixManager.UpdateMatrices();
+                MatrixManager.UpdateMatrices();
             }
             _logger.Info(LogInfoUserCheckedState, Context.User.Identity.Name, Context.User.Identity.IsAuthenticated);
         }
