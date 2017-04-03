@@ -162,7 +162,7 @@
           );
         $("#sendrq").click(function ()
         {
-            uiManagerHub.server.requestActivate();
+            uiManagerHub.server.requestActivate(checkselected());
         });
     $("#progress").click(function() {
         uiManagerHub.server.loginStatus();

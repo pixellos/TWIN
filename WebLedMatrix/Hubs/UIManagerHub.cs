@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Diagnostics;
 using Microsoft.AspNet.SignalR;
 using NLog;
 using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
 using WebLedMatrix.Server.Logic.Text_Processing;
+using System.Collections.Generic;
 
 namespace WebLedMatrix.Hubs
 {
@@ -16,8 +18,9 @@ namespace WebLedMatrix.Hubs
         private readonly MatrixManager _matrixManager;
         private readonly HubConnections _repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private string _currentActiveUser = "";
+        private static string currentActiveUser = "";
         private static DateTime LastDate = DateTime.Now;
+        private List<Tuple<string, string, string>> UserToTargetToData { get; set; }
 
         public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
         {
@@ -25,6 +28,7 @@ namespace WebLedMatrix.Hubs
             _matrixManager = matrixManager;
             _repository = repository;
             _webpageValidation = new WebpageValidation();
+            this.UserToTargetToData = new List<Tuple<string, string, string>>();
         }
 
         public void IfNotMuted(Action x, string userName = null)
@@ -38,19 +42,12 @@ namespace WebLedMatrix.Hubs
         public void SendUri(string data, string name)
         {
             RequestActivate();
-            IfNotMuted(() =>
-                {
-                    if (this.Context.User.Identity.Name.Equals(this._currentActiveUser))
-                    {
-                        _matrixManager.AppendData(this.Context.User.Identity.Name, name, _webpageValidation.ParseAddress(data));
-                    }
-                }
-                );
+            this.SendTo(_webpageValidation.ParseAddress(data), this.Context.User.Identity.Name);
         }
 
         private void TestAndSend(string text)
         {
-            this.SendTo(_currentActiveUser, text);
+            this.SendTo(currentActiveUser, text);
         }
 
         public void UpClick(string targetName)
@@ -89,24 +86,43 @@ namespace WebLedMatrix.Hubs
 
         private void SendTo(string data, string targetName)
         {
-            if (this._currentActiveUser == this.Context.User.Identity.Name)
+            var user = this.Context.User.Identity.Name;
+            if (currentActiveUser == user)
             {
-                _matrixManager.AppendData(this.Context.User.Identity.Name, targetName, data);
+                this.SendQueuedString(targetName, user);
+                _matrixManager.AppendData(user, targetName, data);
+            }
+            else
+            {
+                this.UserToTargetToData.Add(new Tuple<string, string, string>(user, targetName, data));
             }
         }
 
-        public void RequestActivate()
+        private void SendQueuedString(string targetName, string user)
+        {
+            var queuedStrings = this.UserToTargetToData.Where(x => x.Item1 == user && x.Item2 == targetName);
+            this.UserToTargetToData.RemoveAll(t => queuedStrings.Contains(t));
+            foreach (var str in queuedStrings)
+            {
+                _matrixManager.AppendData(user, targetName, str.Item3);
+            }
+        }
+ 
+        //Todo: Add selected matrix for user request
+        public void RequestActivate(string targetName)
         {
             IfNotMuted(() =>
+            {
+                if ((DateTime.Now - LastDate) > new TimeSpan(0, 0, 0, 200))
                 {
-                    if ((DateTime.Now - LastDate) > new TimeSpan(0, 0, 0, 200))
-                    {
-                        this._currentActiveUser = this.Context.User.Identity.Name;
-                        this.Clients.All.userIsActiveStatus(false);
-                        this.Clients.Caller.userIsActiveStatus(true);
-                        UiManagerHub.LastDate = DateTime.Now;
-                    }
+                    var user = this.Context.User.Identity.Name;
+                    this.SendQueuedString(targetName, user);
+                    currentActiveUser = this.Context.User.Identity.Name;
+                    this.Clients.All.userIsActiveStatus(false);
+                    this.Clients.Caller.userIsActiveStatus(true);
+                    UiManagerHub.LastDate = DateTime.Now;
                 }
+            }
             );
         }
 
