@@ -11,28 +11,28 @@ namespace WebLedMatrix.Hubs
         private static Dictionary<AdministrationHub, AdministrationModel> _models =
             new Dictionary<AdministrationHub, AdministrationModel>();
 
-        private MatrixManager _matrixManager;
+        private Clients _matrixManager;
 
-        public AdministrationHub(MatrixManager matrixManager)
+        public AdministrationHub(Clients matrixManager)
         {
             _matrixManager = matrixManager;
         }
 
         public void GetUsers()
         {
-            Clients.Caller.activeUsers(HubConnections.Repository.HubUserList);
+            this.Clients.Caller.activeUsers(HubConnections.Repository.HubUserList);
         }
 
         public void MuteUser(string name)
         {                                                                                       
             HubConnections.Repository.SetMuteState(name,true);
-            GetUsers();
+            this.GetUsers();
         }
 
         public void UnMuteUser(string name)
         {
             HubConnections.Repository.SetMuteState(name, false);
-            GetUsers();
+            this.GetUsers();
         }
 
         public override Task OnConnected()
@@ -41,7 +41,7 @@ namespace WebLedMatrix.Hubs
             {
                 HubConnections.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
             }
-            GetUsers();
+            this.GetUsers();
             return base.OnConnected();
         }
 
@@ -59,6 +59,6 @@ namespace WebLedMatrix.Hubs
             }
             GetUsers();
             return base.OnDisconnected(stopCalled);
-        }
+        }   
     }
 }

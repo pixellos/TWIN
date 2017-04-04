@@ -18,7 +18,7 @@ namespace Test.WebLedMatrix.Server
             mock.Setup(x=>x.Clients.All.unRegisterAllMatrices())
                 .Verifiable("This should be called");
 
-            mock.Setup(x=>x.Clients.All.updateMatrices(It.IsAny<Matrix[]>()))
+            mock.Setup(x=>x.Clients.All.updateMatrices(It.IsAny<Client[]>()))
                 .Verifiable("This should be called");
             return mock;
         }
@@ -28,7 +28,7 @@ namespace Test.WebLedMatrix.Server
     public class MatrixManagerFixture
     {
         public Mock<IHubContext<IUiManagerHub>> IHubMock;
-        public MatrixManager MatrixManager;
+        public Clients MatrixManager;
 
         public MatrixManagerFixture()
         {
@@ -39,7 +39,7 @@ namespace Test.WebLedMatrix.Server
         {
             IHubMock = new Mock<IHubContext<IUiManagerHub>>();
             setupParameters.Invoke(IHubMock);
-            MatrixManager = new MatrixManager(IHubMock.Object);
+            MatrixManager = new Clients(IHubMock.Object);
         }
     }
 
@@ -65,7 +65,7 @@ namespace Test.WebLedMatrix.Server
             
             _fixture.IHubMock.Verify(x=>x.Clients.All.unRegisterAllMatrices());
             Assert.True(
-                _fixture.MatrixManager.Matrices.Exists(
+                _fixture.MatrixManager.Collection.Exists(
                     x => x.Name.Equals(nameOfMatrix)));
         }
 
@@ -79,7 +79,7 @@ namespace Test.WebLedMatrix.Server
 
             _fixture.IHubMock.Verify(x => x.Clients.All.unRegisterAllMatrices());
             Assert.False(
-                _fixture.MatrixManager.Matrices.Exists(
+                _fixture.MatrixManager.Collection.Exists(
                     x => x.Name.Equals(nameOfMatrix)));
         }
 

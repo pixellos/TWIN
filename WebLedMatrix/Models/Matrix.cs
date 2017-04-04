@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebLedMatrix.Models
 {
-    public class Matrix
+    public class Client
     {
         public string Name { get; set; }
         public bool Connected { get; set; }
@@ -33,9 +33,9 @@ namespace WebLedMatrix.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is Matrix)
+            if (obj is Client)
             {
-                var matrix = obj as Matrix;
+                var matrix = obj as Client;
                 return matrix.Equals(this);
             }
             else
@@ -44,7 +44,7 @@ namespace WebLedMatrix.Models
             }
         }
 
-        public bool Equals(Matrix other)
+        public bool Equals(Client other)
         {
             return string.Equals(Name, other.Name);
         }

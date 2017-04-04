@@ -18,7 +18,7 @@ namespace WebLedMatrix.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c => new LoginStatusChecker()).As<ILoginStatusChecker>().SingleInstance();
-            builder.Register(c => new MatrixManager()).SingleInstance();
+            builder.Register(c => new Clients()).SingleInstance();
             builder.Register(c => HubConnections.Repository);
             builder.Register(c => new WebpageValidation());
 

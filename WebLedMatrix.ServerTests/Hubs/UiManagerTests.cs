@@ -17,13 +17,13 @@ namespace Test.WebLedMatrix.Server.Hubs
     public class UiManagerFixture : IDisposable
     {
         public UiManagerHub ManagerHub;
-        public MatrixManager MatrixManagerInsideManagerHub;
+        public Clients MatrixManagerInsideManagerHub;
 
         public string UserName = nameof(UserName);
 
         public UiManagerFixture()
         {
-            MatrixManagerInsideManagerHub = new MatrixManager();
+            MatrixManagerInsideManagerHub = new Clients();
             ManagerHub = new UiManagerHub(new LoginStatusChecker(), MatrixManagerInsideManagerHub,HubConnections.Repository);
 
             HubConnections.Repository.AddConnection("",UserName);
@@ -57,7 +57,7 @@ namespace Test.WebLedMatrix.Server.Hubs
 
         public void CoreAccountTest(State expectedState, IRequest identityRequest)
         {
-            var matrixManager = Substitute.For<MatrixManager>();
+            var matrixManager = Substitute.For<Clients>();
             matrixManager.When(x=>x.UpdateMatrices()).DoNotCallBase();
 
             UiManagerHub managerHub = Substitute.For<UiManagerHub>(_loginStatusChecker, matrixManager,HubConnections.Repository);

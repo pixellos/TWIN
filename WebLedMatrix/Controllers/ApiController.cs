@@ -14,10 +14,10 @@ namespace WebLedMatrix.Controllers
     {
         public List<string> Users => HubConnections.Repository.HubUserList.Select(x => x.UserName).ToList();
 
-        private MatrixManager MatrixManager;
+        private Clients MatrixManager;
         public ApiController()
         {
-            MatrixManager = AutofacHostFactory.Container.Resolve<MatrixManager>();
+            MatrixManager = AutofacHostFactory.Container.Resolve<Clients>();
         }
 
         [Route("clientApi/Reference")]
@@ -34,10 +34,10 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string Register(string name)
         {
-            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                this.MatrixManager.AddMatrix(name);
+                this.MatrixManager.Matrix(name);
                 return "Registered";
                 //Todo: Add timeout and forcing reregistering
             }
@@ -51,7 +51,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public HttpResponseMessage CloseConnection(string name)
         {
-            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
                 var respond = new HttpResponseMessage(HttpStatusCode.Forbidden) {ReasonPhrase = "This connection has not be established"};
@@ -68,7 +68,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string[] Commands(string name)
         {
-            var matrix = MatrixManager.Matrices.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
                 return  new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };

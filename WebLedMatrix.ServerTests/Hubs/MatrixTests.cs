@@ -13,8 +13,8 @@ namespace WebLedMatrix.Hubs.Tests
 
         [Fact()] public void EqualsTest_ThatSameNamed_AreEqual()
         {
-            var Matrix = new Matrix() {Name = matrixName};
-            var Matrix2 = new Matrix() {Name = matrixName};
+            var Matrix = new Client() {Name = matrixName};
+            var Matrix2 = new Client() {Name = matrixName};
 
             Assert.Equal(Matrix,Matrix2);
         }
@@ -22,7 +22,7 @@ namespace WebLedMatrix.Hubs.Tests
         [Fact()]
         public void EqualsTest_RandomObject_AreNotEqual()
         {
-            var Matrix = new Matrix() { Name = matrixName };
+            var Matrix = new Client() { Name = matrixName };
             var randomObject = new Random().Next().GetHashCode().ToString();
 
             Assert.NotEqual(Matrix, (object)randomObject);
@@ -31,8 +31,8 @@ namespace WebLedMatrix.Hubs.Tests
         [Fact()]
         public void EqualsTest_DiffrentNamed_AreNotEqual()
         {
-            var Matrix = new Matrix() { Name = matrixName };
-            var Matrix2 = new Matrix() { Name = anotherMatrixName};
+            var Matrix = new Client() { Name = matrixName };
+            var Matrix2 = new Client() { Name = anotherMatrixName};
 
             Assert.NotEqual(Matrix, Matrix2);
         }
@@ -40,7 +40,7 @@ namespace WebLedMatrix.Hubs.Tests
         [Fact()]
         public void GetHashCode_NameIsHashCode_ExpectedBehavior() //Needed for 
         {
-            var matrix = new Matrix {Name = matrixName};
+            var matrix = new Client {Name = matrixName};
 
             Assert.Equal(matrix.GetHashCode(),matrixName.GetHashCode());
         }
@@ -48,7 +48,7 @@ namespace WebLedMatrix.Hubs.Tests
         [Fact()]
         public void GetHashCode_NameIsHashCode_ExpectedBehavior_PropertiesAreAssigned() //Needed for 
         {
-            var matrix = new Matrix
+            var matrix = new Client
             {
                 Connected = true,
                 Enabled = false,

@@ -5,36 +5,36 @@ using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
 using WebLedMatrix.Logic;
 using System;
+using System.Collections;
 
 namespace WebLedMatrix
 {
-    public class MatrixManager
+    public class Clients : IEnumerable<Client>
     {
-        private HashSet<Matrix> matrices = new HashSet<Matrix>();
-        public List<Matrix> Matrices => new List<Matrix>(matrices);
+        private HashSet<Client> Collection = new HashSet<Client>();
 
         private IHubContext<IUiManagerHub> Context { get; set; }
 
-        public MatrixManager(IHubContext<IUiManagerHub> hubContext)
+        public Clients(IHubContext<IUiManagerHub> hubContext)
         {
-            Context = hubContext;
+            this.Context = hubContext;
         }
 
-        public MatrixManager()
+        public Clients()
         {
-            Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
+            this.Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
         }
 
-        public Matrix AddMatrix(string name)
+        public Client Matrix(string name)
         {
-            var matrix = new Matrix() {Name = name};
-            if (matrices.Any(x=>x.Name == name))
+            var matrix = new Client() {Name = name};
+            if (Collection.Any(x=>x.Name == name))
             {
-                matrix = matrices.Single(x => x.Name == name);
+                matrix = Collection.Single(x => x.Name == name);
             }
             else
             {
-                matrices.Add(matrix);
+                this.Collection.Add(matrix);
             }
             UpdateMatrices();
             return matrix;
@@ -42,19 +42,13 @@ namespace WebLedMatrix
 
         public void RemoveMatrix(string name)
         {
-            matrices.RemoveWhere(x => x.Name == name);
-            UpdateMatrices();
-        }
-
-        public void UpdateMatrices()
-        {
-            Context.Clients.All.unRegisterAllMatrices();
-            Context.Clients.All.updateMatrices(matrices.ToArray());     
+            this.Collection.RemoveWhere(x => x.Name == name);
+            this.UpdateMatrices();
         }
 
         public void SendToAll(string username, string text)
         {
-            foreach (var matrix in this.matrices)
+            foreach (var matrix in this.Collection)
             {
                 matrix.AppendData(username,text);
             }
@@ -62,12 +56,28 @@ namespace WebLedMatrix
 
         public void AppendData(string user, string clientName, string text)
         {
-            var searchedMatrice = matrices.SingleOrDefault(x => x.Name.Equals(clientName));
+            var searchedMatrice = Collection.SingleOrDefault(x => x.Name.Equals(clientName));
             if (searchedMatrice == null)
             {
                 throw new Exception($"Matrice named {clientName} does not exist at our cache. Please consider refreshing browser");
             }
             searchedMatrice.AppendData(user, text);
+        }
+
+        public void UpdateMatrices()
+        {
+            Context.Clients.All.unRegisterAllMatrices();
+            Context.Clients.All.updateMatrices(Collection.ToArray());
+        }
+
+        public IEnumerator<Client> GetEnumerator()
+        {
+            return this.Collection.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)this.GetEnumerator();
         }
     }
 }

@@ -18,19 +18,19 @@ namespace WebLedMatrix.Hubs
         private static DateTime LastDate = DateTime.Now;
         private readonly ILoginStatusChecker StatusChecker;
         private readonly WebpageValidation Validator;
-        private readonly MatrixManager MatrixManager;
+        private readonly Clients MatrixManager;
         private readonly HubConnections Repository;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
        
-        private List<DelayedMessage> UserToTargetToData { get; set; }
+        private List<DelayedMessage> Messages { get; set; }
 
         private List<Session> Sessions { get; }
 
-        public UiManagerHub(ILoginStatusChecker statusChecker, MatrixManager matrixManager, HubConnections repository)
+        public UiManagerHub(ILoginStatusChecker statusChecker, Clients matrixManager, HubConnections repository)
         {
             this.Sessions = new List<Session>();
             this.Validator = new WebpageValidation();
-            this.UserToTargetToData = new List<DelayedMessage>();
+            this.Messages = new List<DelayedMessage>();
             this.StatusChecker = statusChecker;
             this.MatrixManager = matrixManager;
             this.Repository = repository;
@@ -92,21 +92,21 @@ namespace WebLedMatrix.Hubs
         private void SendTo(string data, string targetName)
         {
             var user = this.Context.User.Identity.Name;
-            if (currentActiveUser == user)
-            {
-                this.SendQueuedString(targetName, user);
+           // if (currentActiveUser == user)
+            //{
+               // this.SendQueuedString(targetName, user);
                 MatrixManager.AppendData(user, targetName, data);
-            }
-            else
-            {
-                this.UserToTargetToData.Add(new DelayedMessage(user, targetName, data));
-            }
+            //}
+            //else
+            //{
+               // this.Messages.Add(new DelayedMessage(user, targetName, data));
+            //}
         }
 
         private void SendQueuedString(string targetName, string user)
         {
-            var queuedStrings = this.UserToTargetToData.Where(x => x.User == user && x.TargetId == targetName);
-            this.UserToTargetToData.RemoveAll(t => queuedStrings.Contains(t));
+            var queuedStrings = this.Messages.Where(x => x.User == user && x.TargetId == targetName);
+            this.Messages.RemoveAll(t => queuedStrings.Contains(t));
             foreach (var msg in queuedStrings)
             {
                 MatrixManager.AppendData(user, targetName, msg.Data);
