@@ -34,7 +34,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string Register(string name)
         {
-            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
                 this.MatrixManager.Matrix(name);
@@ -51,7 +51,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public HttpResponseMessage CloseConnection(string name)
         {
-            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
                 var respond = new HttpResponseMessage(HttpStatusCode.Forbidden) {ReasonPhrase = "This connection has not be established"};
@@ -68,7 +68,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string[] Commands(string name)
         {
-            var matrix = MatrixManager.Collection.SingleOrDefault(x => x.Name == name);
+            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
                 return  new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
