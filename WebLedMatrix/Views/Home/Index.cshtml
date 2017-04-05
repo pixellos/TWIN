@@ -178,6 +178,13 @@
         });
 
         $("#administrationPanelButton").click(function() {
+        
+            e.stopPropagation();
+            
+            if ( $("#administrationPanel").is(':animated') ) {
+            return false;
+            }
+        
             $("#administrationPanel").slideToggle("slow");
         });
     });
@@ -198,7 +205,7 @@
         User Administration
     </div>
 
-    <div id="administrationPanel" class="jumbotron" style="display: none">
+    <div id="administrationPanel" class="jumbotron row" style="display: none">
         MatrixServiceMatrixService MatrixService
         MatrixService
     </div>
