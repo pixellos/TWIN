@@ -4,36 +4,45 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Controllers
 {
     public class StatisticsController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        private IList<StatisticsViewModel> Session { get; }
+        public StatisticsController(IList<StatisticsViewModel> statistics)
         {
-            return new string[] { "value1", "value2" };
+            this.Session = statistics;
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [Route("Stats/Summary/{page}/{entiresPerPage}")]
+        public IEnumerable<StatisticsViewModel> Summary(int page = 0, int entriesPerPage = 50)
         {
-            return "value";
+            IEnumerable<StatisticsViewModel> toShow;
+            if (page < 0)
+            {
+                throw new ArgumentException(nameof(page));
+            }
+            if (entriesPerPage < 1)
+            {
+                throw new ArgumentException(nameof(entriesPerPage));
+            }
+            if (page == 0)
+            {
+                toShow = this.Session.Take(entriesPerPage);
+            }
+            else
+            {
+                toShow = this.Session.Skip((page -1) * entriesPerPage).Take(entriesPerPage);
+            }
+            return toShow;
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        public object Summary1(int page = 0)
         {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            var result = this.Summary(entriesPerPage: 5);
+            return null;
         }
     }
-}
+}   

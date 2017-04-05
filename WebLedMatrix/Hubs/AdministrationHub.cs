@@ -8,13 +8,13 @@ namespace WebLedMatrix.Hubs
 {
     public class AdministrationHub : Hub
     {
-        private static Dictionary<AdministrationHub, AdministrationModel> _models =
-            new Dictionary<AdministrationHub, AdministrationModel>();
+        private static Dictionary<AdministrationHub, AdministrationModel> Models = new Dictionary<AdministrationHub, AdministrationModel>();
 
         private Clients _matrixManager;
 
         public AdministrationHub(Clients matrixManager)
         {
+
             _matrixManager = matrixManager;
         }
 

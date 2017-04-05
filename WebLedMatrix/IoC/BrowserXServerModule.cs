@@ -10,6 +10,7 @@ using WebLedMatrix.Logic;
 using WebLedMatrix.Logic.Authentication.Abstract;
 using WebLedMatrix.Logic.Authentication.Models;
 using WebLedMatrix.Server.Logic.Text_Processing;
+using WebLedMatrix.Models;
 
 namespace WebLedMatrix.IoC
 {
@@ -21,7 +22,7 @@ namespace WebLedMatrix.IoC
             builder.Register(c => new Clients()).SingleInstance();
             builder.Register(c => HubConnections.Repository);
             builder.Register(c => new WebpageValidation());
-
+            builder.Register(c => new List<Session>()).As<IList<Session>>().SingleInstance();
         }
     }
 }

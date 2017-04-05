@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebLedMatrix.Models;
@@ -8,15 +9,26 @@ namespace WebLedMatrix.Logic
     {
         public static HubConnections Repository = new HubConnections();
         public List<HubUser> HubUserList = new List<HubUser>();
-        private readonly object _lock = new object();
+        private IList<Session> Sessions { get; }
+        private readonly object @lock = new object();
+ 
+        public HubConnections(IList<Session> sessions)
+        {
+            this.Sessions = sessions;
+        }
 
+        
         public void DeleteConnection(string connectionId)
         {
-            lock (_lock)
+            lock (@lock)
             {
                 var user = HubUserList.Single(x => x.Ids.Any(y=>y.Equals(connectionId)));
                 user.Ids.Remove(connectionId);
-
+                var toEnd = this.Sessions.Where(x => x.ID == connectionId);
+                foreach (var sess in toEnd)
+                {
+                    sess.EndSession();
+                }
                 if (! user.Ids.Any())
                 {
                     HubUserList.Remove(user);
@@ -26,7 +38,7 @@ namespace WebLedMatrix.Logic
 
         public bool IsMuted(string userName)
         {
-            lock (_lock)
+            lock (@lock)
             {
                 return HubUserList.Single(x => x.UserName.Equals(userName)).IsMuted;
             }
@@ -34,7 +46,7 @@ namespace WebLedMatrix.Logic
 
         public void SetMuteState(string userName,bool isMuted)
         {
-            lock (_lock)
+            lock (@lock)
             {
                 HubUserList.Single(x => x.UserName.Equals(userName)).IsMuted = isMuted;
             }
@@ -42,7 +54,7 @@ namespace WebLedMatrix.Logic
 
         public void AddConnection(string connectionId, string userName)
         {
-            lock (_lock)
+            lock (@lock)
             {
                 HubUser existingHubUser = null;
                 if (HubUserList.Any(x=>x.UserName.Equals(userName)))
@@ -58,6 +70,7 @@ namespace WebLedMatrix.Logic
                 {
                     HubUserList.Add(new HubUser(userName, connectionId));
                 }
+                this.Sessions.Add(new Session(DateTime.Now, userName, connectionId));
             }
         }
     }
