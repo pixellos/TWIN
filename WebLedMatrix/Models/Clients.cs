@@ -25,7 +25,7 @@ namespace WebLedMatrix
             this.Context = GlobalHost.ConnectionManager.GetHubContext<IUiManagerHub>(typeof(UiManagerHub).Name);
         }
 
-        public Client Matrix(string name)
+        public Client Register(string name)
         {
             var matrix = new Client() {Name = name};
             if (Collection.Any(x=>x.Name == name))

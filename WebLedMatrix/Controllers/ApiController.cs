@@ -37,7 +37,7 @@ namespace WebLedMatrix.Controllers
             var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                this.MatrixManager.Matrix(name);
+                this.MatrixManager.Register(name);
                 return "Registered";
                 //Todo: Add timeout and forcing reregistering
             }

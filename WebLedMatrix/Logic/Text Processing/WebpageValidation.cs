@@ -29,7 +29,7 @@ namespace WebLedMatrix.Server.Logic.Text_Processing
 
         private string YoutubeParse(string address)
         {
-            Regex regex = new Regex(@".*youtube(.*)watch[?]v=(\S*)");
+            var regex = new Regex(@".*youtube(.*)watch[?]v=(\S*)");
             var youtubeRegex = regex.Match(address);
             if (youtubeRegex.Success)
             {

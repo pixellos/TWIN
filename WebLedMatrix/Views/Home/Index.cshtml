@@ -78,11 +78,30 @@
             }
         }
 
+        /// <summary>
+        /// This callback allows the server to controll the client's ui
+        /// </summary>
+        /// <param name="matrixes">
+        /// True if matrixes data is modified
+        /// </param>
+        /// <param name="sending">
+        /// True if sending data is modified
+        /// </param>
+        /// <param name="administration">
+        /// True if administration data is modified
+        /// </param>
         uiManagerHub.client.showSections = function (matrixes, sending, administration) {
             matrixes ? $("#matrixSection").slideDown("slow") : $("#matrixSection").slideUp("slow");
             administration ? $("#administrationSection").slideDown("slow") : $("#administrationSection").slideUp("slow");
         }
 
+            /// <summary>
+        /// It's callback for active users refresh function
+        /// </summary>
+        /// <param name="users">
+        /// collection of the users
+        /// </param>
+        /// Ideas: Maybe diff between users and old users, some modifications
         administrationHub.client.activeUsers = function (users) {
             $("#administrationPanel").empty();
             users.forEach(showConnectedUsers);
