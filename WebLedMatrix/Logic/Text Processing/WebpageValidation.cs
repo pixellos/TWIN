@@ -7,7 +7,7 @@ namespace WebLedMatrix.Server.Logic.Text_Processing
         internal static readonly string PornRegex = @"(porn)";
         public const string GoogleSiteAddress = "www.google.com";
 
-        private string BuildVideoAddress(string videoId)
+        private string EmbeddedYoutubeAddress(string videoId)
         {
             return $"www.youtube.com/v/{videoId}?autoplay=1";
         }
@@ -33,7 +33,7 @@ namespace WebLedMatrix.Server.Logic.Text_Processing
             var youtubeRegex = regex.Match(address);
             if (youtubeRegex.Success)
             {
-                return BuildVideoAddress(youtubeRegex.Groups[2].Value);
+                return EmbeddedYoutubeAddress(youtubeRegex.Groups[2].Value);
             }
             return GoogleSiteAddress;
         }
