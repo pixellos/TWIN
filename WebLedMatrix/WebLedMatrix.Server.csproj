@@ -266,6 +266,7 @@
     <Compile Include="Controllers\Exceptions\RoleResultException.cs" />
     <Compile Include="Controllers\Exceptions\UsersAreRecurringException.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\StatisticsViewModel.cs" />
     <Compile Include="Hubs\AdministrationHub.cs" />
     <Compile Include="Hubs\IUiManagerHub.cs" />
     <Compile Include="Controllers\Authentication\Concrete\DefaultUserValidatorHelper.cs" />

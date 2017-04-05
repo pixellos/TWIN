@@ -38,11 +38,5 @@ namespace WebLedMatrix.Controllers
             }
             return toShow;
         }
-
-        public object Summary1(int page = 0)
-        {
-            var result = this.Summary(entriesPerPage: 5);
-            return null;
-        }
     }
 }   

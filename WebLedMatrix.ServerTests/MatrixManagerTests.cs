@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNet.SignalR;
 using Moq;
+using System.Linq;
 using WebLedMatrix;
 using WebLedMatrix.Hubs;
 using WebLedMatrix.Models;
@@ -65,7 +66,7 @@ namespace Test.WebLedMatrix.Server
             
             _fixture.IHubMock.Verify(x=>x.Clients.All.unRegisterAllMatrices());
             Assert.True(
-                _fixture.MatrixManager.Collection.Exists(
+                _fixture.MatrixManager.Any(
                     x => x.Name.Equals(nameOfMatrix)));
         }
 
@@ -79,7 +80,7 @@ namespace Test.WebLedMatrix.Server
 
             _fixture.IHubMock.Verify(x => x.Clients.All.unRegisterAllMatrices());
             Assert.False(
-                _fixture.MatrixManager.Collection.Exists(
+                _fixture.MatrixManager.Any(
                     x => x.Name.Equals(nameOfMatrix)));
         }
 

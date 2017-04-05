@@ -7,14 +7,15 @@ namespace WebLedMatrix.Logic
 {
     public class HubConnections
     {
+        //Todo: To di
         public static HubConnections Repository = new HubConnections();
         public List<HubUser> HubUserList = new List<HubUser>();
-        private IList<Session> Sessions { get; }
+        private static IList<Session> Sessions { get; } = new List<Session>();
         private readonly object @lock = new object();
  
-        public HubConnections(IList<Session> sessions)
+        public HubConnections()//IList<Session> sessions)
         {
-            this.Sessions = sessions;
+            //this.Sessions = sessions;
         }
 
         
@@ -24,7 +25,7 @@ namespace WebLedMatrix.Logic
             {
                 var user = HubUserList.Single(x => x.Ids.Any(y=>y.Equals(connectionId)));
                 user.Ids.Remove(connectionId);
-                var toEnd = this.Sessions.Where(x => x.ID == connectionId);
+                var toEnd = Sessions.Where(x => x.ID == connectionId);
                 foreach (var sess in toEnd)
                 {
                     sess.EndSession();
@@ -70,7 +71,7 @@ namespace WebLedMatrix.Logic
                 {
                     HubUserList.Add(new HubUser(userName, connectionId));
                 }
-                this.Sessions.Add(new Session(DateTime.Now, userName, connectionId));
+                Sessions.Add(new Session(DateTime.Now, userName, connectionId));
             }
         }
     }
