@@ -7,9 +7,11 @@ using System.Web.Http;
 using Autofac.Integration.Wcf;
 using Autofac;
 using WebLedMatrix.Logic;
+using System.Web.Http.Cors;
 
 namespace WebLedMatrix.Controllers
 {
+    [EnableCors("*", "*", "GET")]
     public class ApiController : System.Web.Http.ApiController
     {
         public List<string> Users => HubConnections.Repository.HubUserList.Select(x => x.UserName).ToList();
