@@ -1,11 +1,16 @@
 ﻿<div class="col-xs-12">
     <div class="col-xs-12 row" id="Status">
-        <div class="col-sm-3" id="progress">
+        <div class="col-sm-2" id="progress">
+        </div>
+        <div class="col-sm-1" id="separator">
+        &nbsp;
         </div>
         <div class="col-sm-9" id="slider">
+            <div class="col-sm-8" style="text-align:center">
             @{
                 Html.RenderAction("Login", "Account");
             }
+            </div>
         </div>
     </div>
 </div>
