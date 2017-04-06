@@ -23,7 +23,7 @@ namespace WebLedMatrix.Models.Authentication.Roles
         public RoleAdministrating(AppRoleManager roleManager, UserIdentityManager identityManager)
         {
             _injectedAppRoleManager = roleManager;
-            _injectedUserIdentityManager = identityManager;
+            _injectedUserIdentityManager = identityManager; 
         }
 
         public RoleAdministrating() {}

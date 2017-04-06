@@ -10,28 +10,29 @@ namespace WebLedMatrix.Hubs
     {
         private static Dictionary<AdministrationHub, AdministrationModel> Models = new Dictionary<AdministrationHub, AdministrationModel>();
 
-        private Clients _matrixManager;
+        private Clients ConnectedClients;
+        private HubConnections HubConnection;
 
-        public AdministrationHub(Clients matrixManager)
+        public AdministrationHub(Clients clients, HubConnections connection)
         {
-
-            _matrixManager = matrixManager;
+            this.ConnectedClients = clients;
+            this.HubConnection = connection;
         }
 
         public void GetUsers()
         {
-            this.Clients.Caller.activeUsers(HubConnections.Repository.HubUserList);
+            this.Clients.Caller.activeUsers(this.HubConnection.HubUserList);
         }
 
         public void MuteUser(string name)
         {                                                                                       
-            HubConnections.Repository.SetMuteState(name,true);
+            this.HubConnection.SetMuteState(name,true);
             this.GetUsers();
         }
 
         public void UnMuteUser(string name)
         {
-            HubConnections.Repository.SetMuteState(name, false);
+            this.HubConnection.SetMuteState(name, false);
             this.GetUsers();
         }
 
@@ -39,7 +40,7 @@ namespace WebLedMatrix.Hubs
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                HubConnections.Repository.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
+                this.HubConnection.AddConnection(Context.ConnectionId, Context.User.Identity.Name);
             }
             this.GetUsers();
             return base.OnConnected();
@@ -55,7 +56,7 @@ namespace WebLedMatrix.Hubs
         {
             if (Context.User.Identity.IsAuthenticated)
             {
-                HubConnections.Repository.DeleteConnection(Context.ConnectionId);
+                this.HubConnection.DeleteConnection(Context.ConnectionId);
             }
             GetUsers();
             return base.OnDisconnected(stopCalled);

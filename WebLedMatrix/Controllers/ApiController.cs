@@ -4,22 +4,21 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Autofac.Integration.Wcf;
 using Autofac;
-using WebLedMatrix.Logic;
 using System.Web.Http.Cors;
+using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Controllers
 {
     [EnableCors("*", "*", "GET")]
     public class ApiController : System.Web.Http.ApiController
     {
-        public List<string> Users => HubConnections.Repository.HubUserList.Select(x => x.UserName).ToList();
-
-        private Clients MatrixManager;
-        public ApiController()
+        private Clients ConnectedClients;
+        private IList<Session> Sessions { get; }
+        public ApiController(IList<Session> session, Clients clients)
         {
-            MatrixManager = AutofacHostFactory.Container.Resolve<Clients>();
+            this.Sessions = session;
+            this.ConnectedClients = clients;
         }
 
         [Route("clientApi/Reference")]
@@ -36,10 +35,10 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string Register(string name)
         {
-            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
+            var matrix = ConnectedClients.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                this.MatrixManager.Register(name);
+                this.ConnectedClients.Register(name);
                 return "Registered";
                 //Todo: Add timeout and forcing reregistering
             }
@@ -53,15 +52,15 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public HttpResponseMessage CloseConnection(string name)
         {
-            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
+            var matrix = ConnectedClients.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                var respond = new HttpResponseMessage(HttpStatusCode.Forbidden) {ReasonPhrase = "This connection has not be established"};
+                var respond = new HttpResponseMessage(HttpStatusCode.Forbidden) { ReasonPhrase = "This connection has not be established" };
                 return respond;
             }
             else
             {
-                MatrixManager.RemoveMatrix(name);
+                ConnectedClients.RemoveMatrix(name);
                 return new HttpResponseMessage(HttpStatusCode.OK) { ReasonPhrase = $"Matrix {name} has been successfully removed" };
             }
         }
@@ -70,22 +69,15 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public string[] Commands(string name)
         {
-            var matrix = MatrixManager.SingleOrDefault(x => x.Name == name);
+            var matrix = ConnectedClients.SingleOrDefault(x => x.Name == name);
             if (matrix == null)
             {
-                return  new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
+                return new string[] { "ERROR: Sorry, your matrix is not registered. Please register it before getting data." };
             }
             else
             {
                 var data = matrix.PendingData;
-                if (data == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return data.ToArray();
-                }
+                return matrix.PendingData?.ToArray() ?? Array.Empty<String>();
             }
         }
 
@@ -93,7 +85,7 @@ namespace WebLedMatrix.Controllers
         [HttpGet]
         public List<string> GetUsers(string name)
         {
-            return Users;//;
+            return this.Sessions.Where(x => !x.IsEnded).Select(x => x.UserName).Distinct().ToList();
             //Todo: unregister user when log out
         }
     }

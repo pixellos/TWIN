@@ -20,7 +20,7 @@ namespace WebLedMatrix.IoC
         {
             builder.Register(c => new LoginStatusChecker()).As<ILoginStatusChecker>().SingleInstance();
             builder.Register(c => new Clients()).SingleInstance();
-            builder.Register(c => HubConnections.Repository);
+            builder.Register(c => new List<Session>()).SingleInstance();
             builder.Register(c => new WebpageValidation());
             builder.Register(c => new List<Session>()).As<IList<Session>>().SingleInstance();
         }

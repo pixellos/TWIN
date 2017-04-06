@@ -8,15 +8,16 @@ using WebLedMatrix.Models;
 
 namespace WebLedMatrix.Controllers
 {
-    public class StatisticsController : ApiController
+    public class StatisticsController : System.Web.Http.ApiController
     {
         private IList<StatisticsViewModel> Session { get; }
-        public StatisticsController(IList<StatisticsViewModel> statistics)
+        public StatisticsController(IList<StatisticsViewModel> session)
         {
-            this.Session = statistics;
+            this.Session = session;
         }
 
-        [Route("Stats/Summary/{page}/{entiresPerPage}")]
+        [HttpGet]
+        [Route("Stats/All/{page:int?}&{entiresPerPage:int?}")]
         public IEnumerable<StatisticsViewModel> Summary(int page = 0, int entriesPerPage = 50)
         {
             IEnumerable<StatisticsViewModel> toShow;
@@ -39,7 +40,8 @@ namespace WebLedMatrix.Controllers
             return toShow;
         }
 
-        [Route("Stats/User/{user}/{page}/{entiresPerPage}")]
+        [HttpGet]
+        [Route("Stats/User/{user}/{page:int?}/{entiresPerPage:int?}")]
         public IEnumerable<StatisticsViewModel> UserSummary(string user, int page = 0, int entriesPerPage = 50)
         {
             IEnumerable<StatisticsViewModel> toShow;
@@ -62,7 +64,5 @@ namespace WebLedMatrix.Controllers
             }
             return toShow;
         }
-
-
     }
 }   

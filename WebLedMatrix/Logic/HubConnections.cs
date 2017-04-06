@@ -7,17 +7,14 @@ namespace WebLedMatrix.Logic
 {
     public class HubConnections
     {
-        //Todo: To di
-        public static HubConnections Repository = new HubConnections();
         public List<HubUser> HubUserList = new List<HubUser>();
-        private static IList<Session> Sessions { get; } = new List<Session>();
+        private IList<Session> Sessions { get; }
         private readonly object @lock = new object();
  
-        public HubConnections()//IList<Session> sessions)
+        public HubConnections(IList<Session> sessions)
         {
-            //this.Sessions = sessions;
+            this.Sessions = sessions;
         }
-
         
         public void DeleteConnection(string connectionId)
         {

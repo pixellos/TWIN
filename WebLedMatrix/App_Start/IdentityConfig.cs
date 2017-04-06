@@ -13,7 +13,9 @@ using WebLedMatrix.IoC;
 using WebLedMatrix.Logic.Authentication.Concrete;
 using WebLedMatrix.Logic.Authentication.Infrastructure;
 using WebLedMatrix.Logic.Authentication.Models.Roles;
-using static Autofac.Integration.Wcf.AutofacHostFactory;
+using WebLedMatrix.Logic;
+using Autofac.Integration.WebApi;
+using System.Web.Http;
 
 namespace WebLedMatrix
 {
@@ -21,37 +23,28 @@ namespace WebLedMatrix
     {
         public void Configuration(IAppBuilder app)
         {
-            var config = SignalRIoCConfiguration();
-            RegisterIdentity(app,config);
-        }
-
-        private static HubConfiguration SignalRIoCConfiguration()
-        {
-            ContainerBuilder builder = new ContainerBuilder();
-            var config = new HubConfiguration();
+            var builder = new ContainerBuilder();
+            var hubConfig = new HubConfiguration();
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
-            builder.RegisterType(typeof (UiManagerHub)).AsSelf().InstancePerDependency();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterType(typeof(UiManagerHub)).AsSelf().InstancePerDependency();
+            builder.RegisterType(typeof(HubConnections)).AsSelf().SingleInstance();
             builder.RegisterModule(new BrowserXServerModule());
-            
             var container = builder.Build();
-            config.Resolver = new AutofacDependencyResolver(container);
-            Container = container;
-            
-            GlobalHost.DependencyResolver = config.Resolver;
-            return config;
-        }
-
-        private static void WCFIoC()
-        {
+            hubConfig.Resolver = new AutofacDependencyResolver(container);
+            GlobalHost.DependencyResolver = hubConfig.Resolver;
+            IdentityConfig.RegisterIdentity(app, hubConfig);
+            app.UseAutofacMiddleware(container);
+            var webApiResolver = new AutofacWebApiDependencyResolver(container);
+            GlobalConfiguration.Configuration.DependencyResolver = webApiResolver;
+            app.MapSignalR(hubConfig);
         }
 
         private static void RegisterIdentity(IAppBuilder app, HubConfiguration config)
         {
-            WCFIoC();
             app.CreatePerOwinContext(UserIdentityDbContext.Create);
             app.CreatePerOwinContext<UserIdentityManager>(UserIdentityManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
-                
             app.UseCookieAuthentication(
                 new CookieAuthenticationOptions()
                 {
@@ -59,8 +52,6 @@ namespace WebLedMatrix
                     LoginPath = new PathString("/Account/Login"),
                 });
             AntiForgeryConfig.SuppressIdentityHeuristicChecks = true;
-        
-            app.MapSignalR(config);
         }
     }
 }
