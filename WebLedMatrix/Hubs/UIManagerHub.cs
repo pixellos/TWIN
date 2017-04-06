@@ -133,8 +133,7 @@ namespace WebLedMatrix.Hubs
 
         public void LoginStatus()
         {
-            Clients.Caller.loginStatus(
-                StatusChecker.GetLoginStateString(Context.User));
+            Clients.Caller.loginStatus(StatusChecker.GetLoginStateString(Context.User));
             if (Context.User.Identity.IsAuthenticated)
             {
                 Clients.Caller.showSections(matrixesSection: true, sendingSection: true, administrationSection: true);
