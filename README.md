@@ -10,4 +10,6 @@
 >Contributors    
 -Mateusz Popielarz (Repo Owner) - PL Group technical leader - Technical Design/BackEnd  
 -Norbert Bolanowski - UI Design/ UI Scripting  
--Karol Szustakowsi - UI Desing/UI Scripting   
+-Karol Szustakowsi - UI Desing/UI Scripting/Python Client  
+-Krzysztof Zajdel - Java Client
+
