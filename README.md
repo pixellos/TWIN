@@ -8,8 +8,8 @@
 -User authentitaction (Especially Administrators/Lectors privileges)
 
 >Contributors    
--Mateusz Popielarz (Repo Owner) - PL Group technical leader - Technical Design/Server side/UI Scripting
--Norbert Bolanowski - UI Design/ UI Scripting  
+-Mateusz Popielarz (Repo Owner) - PL Group technical leader - Technical Design/Server side/UI Scripting  
+-Norbert Bolanowski - UI Design/ UI Scripting   
 -Karol Szustakowsi - UI Desing/UI Scripting/Python Client  
 -Krzysztof Zajdel - Java Client
 
