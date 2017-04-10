@@ -2,7 +2,7 @@
 > Hub for all UE Erasmus+ TWIN project software
 
 >Goals  
--Easy api (based only at HTTP/GET)    
+-Easy to use api (based only at HTTP/GET)    
 -Easy, responsive UI  
 -Modular application  
 -User authentitaction (Especially Administrators/Lectors privileges)
